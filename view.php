@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/header.php";
+require_once __DIR__ . "/Src/header.php";
 
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
@@ -110,3 +110,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
         <h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2>
     <?php endif; ?>
 </div>
+
+<?php
+require_once __DIR__ . "/Src/footer.php";
+?>
