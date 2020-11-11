@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/header.php";
 
-$product_id = $_GET['id'] ?? 0;
+$product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THROW_ON_ERROR);

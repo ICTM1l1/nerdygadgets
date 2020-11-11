@@ -1,13 +1,13 @@
 <?php
 require_once __DIR__ . "/header.php";
 
-$searchString = $_GET['search_string'] ?? '';
-$categoryID = (int) ($_GET['category_id'] ?? '0');
+$searchString = get_form_data_get('search_string');
+$categoryID = (int) get_form_data_get('category_id');
 $products = null;
 
-$sortOnPage = $_GET['sort'] ?? "price_low_high";
-$productsOnPage = (int) ($_GET['products_on_page'] ?? '25');
-$pageNumber = (int) ($_GET['page_number'] ?? '0');
+$sortOnPage = get_form_data_get('sort', 'price_low_high');
+$productsOnPage = (int) get_form_data_get('products_on_page', '25');
+$pageNumber = (int) get_form_data_get('page_number');
 
 $amountOfPages = 0;
 $queryBuildResult = "";
@@ -114,13 +114,13 @@ if (!empty($amountProducts)) {
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
-    <form method="get" action="<?= $_SERVER['PHP_SELF'] ?>">
-        <input type="hidden" name="category_id" id="category_id" value="<?= $_GET['category_id'] ?? '' ?>">
+    <form method="get" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+        <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
             <div class="form-group">
                 <h4 class="FilterTopMargin"><i class="fas fa-search"></i> Zoeken</h4>
-                <input type="text" name="search_string" id="search_string" value="<?= $_GET['search_string'] ?? '' ?>" class="form-submit">
+                <input type="text" name="search_string" id="search_string" value="<?= $searchString ?>" class="form-submit">
             </div>
 
             <div class="form-group">
