@@ -1,93 +1,43 @@
 <?php
-$Connection = mysqli_connect("localhost", "root", "", "nerdygadgets");
-mysqli_set_charset($Connection, 'latin1');
-include __DIR__ . "/header.php";
+require_once __DIR__ . "/header.php";
+$connection = require __DIR__ . '/connect.php';
 
-$Query = " 
-           SELECT SI.StockItemID, 
-            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
-            StockItemName,
-            CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
-            SearchDetails, 
-            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
-            (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
-            FROM stockitems SI 
-            JOIN stockitemholdings SIH USING(stockitemid)
-            JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
-            JOIN stockgroups USING(StockGroupID)
-            WHERE SI.stockitemid = ?
-            GROUP BY StockItemID";
-
-$ShowStockLevel = 1000;
-$Statement = mysqli_prepare($Connection, $Query);
-mysqli_stmt_bind_param($Statement, "i", $_GET['id']);
-mysqli_stmt_execute($Statement);
-$ReturnableResult = mysqli_stmt_get_result($Statement);
-if ($ReturnableResult && mysqli_num_rows($ReturnableResult) == 1) {
-    $Result = mysqli_fetch_all($ReturnableResult, MYSQLI_ASSOC)[0];
-} else {
-    $Result = null;
-}
-//Get Images
-$Query = "
-                SELECT ImagePath
-                FROM stockitemimages 
-                WHERE StockItemID = ?";
-
-$Statement = mysqli_prepare($Connection, $Query);
-mysqli_stmt_bind_param($Statement, "i", $_GET['id']);
-mysqli_stmt_execute($Statement);
-$R = mysqli_stmt_get_result($Statement);
-$R = mysqli_fetch_all($R, MYSQLI_ASSOC);
-
-if ($R) {
-    $Images = $R;
-}
+$product_id = $_GET['id'] ?? 0;
+$product = getProduct($product_id);
+$images = getProductImages($product_id);
+$customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THROW_ON_ERROR);
 ?>
 <div id="CenteredContent">
-    <?php
-    if ($Result != null) {
-        ?>
-        <?php
-        if (isset($Result['Video'])) {
-            ?>
+    <?php if (!empty($product)) : ?>
+        <?php if (isset($product['Video'])) : ?>
             <div id="VideoFrame">
-                <?php print $Result['Video']; ?>
+                <?= $product['Video'] ?? '' ?>
             </div>
-        <?php }
-        ?>
-
+        <?php endif; ?>
 
         <div id="ArticleHeader">
-            <?php
-            if (isset($Images)) {
-                // print Single
-                if (count($Images) == 1) {
-                    ?>
+            <?php if (!empty($images)) : ?>
+                <?php if (count($images) === 1) : ?>
                     <div id="ImageFrame"
-                         style="background-image: url('Public/StockItemIMG/<?php print $Images[0]['ImagePath']; ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
-                    <?php
-                } else if (count($Images) >= 2) { ?>
+                         style="background-image: url('Public/StockItemIMG/<?= $images[0]['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
+                <?php else : ?>
                     <div id="ImageFrame">
                         <div id="ImageCarousel" class="carousel slide" data-interval="false">
                             <!-- Indicators -->
                             <ul class="carousel-indicators">
-                                <?php for ($i = 0; $i < count($Images); $i++) {
-                                    ?>
+                                <?php foreach ($images as $key => $image) : $key++; ?>
                                     <li data-target="#ImageCarousel"
-                                        data-slide-to="<?php print $i ?>" <?php print (($i == 0) ? 'class="active"' : ''); ?>></li>
-                                    <?php
-                                } ?>
+                                        data-slide-to="<?= $key ?>" <?= (($key === 0) ? 'class="active"' : ''); ?>></li>
+                                <?php endforeach; ?>
                             </ul>
 
                             <!-- The slideshow -->
                             <div class="carousel-inner">
-                                <?php for ($i = 0; $i < count($Images); $i++) {
-                                    ?>
-                                    <div class="carousel-item <?php print ($i == 0) ? 'active' : ''; ?>">
-                                        <img src="Public/StockItemIMG/<?php print $Images[$i]['ImagePath'] ?>">
+                                <?php foreach ($images as $key => $image) : $key++; ?>
+                                    <div class="carousel-item <?= ($key === 0) ? 'active' : ''; ?>">
+                                        <img alt="Product foto" src="Public/StockItemIMG/<?= $image['ImagePath'] ?? '' ?>">
                                     </div>
-                                <?php } ?>
+                                <?php endforeach; ?>
                             </div>
 
                             <!-- Left and right controls -->
@@ -99,26 +49,23 @@ if ($R) {
                             </a>
                         </div>
                     </div>
-                    <?php
-                }
-            } else {
-                ?>
+                <?php endif; ?>
+            <?php else : ?>
                 <div id="ImageFrame"
-                     style="background-image: url('Public/StockGroupIMG/<?php print $Result['BackupImagePath']; ?>'); background-size: cover;"></div>
-                <?php
-            }
-            ?>
+                     style="background-image: url('Public/StockGroupIMG/<?= $product['BackupImagePath'] ?? '' ?>'); background-size: cover;"></div>
+            <?php endif; ?>
 
-
-            <h1 class="StockItemID">Artikelnummer: <?php print $Result["StockItemID"]; ?></h1>
+            <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>
             <h2 class="StockItemNameViewSize StockItemName">
-                <?php print $Result['StockItemName']; ?>
+                <?= $product['StockItemName'] ?? '' ?>
             </h2>
-            <div class="QuantityText"><?php print $Result['QuantityOnHand']; ?></div>
+            <div class="QuantityText"><?= $product['QuantityOnHand'] ?? 0 ?></div>
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
-                        <p class="StockItemPriceText"><b><?php print sprintf("€ %.2f", $Result['SellPrice']); ?></b></p>
+                        <p class="StockItemPriceText">
+                            <b>&euro; <?= number_format($product['SellPrice'] ?? 0, 2, '.', ',') ?></b>
+                        </p>
                         <h6> Inclusief BTW </h6>
                     </div>
                 </div>
@@ -127,47 +74,40 @@ if ($R) {
 
         <div id="StockItemDescription">
             <h3>Artikel beschrijving</h3>
-            <p><?php print $Result['SearchDetails']; ?></p>
+            <p><?= $product['SearchDetails'] ?? '' ?></p>
         </div>
         <div id="StockItemSpecifications">
             <h3>Artikel specificaties</h3>
-            <?php
-            $CustomFields = json_decode($Result['CustomFields'], true);
-            if (is_array($CustomFields)) { ?>
+            <?php if (is_array($customFields) && !empty($customFields)) : ?>
                 <table>
-                <thead>
-                <th>Naam</th>
-                <th>Data</th>
-                </thead>
-                <?php
-                foreach ($CustomFields as $SpecName => $SpecText) { ?>
-                    <tr>
-                        <td>
-                            <?php print $SpecName; ?>
-                        </td>
-                        <td>
-                            <?php
-                            if (is_array($SpecText)) {
-                                foreach ($SpecText as $SubText) {
-                                    print $SubText . " ";
-                                }
-                            } else {
-                                print $SpecText;
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                <?php } ?>
-                </table><?php
-            } else { ?>
-
-                <p><?php print $Result['CustomFields']; ?>.</p>
-                <?php
-            }
-            ?>
+                    <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($customFields as $name => $data) : ?>
+                        <tr>
+                            <td><?= $name ?></td>
+                            <td>
+                                <?php if (is_array($data)) : ?>
+                                    <?php foreach ($data as $text) : ?>
+                                        <?= $text ?>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <?= $data ?>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else : ?>
+                <p><?= $product['CustomFields'] ?? '' ?>.</p>
+            <?php endif; ?>
         </div>
-        <?php
-    } else {
-        ?><h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2><?php
-    } ?>
+    <?php else : ?>
+        <h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2>
+    <?php endif; ?>
 </div>
