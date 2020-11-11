@@ -18,7 +18,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
             <?php if (!empty($images)) : ?>
                 <?php if (count($images) === 1) : ?>
                     <div id="ImageFrame"
-                         style="background-image: url('Public/StockItemIMG/<?= $images[0]['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
+                         style="background-image: url('Public/StockItemIMG/<?= $images['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
                 <?php else : ?>
                     <div id="ImageFrame">
                         <div id="ImageCarousel" class="carousel slide" data-interval="false">
@@ -26,14 +26,14 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
                             <ul class="carousel-indicators">
                                 <?php foreach ($images as $key => $image) : $key++; ?>
                                     <li data-target="#ImageCarousel"
-                                        data-slide-to="<?= $key ?>" <?= (($key === 0) ? 'class="active"' : ''); ?>></li>
+                                        data-slide-to="<?= $key ?>" <?= (($key === 1) ? 'class="active"' : ''); ?>></li>
                                 <?php endforeach; ?>
                             </ul>
 
                             <!-- The slideshow -->
                             <div class="carousel-inner">
                                 <?php foreach ($images as $key => $image) : $key++; ?>
-                                    <div class="carousel-item <?= ($key === 0) ? 'active' : ''; ?>">
+                                    <div class="carousel-item <?= ($key === 1) ? 'active' : ''; ?>">
                                         <img alt="Product foto" src="Public/StockItemIMG/<?= $image['ImagePath'] ?? '' ?>">
                                     </div>
                                 <?php endforeach; ?>
