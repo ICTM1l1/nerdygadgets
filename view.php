@@ -63,7 +63,9 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
             <div id="StockItemHeaderLeft">
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
-                        <p class="StockItemPriceText"><b><?= sprintf("€ %.2f", ($product['SellPrice'] ?? 0)); ?></b></p>
+                        <p class="StockItemPriceText">
+                            <b>&euro; <?= number_format($product['SellPrice'] ?? 0, 2, '.', ',') ?></b>
+                        </p>
                         <h6> Inclusief BTW </h6>
                     </div>
                 </div>
