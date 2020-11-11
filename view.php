@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . "/header.php";
-$connection = require __DIR__ . '/connect.php';
+require_once __DIR__ . "/Src/header.php";
 
-$product_id = $_GET['id'] ?? 0;
+$product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THROW_ON_ERROR);
@@ -19,7 +18,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
             <?php if (!empty($images)) : ?>
                 <?php if (count($images) === 1) : ?>
                     <div id="ImageFrame"
-                         style="background-image: url('Public/StockItemIMG/<?= $images[0]['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
+                         style="background-image: url('Public/StockItemIMG/<?= $images['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
                 <?php else : ?>
                     <div id="ImageFrame">
                         <div id="ImageCarousel" class="carousel slide" data-interval="false">
@@ -27,14 +26,14 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
                             <ul class="carousel-indicators">
                                 <?php foreach ($images as $key => $image) : $key++; ?>
                                     <li data-target="#ImageCarousel"
-                                        data-slide-to="<?= $key ?>" <?= (($key === 0) ? 'class="active"' : ''); ?>></li>
+                                        data-slide-to="<?= $key ?>" <?= (($key === 1) ? 'class="active"' : ''); ?>></li>
                                 <?php endforeach; ?>
                             </ul>
 
                             <!-- The slideshow -->
                             <div class="carousel-inner">
                                 <?php foreach ($images as $key => $image) : $key++; ?>
-                                    <div class="carousel-item <?= ($key === 0) ? 'active' : ''; ?>">
+                                    <div class="carousel-item <?= ($key === 1) ? 'active' : ''; ?>">
                                         <img alt="Product foto" src="Public/StockItemIMG/<?= $image['ImagePath'] ?? '' ?>">
                                     </div>
                                 <?php endforeach; ?>
@@ -111,3 +110,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
         <h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2>
     <?php endif; ?>
 </div>
+
+<?php
+require_once __DIR__ . "/Src/footer.php";
+?>

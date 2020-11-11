@@ -1,33 +1,23 @@
 <?php
 session_start();
 
-$config = require __DIR__ . '/Config/config.php';
-require_once __DIR__ . '/Src/functions.php';
-require_once __DIR__ . '/Src/database.php';
-require_once __DIR__ . '/Src/Crud/crud.php';
+require_once __DIR__ . '/../Src/Core/environment.php';
+require_once __DIR__ . '/../Src/Core/functions.php';
+require_once __DIR__ . '/../Src/Core/database.php';
+require_once __DIR__ . '/../Src/Crud/crud.php';
 
 $categories = getCategories();
 ?>
 <!DOCTYPE html>
 <html lang="en" style="background-color: rgb(35, 35, 47);">
 <head>
-    <script src="Public/JS/fontawesome.js" crossorigin="anonymous"></script>
-    <script src="Public/JS/jquery.min.js"></script>
-    <script src="Public/JS/bootstrap.min.js"></script>
-    <script src="Public/JS/popper.min.js"></script>
-    <script src="Public/JS/Resizer.js"></script>
-    <script src="Public/JS/jquery-3.4.1.js"></script>
-    <style>
-        @font-face {
-            font-family: MmrText;
-            src: url(/Public/fonts/mmrtext.ttf);
-        }
-    </style>
     <meta charset="ISO-8859-1">
     <title>NerdyGadgets</title>
+
     <link rel="stylesheet" href="Public/CSS/Style.css" type="text/css">
     <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="Public/CSS/nha3fuq.css">
+    <link rel="stylesheet" href="Public/CSS/fonts.css">
+
     <link rel="apple-touch-icon" sizes="57x57" href="Public/Favicon/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="Public/Favicon/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="Public/Favicon/apple-icon-72x72.png">
@@ -45,11 +35,17 @@ $categories = getCategories();
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="Public/Favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+    <style>
+        @font-face {
+            font-family: MmrText;
+            src: url(/Public/fonts/mmrtext.ttf);
+        }
+    </style>
 </head>
 <body>
 <div class="Background">
     <div class="row" id="Header">
-        <div class="col-2"><a href="./" id="LogoA">
+        <div class="col-2"><a href="index.php" id="LogoA">
                 <div id="LogoImage"></div>
             </a></div>
         <div class="col-8" id="CategoriesBar">

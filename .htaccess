@@ -1,0 +1,7 @@
+ErrorDocument 404 /nerdygadgets/Errors/404.php
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} ^/404/$
+RewriteRule ^(.*)$ /nerdygadgets/Errors/404.php [L]
