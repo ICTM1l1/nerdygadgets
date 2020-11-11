@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+require_once __DIR__ . '/../Src/Core/environment.php';
 require_once __DIR__ . '/../Src/Core/functions.php';
 require_once __DIR__ . '/../Src/Core/database.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
