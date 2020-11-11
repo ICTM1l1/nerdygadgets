@@ -35,13 +35,6 @@ $categories = getCategories();
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="Public/Favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-
-    <script src="Public/JS/fontawesome.js" crossorigin="anonymous"></script>
-    <script src="Public/JS/jquery.min.js"></script>
-    <script src="Public/JS/bootstrap.min.js"></script>
-    <script src="Public/JS/popper.min.js"></script>
-    <script src="Public/JS/Resizer.js"></script>
-    <script src="Public/JS/jquery-3.4.1.js"></script>
     <style>
         @font-face {
             font-family: MmrText;
