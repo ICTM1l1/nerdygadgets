@@ -2,8 +2,8 @@
 session_start();
 
 $config = require __DIR__ . '/../Config/config.php';
-require_once __DIR__ . '/../Src/functions.php';
-require_once __DIR__ . '/../Src/database.php';
+require_once __DIR__ . '/../Src/Core/functions.php';
+require_once __DIR__ . '/../Src/Core/database.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
 
 $categories = getCategories();
