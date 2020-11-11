@@ -1,6 +1,12 @@
 <?php
 session_start();
-include "connect.php";
+
+$config = require __DIR__ . '/Config/config.php';
+require_once __DIR__ . '/Src/functions.php';
+require_once __DIR__ . '/Src/database.php';
+require_once __DIR__ . '/Src/Crud/crud.php';
+
+$categories = getCategories();
 ?>
 <!DOCTYPE html>
 <html lang="en" style="background-color: rgb(35, 35, 47);">
@@ -48,28 +54,12 @@ include "connect.php";
             </a></div>
         <div class="col-8" id="CategoriesBar">
             <ul id="ul-class">
-                <?php
-                $Query = "
-                SELECT StockGroupID, StockGroupName, ImagePath
-                FROM stockgroups 
-                WHERE StockGroupID IN (
-                                        SELECT StockGroupID 
-                                        FROM stockitemstockgroups
-                                        ) AND ImagePath IS NOT NULL
-                ORDER BY StockGroupID ASC";
-                $Statement = mysqli_prepare($Connection, $Query);
-                mysqli_stmt_execute($Statement);
-                $HeaderStockGroups = mysqli_stmt_get_result($Statement);
-
-                foreach ($HeaderStockGroups as $HeaderStockGroup) {
-                    ?>
+                <?php foreach($categories as $category) : ?>
                     <li>
-                        <a href="browse.php?category_id=<?php print $HeaderStockGroup['StockGroupID']; ?>"
-                           class="HrefDecoration"><?php print $HeaderStockGroup['StockGroupName']; ?></a>
+                        <a href="browse.php?category_id=<?= $category['StockGroupID'] ?? '' ?>"
+                           class="HrefDecoration"><?= $category['StockGroupName'] ?? '' ?></a>
                     </li>
-                    <?php
-                }
-                ?>
+                <?php endforeach; ?>
                 <li>
                     <a href="categories.php" class="HrefDecoration">Alle categorieën</a>
                 </li>
