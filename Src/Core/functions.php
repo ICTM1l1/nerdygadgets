@@ -57,7 +57,7 @@ function get_form_data_session(string $key, $default = '') {
  *   The data from the config data.
  */
 function config_get(string $key, $default = '') {
-    $config = require __DIR__ . '/../Config/config.php';
+    $config = require __DIR__ . '/../../Config/config.php';
 
     return $config[$key] ?? $default;
 }

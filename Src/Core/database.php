@@ -7,18 +7,16 @@
  *   The database connection.
  */
 function getDatabaseConnection(){
-    global $config;
+    $dsn = config_get('server') . ';';
+    $dsn .= 'dbname=' . config_get('database') . ';';
+    $dsn .= 'charset=' .  config_get('charset') . ';';
+    $dsn .= 'port=' . config_get('port') . ';';
 
-    $dsn = ($config['server'] ?? '') . ';';
-    $dsn .= 'dbname=' . ($config['database'] ?? '') . ';';
-    $dsn .= 'charset=' . ($config['charset'] ?? '') . ';';
-    $dsn .= 'port=' . ($config['port'] ?? 0) . ';';
-
-    $username = $config['user'] ?? null;
-    $password = $config['password'] ?? null;
+    $username = config_get('user');
+    $password = config_get('password');
 
     $options = [];
-    $debug = $config['debug'] ?? false;
+    $debug = config_get('debug', false);
     if ($debug) {
         $options[PDO::ATTR_EMULATE_PREPARES] = false;
         $options[PDO::ATTR_ERRMODE] = 2;
