@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . "/header.php";
-$connection = require __DIR__ . '/connect.php';
 
 $product_id = $_GET['id'] ?? 0;
 $product = getProduct($product_id);
