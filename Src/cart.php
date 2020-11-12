@@ -50,3 +50,7 @@ class Cart {
         array_splice($this->items, $n, 1);
     }
 }
+
+if(!isset($_SESSION["cart"])){
+    $_SESSION["cart"] = Cart();
+}
