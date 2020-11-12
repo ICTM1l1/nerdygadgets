@@ -1,7 +1,7 @@
 <?php
 
 function getProduct(int $product_id) {
-    return select("SELECT SI.StockItemID, 
+    return selectFirst("SELECT SI.StockItemID, 
             (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,

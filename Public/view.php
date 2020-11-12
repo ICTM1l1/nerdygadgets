@@ -4,7 +4,12 @@ require_once __DIR__ . "/../Src/header.php";
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
-$customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THROW_ON_ERROR);
+
+$productCustomFields = $product['CustomFields'] ?? null;
+$customFields = [];
+if (!empty($productCustomFields)) {
+    $customFields = json_decode($productCustomFields, true, 512, JSON_THROW_ON_ERROR);
+}
 ?>
 <div id="CenteredContent">
     <?php if (!empty($product)) : ?>
