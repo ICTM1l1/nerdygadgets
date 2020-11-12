@@ -33,6 +33,17 @@ function getDatabaseConnection(){
     return $connection;
 }
 
+/**
+ * Executes a query.
+ *
+ * @param string $query
+ *   The query.
+ * @param array $parameters
+ *   The parameters of the query.
+ *
+ * @return bool|PDOStatement
+ *   The PDOStatement object on success or a boolean.
+ */
 function executeQuery(string $query, array $parameters = []) {
     $connection = getDatabaseConnection();
 
