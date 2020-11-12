@@ -15,11 +15,16 @@ function getDatabaseConnection(){
     $username = config_get('database_user');
     $password = config_get('database_password');
 
-    $options = [];
+    $options = [
+        PDO::ATTR_EMULATE_PREPARES => false, // TODO: find out why this is necessary or how to explain this
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
+    ];
+
     $debug = config_get('debug', false);
     if ($debug) {
-        $options[PDO::ATTR_EMULATE_PREPARES] = false;
-        $options[PDO::ATTR_ERRMODE] = 2;
+        $options = [];
+        $options[PDO::ATTR_EMULATE_PREPARES] = false; // TODO: find out why this is necessary or how to explain this
+        $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
     }
 
     $connection = new PDO($dsn, $username, $password, $options);
