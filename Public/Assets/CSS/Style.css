@@ -429,7 +429,7 @@ ul#ul-class-price li {
 .ListItem:hover {
     text-decoration: none;
 }
-#NoSearchResults {
+#emptySearchResults {
     text-align: center;
     height: 100%;
     margin: 20px;

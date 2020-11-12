@@ -169,9 +169,11 @@ if (!empty($amountProducts)) {
             </form>
         </div>
     <?php else : ?>
-        <h2 id="NoSearchResults">
-            Yarr, er zijn geen resultaten gevonden.
-        </h2>
+        <div class="container mt-2">
+            <h2 id="emptySearchResults" class="m-auto">
+                Helaas, er zijn geen resultaten gevonden.
+            </h2>
+        </div>
     <?php endif; ?>
 </div>
 
