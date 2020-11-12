@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/Src/header.php";
+require_once __DIR__ . "/../Src/header.php";
 ?>
 <div class="IndexStyle">
     <div class="col-11">
@@ -17,6 +17,6 @@ require_once __DIR__ . "/Src/header.php";
     </div>
 </div>
 <?php
-require_once __DIR__ . "/Src/footer.php";
+require_once __DIR__ . "/../Src/footer.php";
 ?>
 

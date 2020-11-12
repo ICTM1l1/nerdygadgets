@@ -1,7 +1,18 @@
-ErrorDocument 404 /nerdygadgets/Errors/404.php
-
 RewriteEngine On
-RewriteBase /
+RewriteBase /nerdygadgets/
+
+# Redirect all reqeusts to the public directory.
+RewriteCond %{THE_REQUEST} /Public/([^\s?]*) [NC]
+RewriteRule ^ %1 [L,NE,R=302]
+
+RewriteRule ^((?!Public/).*)$ Public/$1 [L,NC]
+
+# Provide custom error pages.
+ErrorDocument 403 /nerdygadgets/Public/Errors/403.php
+ErrorDocument 404 /nerdygadgets/Public/Errors/404.php
+
+RewriteCond %{REQUEST_URI} ^/403/$
+RewriteRule ^(.*)$ /Public/Errors/403.php [L]
 
 RewriteCond %{REQUEST_URI} ^/404/$
-RewriteRule ^(.*)$ /nerdygadgets/Errors/404.php [L]
+RewriteRule ^(.*)$ /Public/Errors/404.php [L]
