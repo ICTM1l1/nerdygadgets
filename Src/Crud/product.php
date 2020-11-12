@@ -16,6 +16,23 @@ function getProduct(int $product_id) {
             GROUP BY StockItemID", ['stockitemid' => $product_id]);
 }
 
+function getProductWithImage(int $product_id) {
+    return selectFirst("SELECT SI.StockItemID, 
+            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+            StockItemName,
+            CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
+            SearchDetails, 
+            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
+            (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
+            FROM stockitems SI 
+            JOIN stockitemholdings SIH USING(stockitemid)
+            JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
+            JOIN stockgroups USING(StockGroupID)
+            WHERE SI.stockitemid = :stockitemid
+            AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
+            GROUP BY StockItemID", ['stockitemid' => $product_id]);
+}
+
 function getProductImages(int $product_id) {
     return select("
                 SELECT ImagePath
