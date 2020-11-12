@@ -34,7 +34,7 @@ if (!empty($productCustomFields)) {
                                         data-slide-to="<?= $key ?>" <?= (($key === 1) ? 'class="active"' : ''); ?>></li>
                                 <?php endforeach; ?>
                             </ul>
-
+test
                             <!-- The slideshow -->
                             <div class="carousel-inner">
                                 <?php foreach ($images as $key => $image) : $key++; ?>
