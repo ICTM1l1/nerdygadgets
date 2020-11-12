@@ -59,10 +59,24 @@ function executeQuery(string $query, array $parameters = []) {
 function select(string $query, array $parameters = []) {
     $statement = executeQuery($query, $parameters);
 
+    return $statement->fetchAll(PDO::FETCH_NAMED);
+}
+
+/**
+ * Select the first piece of data from the database.
+ *
+ * @param string $query
+ *   The query.
+ * @param array $parameters
+ *   The parameters of the query.
+ *
+ * @return array
+ *   The selected data.
+ */
+function selectFirst(string $query, array $parameters = []) {
+    $statement = executeQuery($query, $parameters);
+
     $values = $statement->fetchAll(PDO::FETCH_NAMED);
-    if (count($values) > 1) {
-        return $values;
-    }
 
     return $values[array_key_first($values)] ?? [];
 }

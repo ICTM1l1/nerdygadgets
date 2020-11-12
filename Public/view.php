@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/Src/header.php";
+require_once __DIR__ . "/../Src/header.php";
 
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
@@ -112,5 +112,5 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
 </div>
 
 <?php
-require_once __DIR__ . "/Src/footer.php";
+require_once __DIR__ . "/../Src/footer.php";
 ?>
