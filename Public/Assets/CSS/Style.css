@@ -236,9 +236,9 @@ ul#ul-class-navigation li {
     position: absolute;
 }
 #LogoImage {
-    background-image: url("../ProductIMGHighRes/NerdyGadgetsLogo.png");
+    background-image: url("../ProductIMGHighRes/logo.png");
     width: 250px;
-    height: 90px;
+    height: 250px;
     margin: 55px 55px 55px 10%;
 }
 ul#ul-class li {
@@ -472,4 +472,46 @@ ul#ul-class-price li {
     background: rgb(36, 41, 143);
     border: 1px rgb(98, 158, 255) solid;
     color: #fff;
+}
+#ProductFrameShoppingCart {
+    background-color: rgba(35, 40, 47, 0.8);
+    width: 49%;
+    float: right;
+    padding: 10px;
+    margin-right: 20px;
+    margin-top:10px;
+    border: 1px solid;
+    font-family: pt-sans, sans-serif;
+    font-size: 20px;
+}
+#ProductAmount {
+    float: right;
+    margin-right: 10px;
+}
+
+#CartPlus {
+    float: right;
+    margin-right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+#CartMin {
+    float: right;
+    margin-right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#Price {
+    float: right;
+}
+
+#BTW {
+    float: right;
+}
+
+#ProductAmountStock {
+    float: bottom;
 }

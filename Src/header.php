@@ -61,6 +61,7 @@ $categories = getCategories();
         </div>
         <ul id="ul-class-navigation">
             <li>
+                <a href="shoppingcart.php" class="HrefDecoration mr-3"><i class="fas fa-shopping-cart" style="color:#676EFF;"></i> Winkelwagen </a>
                 <a href="browse.php" class="HrefDecoration"><i class="fas fa-search" style="color:#676EFF;"></i> Zoeken</a>
             </li>
         </ul>
