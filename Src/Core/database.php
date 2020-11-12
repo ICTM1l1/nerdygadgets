@@ -7,13 +7,13 @@
  *   The database connection.
  */
 function getDatabaseConnection(){
-    $dsn = config_get('server') . ';';
-    $dsn .= 'dbname=' . config_get('database') . ';';
-    $dsn .= 'charset=' .  config_get('charset') . ';';
-    $dsn .= 'port=' . config_get('port') . ';';
+    $dsn = config_get('database_server') . ';';
+    $dsn .= 'dbname=' . config_get('database_name') . ';';
+    $dsn .= 'charset=' .  config_get('database_charset') . ';';
+    $dsn .= 'port=' . config_get('database_port') . ';';
 
-    $username = config_get('user');
-    $password = config_get('password');
+    $username = config_get('database_user');
+    $password = config_get('database_password');
 
     $options = [];
     $debug = config_get('debug', false);
