@@ -1,7 +1,7 @@
 RewriteEngine On
 RewriteBase /nerdygadgets/
 
-# Redirect all reqeusts to the public directory.
+# Redirect all requests to the public directory.
 RewriteCond %{THE_REQUEST} /Public/([^\s?]*) [NC]
 RewriteRule ^ %1 [L,NE,R=302]
 
