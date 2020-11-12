@@ -17,7 +17,6 @@ function getDatabaseConnection(){
 
     $options = [
         PDO::ATTR_EMULATE_PREPARES => false, // TODO: find out why this is necessary or how to explain this
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
     ];
 
     $debug = config_get('debug', false);
