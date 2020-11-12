@@ -69,6 +69,9 @@ function config_get(string $key, $default = '') {
  *   The values to be dumped.
  */
 function dd(...$variables) {
+    // Removes all previous printed items
+    ob_end_clean();
+
     var_dump($variables);
     die();
 }
