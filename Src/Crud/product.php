@@ -39,7 +39,7 @@ function getProducts(string $queryBuildResult, string $sort, int $showStockLevel
                 LIMIT :limit OFFSET :offset", ['showStockLevel' => $showStockLevel, 'limit' => $productsOnPage, 'offset' => $offset]);
 }
 
-function getProductsAmount(string $queryBuildResult) {
+function getProductsAmount(string $queryBuildResult = '') {
     return selectFirst("
             SELECT count(*)
             FROM stockitems SI
