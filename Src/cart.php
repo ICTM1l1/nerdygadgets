@@ -38,6 +38,10 @@ class Cart {
         return $this->items;
     }
 
+    function get_count(){
+        return count($this->items);
+    }
+
     function add_item($code, $count){
         $this->items[] = CartItem($code, $count);
     }
