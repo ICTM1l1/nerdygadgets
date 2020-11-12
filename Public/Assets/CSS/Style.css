@@ -9,7 +9,7 @@ body {
 }
 @font-face {
     font-family: MmrText;
-    src: url(/Public/Assets/fonts/mmrtext.ttf);
+    src: url(/Assets/fonts/mmrtext.ttf);
 }
 select {
     margin: 50px;

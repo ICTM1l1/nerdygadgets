@@ -61,51 +61,15 @@ if (empty($categoryID)) {
         $queryBuildResult = "WHERE {$queryBuildResult}";
     }
 
-    $products = select("
-                SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, ROUND(TaxRate * RecommendedRetailPrice / 100 + RecommendedRetailPrice,2) as SellPrice,
-                (CASE WHEN (SIH.QuantityOnHand) >= :showStockLevel THEN 'Ruime voorraad beschikbaar.' ELSE CONCAT('Voorraad: ',QuantityOnHand) END) AS QuantityOnHand, 
-                (SELECT ImagePath
-                FROM stockitemimages 
-                WHERE StockItemID = SI.StockItemID LIMIT 1) as ImagePath,
-                (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath
-                FROM stockitems SI
-                JOIN stockitemholdings SIH USING(stockitemid)
-                {$queryBuildResult}
-                GROUP BY StockItemID
-                ORDER BY {$sort}
-                LIMIT :limit OFFSET :offset", ['showStockLevel' => $showStockLevel, 'limit' => $productsOnPage, 'offset' => $offset]);
-
-
-    $amountProducts = select("
-            SELECT count(*)
-            FROM stockitems SI
-            {$queryBuildResult}");
+    $products = getProducts($queryBuildResult, $sort, $showStockLevel, $productsOnPage, $offset);
+    $amountProducts = getProductsAmount($queryBuildResult);
 } else {
-
     if ($queryBuildResult !== '') {
         $queryBuildResult .= " AND ";
     }
 
-    $products = select("
-                SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, 
-                ROUND(SI.TaxRate * SI.RecommendedRetailPrice / 100 + SI.RecommendedRetailPrice,2) as SellPrice, 
-                (CASE WHEN (SIH.QuantityOnHand) >= :showStockLevel THEN 'Ruime voorraad beschikbaar.' ELSE CONCAT('Voorraad: ',QuantityOnHand) END) AS QuantityOnHand,
-                (SELECT ImagePath FROM stockitemimages WHERE StockItemID = SI.StockItemID LIMIT 1) as ImagePath,
-                (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath           
-                FROM stockitems SI 
-                JOIN stockitemholdings SIH USING(stockitemid)
-                JOIN stockitemstockgroups USING(StockItemID)
-                JOIN stockgroups ON stockitemstockgroups.StockGroupID = stockgroups.StockGroupID
-                WHERE {$queryBuildResult} :categoryId IN (SELECT StockGroupID from stockitemstockgroups WHERE StockItemID = SI.StockItemID)
-                GROUP BY StockItemID
-                ORDER BY {$sort}
-                LIMIT :limit OFFSET :offset", ['showStockLevel' => $showStockLevel, 'categoryId' => $categoryID, 'limit' => $productsOnPage, 'offset' => $offset]);
-
-    $amountProducts = select("
-                SELECT count(*)
-                FROM stockitems SI 
-                WHERE {$queryBuildResult} :categoryId IN (SELECT SS.StockGroupID from stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
-              ['categoryId' => $categoryID]);
+    $products = getProductsForCategory($queryBuildResult, $sort, $showStockLevel, $categoryID, $productsOnPage, $offset);
+    $amountProducts = getProductsAmountForCategory($queryBuildResult, $categoryID);
 }
 
 if (!empty($amountProducts)) {
@@ -160,10 +124,10 @@ if (!empty($amountProducts)) {
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= "Public/StockItemIMG/" . $product['ImagePath'] ?? '' ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
+                                 style="background-image: url('<?= "Assets/StockItemIMG/" . $product['ImagePath'] ?? '' ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
                         <?php elseif (isset($product['BackupImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= "Public/StockGroupIMG/" . $product['BackupImagePath'] ?? '' ?>'); background-size: cover;"></div>
+                                 style="background-image: url('<?= "Assets/StockGroupIMG/" . $product['BackupImagePath'] ?? '' ?>'); background-size: cover;"></div>
                         <?php endif; ?>
 
                         <div id="StockItemFrameRight">

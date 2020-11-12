@@ -4,7 +4,12 @@ require_once __DIR__ . "/../Src/header.php";
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
-$customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THROW_ON_ERROR);
+
+$productCustomFields = $product['CustomFields'] ?? null;
+$customFields = [];
+if (!empty($productCustomFields)) {
+    $customFields = json_decode($productCustomFields, true, 512, JSON_THROW_ON_ERROR);
+}
 ?>
 <div id="CenteredContent">
     <?php if (!empty($product)) : ?>
@@ -18,7 +23,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
             <?php if (!empty($images)) : ?>
                 <?php if (count($images) === 1) : ?>
                     <div id="ImageFrame"
-                         style="background-image: url('Public/StockItemIMG/<?= $images['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
+                         style="background-image: url('Assets/StockItemIMG/<?= $images[0]['ImagePath'] ?? '' ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
                 <?php else : ?>
                     <div id="ImageFrame">
                         <div id="ImageCarousel" class="carousel slide" data-interval="false">
@@ -34,7 +39,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
                             <div class="carousel-inner">
                                 <?php foreach ($images as $key => $image) : $key++; ?>
                                     <div class="carousel-item <?= ($key === 1) ? 'active' : ''; ?>">
-                                        <img alt="Product foto" src="Public/StockItemIMG/<?= $image['ImagePath'] ?? '' ?>">
+                                        <img alt="Product foto" src="Assets/StockItemIMG/<?= $image['ImagePath'] ?? '' ?>">
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -51,7 +56,7 @@ $customFields = json_decode($product['CustomFields'] ?? '', true, 512, JSON_THRO
                 <?php endif; ?>
             <?php else : ?>
                 <div id="ImageFrame"
-                     style="background-image: url('Public/StockGroupIMG/<?= $product['BackupImagePath'] ?? '' ?>'); background-size: cover;"></div>
+                     style="background-image: url('Assets/StockGroupIMG/<?= $product['BackupImagePath'] ?? '' ?>'); background-size: cover;"></div>
             <?php endif; ?>
 
             <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>

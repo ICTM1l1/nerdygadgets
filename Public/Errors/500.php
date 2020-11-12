@@ -1,11 +1,3 @@
-<?php
-session_start();
-
-require_once __DIR__ . '/../Src/Core/core.php';
-require_once __DIR__ . '/../Src/Crud/crud.php';
-
-$categories = getCategories();
-?>
 <!DOCTYPE html>
 <html lang="en" style="background-color: rgb(35, 35, 47);">
 <head>
@@ -42,31 +34,20 @@ $categories = getCategories();
 </head>
 <body>
 <div class="Background">
-    <div class="row" id="Header">
-        <div class="col-2"><a href="index.php" id="LogoA">
-                <div id="LogoImage"></div>
-            </a></div>
-        <div class="col-8" id="CategoriesBar">
-            <ul id="ul-class">
-                <?php foreach($categories as $category) : ?>
-                    <li>
-                        <a href="browse.php?category_id=<?= $category['StockGroupID'] ?? '' ?>"
-                           class="HrefDecoration"><?= $category['StockGroupName'] ?? '' ?></a>
-                    </li>
-                <?php endforeach; ?>
-                <li>
-                    <a href="categories.php" class="HrefDecoration">Alle categorieën</a>
-                </li>
-            </ul>
-        </div>
-        <ul id="ul-class-navigation">
-            <li>
-                <a href="browse.php" class="HrefDecoration"><i class="fas fa-search" style="color:#676EFF;"></i> Zoeken</a>
-            </li>
-        </ul>
-    </div>
     <div class="row" id="Content">
         <div class="col-12">
             <div id="SubContent">
+                <div class="row">
+                    <div class="col-sm-12 mt-2 text-center">
+                        <h1>500 - Interne fout</h1>
+                        <p>Er is een interne fout opgetreden, neem contact op met de beheerder.</p>
+                    </div>
 
+                    <div class="col-sm-12 mt-2 text-center">
+                        <a href="index.php">Ga terug naar de homepagina.</a>
+                    </div>
+                </div>
+<?php
+require_once __DIR__ . "/../../Src/footer.php";
+?>
 

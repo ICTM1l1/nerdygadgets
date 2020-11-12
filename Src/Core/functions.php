@@ -41,7 +41,7 @@ function get_form_data_post(string $key, $default = '') {
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function get_form_data_session(string $key, $default = '') {
+function session_get(string $key, $default = '') {
     return $_SESSION[$key] ?? $default;
 }
 
@@ -69,6 +69,9 @@ function config_get(string $key, $default = '') {
  *   The values to be dumped.
  */
 function dd(...$variables) {
+    // Removes all previous printed items
+    ob_end_clean();
+
     var_dump($variables);
     die();
 }

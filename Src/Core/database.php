@@ -7,19 +7,23 @@
  *   The database connection.
  */
 function getDatabaseConnection(){
-    $dsn = config_get('server') . ';';
-    $dsn .= 'dbname=' . config_get('database') . ';';
-    $dsn .= 'charset=' .  config_get('charset') . ';';
-    $dsn .= 'port=' . config_get('port') . ';';
+    $dsn = config_get('database_server') . ';';
+    $dsn .= 'dbname=' . config_get('database_name') . ';';
+    $dsn .= 'charset=' .  config_get('database_charset') . ';';
+    $dsn .= 'port=' . config_get('database_port') . ';';
 
-    $username = config_get('user');
-    $password = config_get('password');
+    $username = config_get('database_user');
+    $password = config_get('database_password');
 
-    $options = [];
+    $options = [
+        PDO::ATTR_EMULATE_PREPARES => false, // TODO: find out why this is necessary or how to explain this
+    ];
+
     $debug = config_get('debug', false);
     if ($debug) {
-        $options[PDO::ATTR_EMULATE_PREPARES] = false;
-        $options[PDO::ATTR_ERRMODE] = 2;
+        $options = [];
+        $options[PDO::ATTR_EMULATE_PREPARES] = false; // TODO: find out why this is necessary or how to explain this
+        $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
     }
 
     $connection = new PDO($dsn, $username, $password, $options);
