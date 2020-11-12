@@ -133,7 +133,7 @@ if (!empty($amountProducts)) {
                         <div id="StockItemFrameRight">
                             <div class="CenterPriceLeftChild">
                                 <h1 class="StockItemPriceText">
-                                    &euro; <?= number_format($product["SellPrice"] ?? 0, 2, '.', ',') ?>
+                                    &euro; <?= number_format($product["SellPrice"] ?? 0, 2, ',', '.') ?>
                                 </h1>
                                 <h6>Inclusief BTW </h6>
                             </div>

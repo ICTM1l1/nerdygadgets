@@ -68,7 +68,7 @@ if (!empty($productCustomFields)) {
                 <div class="CenterPriceLeft">
                     <div class="CenterPriceLeftChild">
                         <p class="StockItemPriceText">
-                            <b>&euro; <?= number_format($product['SellPrice'] ?? 0, 2, '.', ',') ?></b>
+                            <b>&euro; <?= number_format($product['SellPrice'] ?? 0, 2, ',', '.') ?></b>
                         </p>
                         <h6> Inclusief BTW </h6>
                     </div>
