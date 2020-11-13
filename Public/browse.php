@@ -112,6 +112,16 @@ if ($amountProducts !== 0) {
                     </option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <button type="button" class="button button-danger float-left" onclick="document.location.href='<?= get_url('browse.php') ?>'">
+                    Reset
+                </button>
+
+                <button type="submit" class="button float-right">
+                    Filter
+                </button>
+            </div>
     </form>
 </div>
 </div>

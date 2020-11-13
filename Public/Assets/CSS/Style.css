@@ -473,3 +473,21 @@ ul#ul-class-price li {
     border: 1px rgb(98, 158, 255) solid;
     color: #fff;
 }
+
+.button {
+    background-color: #EEE;
+    color: #000000;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 15px;
+}
+
+.button:hover {
+    opacity: 0.5;
+}
+
+.button-danger {
+    background-color: #FF0000;
+    color: #fff;
+}
