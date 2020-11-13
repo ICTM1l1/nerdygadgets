@@ -77,7 +77,7 @@ if ($amountProducts !== 0) {
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
-    <form method="get" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+    <form method="get" action="<?= get_current_url() ?>">
         <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
@@ -147,7 +147,7 @@ if ($amountProducts !== 0) {
         </div>
 
         <div class="pagination-container">
-            <form id="PageSelector" method="get" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+            <form id="PageSelector" method="get" action="<?= get_current_url() ?>">
                 <input type="hidden" name="search_string" id="search_string" value="<?= $searchString ?>">
                 <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
                 <input type="hidden" name="result_page_numbers" id="result_page_numbers" value="<?= $amountOfPages ?>">

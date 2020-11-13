@@ -105,6 +105,16 @@ function get_url(string $url) {
 }
 
 /**
+ * Gets the current url.
+ *
+ * @return string
+ *   The current url.
+ */
+function get_current_url() {
+    return htmlspecialchars($_SERVER['PHP_SELF']);
+}
+
+/**
  * Dump and dies the script in order to debug a variable value.
  *
  * @param mixed ...$variables
