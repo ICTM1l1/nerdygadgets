@@ -106,14 +106,16 @@ function getProducts(string $queryBuildResult, string $sort, int $showStockLevel
  * @param string $queryBuildResult
  *   Provides extra select query statements.
  *
- * @return array
+ * @return int
  *   The amount of products.
  */
 function getProductsAmount(string $queryBuildResult = '') {
-    return selectFirst("
+    $productsAmount = selectFirst("
             SELECT count(*)
             FROM stockitems SI
             {$queryBuildResult}");
+
+    return $productsAmount["count(*)"] ?? 0;
 }
 
 /**
@@ -160,15 +162,17 @@ function getProductsForCategory(string $queryBuildResult, string $sort, int $sho
  * @param int $categoryID
  *   The category ID to search for.
  *
- * @return array
+ * @return int
  *   The amount of products for the category.
  */
 function getProductsAmountForCategory(string $queryBuildResult, int $categoryID) {
-    return selectFirst("
+    $productsAmount = selectFirst("
                 SELECT count(*)
                 FROM stockitems SI 
                 WHERE {$queryBuildResult} :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
         ['categoryId' => $categoryID]);
+
+    return $productsAmount["count(*)"] ?? 0;
 }
 
 /**

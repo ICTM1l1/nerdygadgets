@@ -9,7 +9,6 @@ $sortOnPage = get_form_data_get('sort', 'price_low_high');
 $productsOnPage = (int) get_form_data_get('products_on_page', '25');
 $pageNumber = (int) get_form_data_get('page_number');
 
-$amountOfPages = 0;
 $queryBuildResult = "";
 switch ($sortOnPage) {
     case "price_high_low":
@@ -72,9 +71,9 @@ if (empty($categoryID)) {
     $amountProducts = getProductsAmountForCategory($queryBuildResult, $categoryID);
 }
 
-if (!empty($amountProducts)) {
-    $counted_amount = $amountProducts["count(*)"] ?? 0;
-    $amountOfPages = ceil($counted_amount / $productsOnPage);
+$amountOfPages = 0;
+if ($amountProducts !== 0) {
+    $amountOfPages = ceil($amountProducts / $productsOnPage);
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
