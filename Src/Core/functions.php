@@ -65,6 +65,31 @@ function config_get(string $key, $default = '') {
 }
 
 /**
+ * Gets the base url.
+ *
+ * @return string
+ *   The base url.
+ */
+function get_base_url() {
+    return config_get('base_url');
+}
+
+/**
+ * Gets the asset url.
+ *
+ * @param string $asset_url
+ *   The path to the asset.
+ *
+ * @return string
+ *   The asset url.
+ */
+function get_asset_url(string $asset_url) {
+    $base_url = get_base_url();
+
+    return "{$base_url}/Assets/{$asset_url}";
+}
+
+/**
  * Dump and dies the script in order to debug a variable value.
  *
  * @param mixed ...$variables
