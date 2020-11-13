@@ -1,17 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-$productsAmount = getProductsAmount();
-$productsAmount = $productsAmount["count(*)"] ?? 10;
-$products = [
-    getProductWithImage(random_int(1, $productsAmount)),
-    getProductWithImage(random_int(1, $productsAmount)),
-    getProductWithImage(random_int(1, $productsAmount)),
-    getProductWithImage(random_int(1, $productsAmount)),
-    getProductWithImage(random_int(1, $productsAmount)),
-    getProductWithImage(random_int(1, $productsAmount)),
-    getProductWithImage(random_int(1, $productsAmount)),
-];
+$products = getRandomProducts();
 ?>
 <div class="IndexStyle">
     <div class="col-11">

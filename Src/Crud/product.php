@@ -170,3 +170,23 @@ function getProductsAmountForCategory(string $queryBuildResult, int $categoryID)
                 WHERE {$queryBuildResult} :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
         ['categoryId' => $categoryID]);
 }
+
+/**
+ * Gets a random of amount of products.
+ *
+ * @param int $amountOfProducts
+ *   The amount of products.
+ *
+ * @return array
+ *   The randomly found products.
+ */
+function getRandomProducts(int $amountOfProducts = 10) {
+    $productsAmount = getProductsAmount();
+
+    $products = [];
+    for ($x = 1; $x <= $amountOfProducts; $x++) {
+        $products[] = getProductWithImage(random_int(1, $productsAmount));
+    }
+
+    return $products;
+}
