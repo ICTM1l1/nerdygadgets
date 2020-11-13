@@ -1,5 +1,7 @@
 <?php
 
+$config = require __DIR__ . '/../../Config/config.php';
+
 /**
  * Gets a specific piece of data from the submitted form data.
  *
@@ -57,7 +59,7 @@ function session_get(string $key, $default = '') {
  *   The data from the config data.
  */
 function config_get(string $key, $default = '') {
-    $config = require __DIR__ . '/../../Config/config.php';
+    global $config;
 
     return $config[$key] ?? $default;
 }
