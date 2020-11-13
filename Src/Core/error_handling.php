@@ -2,9 +2,9 @@
 
 $debug = (bool) config_get('debug', false);
 
-ini_set('display_errors', $debug ? '1' : '0');
-ini_set('display_startup_errors', $debug ? '1' : '0');
-error_reporting($debug ? E_ALL : -1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Enables custom error handling.
 set_exception_handler('errorException');
@@ -47,7 +47,7 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
  * @param Exception $exception
  *   The exception.
  */
-function errorException(Exception $exception) {
+function errorException($exception) {
     // Removes all previous printed items
     ob_end_clean();
 
