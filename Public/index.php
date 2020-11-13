@@ -13,7 +13,7 @@ $products = getRandomProducts();
                     $images = getProductImages($product_id);
                     ?>
 
-                    <a href="view.php?id=<?= $product_id ?>">
+                    <a href="<?= get_url("view.php?id={$product_id}") ?>">
                         <div class="TextPrice">
                                 <div class="TextMain">
                                     <?= $product['StockItemName'] ?? '' ?>

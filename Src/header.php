@@ -43,25 +43,25 @@ $categories = getCategories();
 <body>
 <div class="Background">
     <div class="row" id="Header">
-        <div class="col-2"><a href="index.php" id="LogoA">
+        <div class="col-2"><a href="<?= get_url('index.php') ?>" id="LogoA">
                 <div id="LogoImage"></div>
             </a></div>
         <div class="col-8" id="CategoriesBar">
             <ul id="ul-class">
                 <?php foreach($categories as $category) : ?>
                     <li>
-                        <a href="browse.php?category_id=<?= $category['StockGroupID'] ?? '' ?>"
+                        <a href="<?= get_url('browse.php?category_id=' . $category['StockGroupID'] ?? '') ?>"
                            class="HrefDecoration"><?= $category['StockGroupName'] ?? '' ?></a>
                     </li>
                 <?php endforeach; ?>
                 <li>
-                    <a href="categories.php" class="HrefDecoration">Alle categorieën</a>
+                    <a href="<?= get_url('categories.php') ?>" class="HrefDecoration">Alle categorieën</a>
                 </li>
             </ul>
         </div>
         <ul id="ul-class-navigation">
             <li>
-                <a href="browse.php" class="HrefDecoration"><i class="fas fa-search" style="color:#676EFF;"></i> Zoeken</a>
+                <a href="<?= get_url('browse.php') ?>" class="HrefDecoration"><i class="fas fa-search" style="color:#676EFF;"></i> Zoeken</a>
             </li>
         </ul>
     </div>

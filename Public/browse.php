@@ -119,7 +119,7 @@ if ($amountProducts !== 0) {
     <?php if (!empty($products)) : ?>
         <div class="products-view">
             <?php foreach ($products as $product) : ?>
-                <a class="ListItem" href='view.php?id=<?= $product['StockItemID'] ?? '' ?>'>
+                <a class="ListItem" href='<?= get_url('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
                             <div class="ImgFrame"
@@ -147,7 +147,7 @@ if ($amountProducts !== 0) {
         </div>
 
         <div class="pagination-container">
-            <form id="PageSelector">
+            <form id="PageSelector" method="get" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
                 <input type="hidden" name="search_string" id="search_string" value="<?= $searchString ?>">
                 <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
                 <input type="hidden" name="result_page_numbers" id="result_page_numbers" value="<?= $amountOfPages ?>">

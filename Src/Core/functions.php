@@ -90,6 +90,21 @@ function get_asset_url(string $asset_url) {
 }
 
 /**
+ * Gets the url.
+ *
+ * @param string $url
+ *   The url.
+ *
+ * @return string
+ *   The url.
+ */
+function get_url(string $url) {
+    $base_url = get_base_url();
+
+    return "{$base_url}/{$url}";
+}
+
+/**
  * Dump and dies the script in order to debug a variable value.
  *
  * @param mixed ...$variables
