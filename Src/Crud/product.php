@@ -46,7 +46,7 @@ function getProductWithImage(int $product_id) {
             JOIN stockitemholdings SIH USING(stockitemid)
             JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
             JOIN stockgroups USING(StockGroupID)
-            WHERE SI.stockitemid IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+            WHERE SI.stockitemid = :stockitemid
             AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
             GROUP BY StockItemID", ['stockitemid' => $product_id]);
 }
