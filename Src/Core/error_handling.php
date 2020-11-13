@@ -2,9 +2,9 @@
 
 $debug = (bool) config_get('debug', false);
 
-ini_set('display_errors', $debug ? '1' : '0');
-ini_set('display_startup_errors', $debug ? '1' : '0');
-error_reporting($debug ? E_ALL : -1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 // Enables custom error handling.
 set_exception_handler('errorException');
@@ -44,7 +44,7 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
 /**
  * Adds custom error handling for exceptions.
  *
- * @param $exception
+ * @param Exception $exception
  *   The exception.
  */
 function errorException($exception) {
@@ -58,7 +58,30 @@ function errorException($exception) {
     }
 
     $message = '<div class="row"><div class="col-sm-12 mt-2 text-center">';
-    $message .= '<b>Exception:</b>' . $exception->getMessage() . '<br>';
+    $message .= "<h2><b>Exception:</b> {$exception->getMessage()} </h2><br>";
+    $message .= "On line {$exception->getLine()} from file {$exception->getFile()} <br><hr>";
+
+    // Build error stack trace.
+    foreach ($exception->getTrace() as $singleTrace) {
+        if (isset($singleTrace['line']) && !empty($singleTrace['line'])) {
+            $message .= "On line {$singleTrace['line']} <br>";
+        }
+
+        if (isset($singleTrace['file']) && !empty($singleTrace['file'])) {
+            $message .= "In file {$singleTrace['file']} <br>";
+        }
+
+        if (isset($singleTrace['function']) && !empty($singleTrace['function'])) {
+            $message .= "In function {$singleTrace['function']} ";
+        }
+
+        if (isset($singleTrace['class']) && !empty($singleTrace['class'])) {
+            $message .= "in class {$singleTrace['class']} ";
+        }
+
+        $message .= "<br><br>";
+    }
+
     $message .= '</div></div>';
 
     echo $message;

@@ -9,7 +9,6 @@ $sortOnPage = get_form_data_get('sort', 'price_low_high');
 $productsOnPage = (int) get_form_data_get('products_on_page', '25');
 $pageNumber = (int) get_form_data_get('page_number');
 
-$amountOfPages = 0;
 $queryBuildResult = "";
 switch ($sortOnPage) {
     case "price_high_low":
@@ -72,13 +71,13 @@ if (empty($categoryID)) {
     $amountProducts = getProductsAmountForCategory($queryBuildResult, $categoryID);
 }
 
-if (!empty($amountProducts)) {
-    $counted_amount = $amountProducts["count(*)"] ?? 0;
-    $amountOfPages = ceil($counted_amount / $productsOnPage);
+$amountOfPages = 0;
+if ($amountProducts !== 0) {
+    $amountOfPages = ceil($amountProducts / $productsOnPage);
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
-    <form method="get" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
+    <form method="get" action="<?= get_current_url() ?>">
         <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
@@ -113,6 +112,16 @@ if (!empty($amountProducts)) {
                     </option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <button type="button" class="button button-danger float-left" onclick="document.location.href='<?= get_url('browse.php') ?>'">
+                    Reset
+                </button>
+
+                <button type="submit" class="button float-right">
+                    Filter
+                </button>
+            </div>
     </form>
 </div>
 </div>
@@ -120,20 +129,20 @@ if (!empty($amountProducts)) {
     <?php if (!empty($products)) : ?>
         <div class="products-view">
             <?php foreach ($products as $product) : ?>
-                <a class="ListItem" href='view.php?id=<?= $product['StockItemID'] ?? '' ?>'>
+                <a class="ListItem" href='<?= get_url('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= "Assets/StockItemIMG/" . $product['ImagePath'] ?? '' ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
+                                 style="background-image: url('<?= get_asset_url('StockItemIMG/' . $product['ImagePath'] ?? '') ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
                         <?php elseif (isset($product['BackupImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= "Assets/StockGroupIMG/" . $product['BackupImagePath'] ?? '' ?>'); background-size: cover;"></div>
+                                 style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
                         <?php endif; ?>
 
                         <div id="StockItemFrameRight">
                             <div class="CenterPriceLeftChild">
                                 <h1 class="StockItemPriceText">
-                                    &euro; <?= number_format($product["SellPrice"] ?? 0, 2, '.', ',') ?>
+                                    &euro; <?= number_format($product["SellPrice"] ?? 0, 2, ',', '.') ?>
                                 </h1>
                                 <h6>Inclusief BTW </h6>
                             </div>
@@ -148,7 +157,7 @@ if (!empty($amountProducts)) {
         </div>
 
         <div class="pagination-container">
-            <form id="PageSelector">
+            <form id="PageSelector" method="get" action="<?= get_current_url() ?>">
                 <input type="hidden" name="search_string" id="search_string" value="<?= $searchString ?>">
                 <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
                 <input type="hidden" name="result_page_numbers" id="result_page_numbers" value="<?= $amountOfPages ?>">
@@ -169,9 +178,11 @@ if (!empty($amountProducts)) {
             </form>
         </div>
     <?php else : ?>
-        <h2 id="NoSearchResults">
-            Yarr, er zijn geen resultaten gevonden.
-        </h2>
+        <div class="container mt-2">
+            <h2 id="emptySearchResults" class="m-auto">
+                Helaas, er zijn geen resultaten gevonden.
+            </h2>
+        </div>
     <?php endif; ?>
 </div>
 

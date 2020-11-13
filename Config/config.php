@@ -2,6 +2,8 @@
 
 $config = [];
 
+$config['base_url'] = 'http://localhost/nerdygadgets';
+
 $config['database_server'] = 'mysql:host=localhost';
 $config['database_name'] = 'nerdygadgets';
 $config['database_user'] = 'root';

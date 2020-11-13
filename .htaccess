@@ -5,14 +5,17 @@ RewriteBase /nerdygadgets/
 RewriteCond %{THE_REQUEST} /Public/([^\s?]*) [NC]
 RewriteRule ^ %1 [L,NE,R=302]
 
+# Redirect a request to the Public folder to the frontpage.
 RewriteRule ^((?!Public/).*)$ Public/$1 [L,NC]
 
 # Provide custom error pages.
 ErrorDocument 403 /nerdygadgets/Public/Errors/403.php
 ErrorDocument 404 /nerdygadgets/Public/Errors/404.php
 
+# Redirect all forbidden requests to the 403.php file.
 RewriteCond %{REQUEST_URI} ^/403/$
 RewriteRule ^(.*)$ /Public/Errors/403.php [L]
 
+# Redirect all non-existing requests to the 404.php file.
 RewriteCond %{REQUEST_URI} ^/404/$
 RewriteRule ^(.*)$ /Public/Errors/404.php [L]
