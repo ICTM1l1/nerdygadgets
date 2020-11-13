@@ -1,5 +1,7 @@
 <?php
-session_start();
+if(session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 class CartItem {
     private $code;
@@ -43,7 +45,7 @@ class Cart {
     }
 
     function add_item($code, $count){
-        $this->items[] = CartItem($code, $count);
+        $this->items[] = new CartItem($code, $count);
     }
 
     function remove_item($n){
@@ -52,5 +54,5 @@ class Cart {
 }
 
 if(!isset($_SESSION["cart"])){
-    $_SESSION["cart"] = Cart();
+    $_SESSION["cart"] = new Cart();
 }
