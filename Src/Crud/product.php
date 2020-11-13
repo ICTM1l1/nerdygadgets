@@ -46,7 +46,7 @@ function getProductWithImage(int $product_id) {
             JOIN stockitemholdings SIH USING(stockitemid)
             JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
             JOIN stockgroups USING(StockGroupID)
-            WHERE SI.stockitemid = :stockitemid
+            WHERE SI.stockitemid IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
             GROUP BY StockItemID", ['stockitemid' => $product_id]);
 }
@@ -187,10 +187,26 @@ function getProductsAmountForCategory(string $queryBuildResult, int $categoryID)
 function getRandomProducts(int $amountOfProducts = 10) {
     $productsAmount = getProductsAmount();
 
-    $products = [];
+    $productPlaceholders = "";
+    $productIds = [];
     for ($x = 1; $x <= $amountOfProducts; $x++) {
-        $products[] = getProductWithImage(random_int(1, $productsAmount));
+        $productIds["product_$x"] = random_int(1, $productsAmount);
+
+        $productPlaceholders .= $x != $amountOfProducts ? ":product_$x, " : ":product_$x";
     }
 
-    return $products;
+    return select("SELECT SI.StockItemID, 
+            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+            StockItemName,
+            CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
+            SearchDetails, 
+            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
+            (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
+            FROM stockitems SI 
+            JOIN stockitemholdings SIH USING(stockitemid)
+            JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
+            JOIN stockgroups USING(StockGroupID)
+            WHERE SI.stockitemid IN ($productPlaceholders)
+    AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
+            GROUP BY StockItemID", $productIds);
 }
