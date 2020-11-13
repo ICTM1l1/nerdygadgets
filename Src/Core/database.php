@@ -15,8 +15,19 @@ function getDatabaseConnection(){
     $username = config_get('database_user');
     $password = config_get('database_password');
 
+    /**
+     * With PDO_MYSQL you need to remember about the PDO::ATTR_EMULATE_PREPARES option.
+     * The default value is TRUE, like $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES,true);
+     *
+     * This means that no prepared statement is created with $connection->prepare() call.
+     * With execute() call PDO replaces the placeholders with values itself and sends
+     * MySQL a generic query string.
+     *
+     * In order to be able to manually bind the values to the query, we must turn
+     * the PDO::ATTR_EMULATE_PREPARES option off.
+     */
     $options = [
-        PDO::ATTR_EMULATE_PREPARES => false, // TODO: find out why this is necessary or how to explain this
+        PDO::ATTR_EMULATE_PREPARES => false,
     ];
 
     $debug = config_get('debug', false);
@@ -24,15 +35,24 @@ function getDatabaseConnection(){
         $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
     }
 
-    $connection = new PDO($dsn, $username, $password, $options);
-
-    if (!$connection) {
+    try {
+        return new PDO($dsn, $username, $password, $options);
+    } catch (PDOException $exception) {
         throw new RuntimeException('Database connection is invalid.');
     }
-
-    return $connection;
 }
 
+/**
+ * Executes a query.
+ *
+ * @param string $query
+ *   The query.
+ * @param array $parameters
+ *   The parameters of the query.
+ *
+ * @return bool|PDOStatement
+ *   The PDOStatement object on success or a boolean.
+ */
 function executeQuery(string $query, array $parameters = []) {
     $connection = getDatabaseConnection();
 
@@ -78,9 +98,7 @@ function select(string $query, array $parameters = []) {
 function selectFirst(string $query, array $parameters = []) {
     $statement = executeQuery($query, $parameters);
 
-    $values = $statement->fetchAll(PDO::FETCH_NAMED);
-
-    return $values[array_key_first($values)] ?? [];
+    return $statement->fetch(PDO::FETCH_NAMED);
 }
 
 /**
