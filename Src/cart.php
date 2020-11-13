@@ -12,15 +12,15 @@ class CartItem {
         $this->count = $count;
     }
 
-    function get_code(){
+    function getCode(){
         return $this->code;
     }
 
-    function get_count(){
+    function getCount(){
         return $this->count;
     }
 
-    function set_count($count){
+    function setCount($count){
         $this->count = $count;
     }
 }
@@ -32,23 +32,23 @@ class Cart {
         $this->items = array();
     }
 
-    function get_item($n){
+    function getItem($n){
         return $this->items[$n];
     }
 
-    function get_items(){
+    function getItems(){
         return $this->items;
     }
 
-    function get_count(){
+    function getCount(){
         return count($this->items);
     }
 
-    function add_item($code, $count){
+    function addItem($code, $count){
         $this->items[] = new CartItem($code, $count);
     }
 
-    function remove_item($n){
+    function removeItem($n){
         array_splice($this->items, $n, 1);
     }
 }

@@ -18,7 +18,7 @@ if(session_status() == PHP_SESSION_NONE) {
 
     <?php
     if(isset($_POST["prodid"], $_POST["amount"])){
-        $_SESSION["cart"]->add_item($_POST["prodid"], $_POST["amount"]);
+        $_SESSION["cart"]->addItem($_POST["prodid"], $_POST["amount"]);
     }
     ?>
 </body>

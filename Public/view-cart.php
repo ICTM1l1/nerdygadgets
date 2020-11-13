@@ -11,10 +11,10 @@ if(session_status() == PHP_SESSION_NONE) {
 <body>
 <p>
     <ul>
-<?php foreach($_SESSION["cart"]->get_items() as $item):?>
+<?php foreach($_SESSION["cart"]->getItems() as $item):?>
     <li>Item:<ul>
-        <li>Product ID:<?php print($item->get_code()); ?></li>
-        <li>Amount    :<?php print($item->get_count());?></li>
+        <li>Product ID: <?php print($item->getCode()); ?></li>
+        <li>Item count: <?php print($item->getCount());?></li>
     </ul></li>
 <?php endforeach;?>
     </ul>
