@@ -44,10 +44,10 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
 /**
  * Adds custom error handling for exceptions.
  *
- * @param $exception
+ * @param Exception $exception
  *   The exception.
  */
-function errorException($exception) {
+function errorException(Exception $exception) {
     // Removes all previous printed items
     ob_end_clean();
 
@@ -58,7 +58,30 @@ function errorException($exception) {
     }
 
     $message = '<div class="row"><div class="col-sm-12 mt-2 text-center">';
-    $message .= '<b>Exception:</b>' . $exception->getMessage() . '<br>';
+    $message .= "<h2><b>Exception:</b> {$exception->getMessage()} </h2><br>";
+    $message .= "On line {$exception->getLine()} from file {$exception->getFile()} <br><hr>";
+
+    // Build error stack trace.
+    foreach ($exception->getTrace() as $singleTrace) {
+        if (isset($singleTrace['line']) && !empty($singleTrace['line'])) {
+            $message .= "On line {$singleTrace['line']} <br>";
+        }
+
+        if (isset($singleTrace['file']) && !empty($singleTrace['file'])) {
+            $message .= "In file {$singleTrace['file']} <br>";
+        }
+
+        if (isset($singleTrace['function']) && !empty($singleTrace['function'])) {
+            $message .= "In function {$singleTrace['function']} ";
+        }
+
+        if (isset($singleTrace['class']) && !empty($singleTrace['class'])) {
+            $message .= "in class {$singleTrace['class']} ";
+        }
+
+        $message .= "<br><br>";
+    }
+
     $message .= '</div></div>';
 
     echo $message;
