@@ -137,7 +137,7 @@ function getProductsAmount(string $queryBuildResult = '') {
  * @return array
  *   The found products for the category.
  */
-function getProductsForCategory(string $queryBuildResult, string $sort, int $showStockLevel, int $categoryID, int $productsOnPage, int $offset) {
+function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort, int $showStockLevel, int $categoryID, int $productsOnPage, int $offset) {
     return select("
                 SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, 
                 ROUND(SI.TaxRate * SI.RecommendedRetailPrice / 100 + SI.RecommendedRetailPrice,2) as SellPrice, 
@@ -165,7 +165,7 @@ function getProductsForCategory(string $queryBuildResult, string $sort, int $sho
  * @return int
  *   The amount of products for the category.
  */
-function getProductsAmountForCategory(string $queryBuildResult, int $categoryID) {
+function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $categoryID) {
     $productsAmount = selectFirst("
                 SELECT count(*)
                 FROM stockitems SI 
@@ -174,9 +174,41 @@ function getProductsAmountForCategory(string $queryBuildResult, int $categoryID)
 
     return $productsAmount["count(*)"] ?? 0;
 }
+/**
+ * Gets products from category
+ *
+ * @param int $categoryID
+ *   The category ID to search for
+ *
+ * @return array
+ *   The randomly found product from category
+ */
+function getProductForCategory(int $categoryID) {
+    $productIds = select("
+                SELECT SI.StockItemID
+                FROM stockitems SI 
+                WHERE :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
+        ['categoryId' => $categoryID]);
+    return getRandomProductForCatergory($productIds);
+}
 
 /**
- * Gets a random of amount of products.
+ * Gets a random product id from category
+ *
+ * @param int $productIds
+ *   The amount of products.
+ *
+ * @return array
+ *   The randomly found product from category
+ */
+function getRandomProductForCatergory($productIds){
+    $amountProductIds = count($productIds);
+    $selectedProduct = $productIds[random_int(0, $amountProductIds)] ?? [];
+    return $selectedProduct["StockItemID"] ?? 0;
+}
+
+/**
+ * Gets a random amount of products.
  *
  * @param int $amountOfProducts
  *   The amount of products.
@@ -185,17 +217,14 @@ function getProductsAmountForCategory(string $queryBuildResult, int $categoryID)
  *   The randomly found products.
  */
 function getRandomProducts(int $amountOfProducts = 10) {
-    $productsAmount = getProductsAmount();
-
     $productPlaceholders = "";
     $productIds = [];
     for ($x = 1; $x <= $amountOfProducts; $x++) {
-        $productIds["product_$x"] = random_int(1, $productsAmount);
-
+        $productIds["product_$x"] = getProductForCategory($x);
         $productPlaceholders .= $x != $amountOfProducts ? ":product_$x, " : ":product_$x";
     }
 
-    return select("SELECT SI.StockItemID, 
+        return select("SELECT SI.StockItemID, 
             (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
             StockItemName,
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
@@ -206,7 +235,7 @@ function getRandomProducts(int $amountOfProducts = 10) {
             JOIN stockitemholdings SIH USING(stockitemid)
             JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
             JOIN stockgroups USING(StockGroupID)
-            WHERE SI.stockitemid IN ($productPlaceholders)
-    AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
+            WHERE SI.stockitemid IN ($productPlaceholders) 
+            AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
             GROUP BY StockItemID", $productIds);
 }
