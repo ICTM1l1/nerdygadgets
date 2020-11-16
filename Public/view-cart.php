@@ -1,10 +1,13 @@
 <?php
+//Example file, can be deleted or overwritten later.
+
 require_once __DIR__ . "/../Src/cart.php";
 if(session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 //print($_SESSION["cart"]->cleanCart());
 ?>
+
 <html>
 <head>
     <title>View cart.</title>
