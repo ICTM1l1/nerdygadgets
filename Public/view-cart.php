@@ -3,6 +3,7 @@ require_once __DIR__ . "/../Src/cart.php";
 if(session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+//print($_SESSION["cart"]->cleanCart());
 ?>
 <html>
 <head>
@@ -19,5 +20,8 @@ if(session_status() == PHP_SESSION_NONE) {
 <?php endforeach;?>
     </ul>
 </p>
+<?php
+print("Total:" . $_SESSION["cart"]->getTotalPrice());
+?>
 </body>
 </html>
