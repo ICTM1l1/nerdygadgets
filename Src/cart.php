@@ -29,9 +29,12 @@ class CartItem {
 
 class Cart {
     private $items;
+    private $cost;
+    private $updated;
 
     function __construct(){
         $this->items = array();
+        $updated = true;
     }
 
     function getItem($n){
@@ -48,22 +51,30 @@ class Cart {
 
     function addItem($code, $count){
         $this->items[] = new CartItem($code, $count);
+        $this->updated = true;
     }
 
     function removeItem($n){
         array_splice($this->items, $n, 1);
+        $this->updated = true;
     }
 
     function cleanCart(){
         $this->items = array();
+        $this->updated = true;
     }
 
     function getTotalPrice(){
+        if(!$this->updated){
+            return $this->cost;
+        }
         $total = 0;
         foreach($this->items as $item){
             $total += selectFirst("SELECT UnitPrice * :count AS total FROM stockitems WHERE StockItemId = :id",
-                                 ["count" => $item->getCount(), "id" => $item->getCode()])["total"];
+                                  ["count" => $item->getCount(), "id" => $item->getCode()])["total"];
         }
+        $this->updated = false;
+        $this->cost = $total;
         return $total;
     }
 }
