@@ -5,28 +5,6 @@ if(session_status() == PHP_SESSION_NONE) {
 
 include_once __DIR__ . "/../Src/Core/core.php";
 
-/*class CartItem {
-    private $code;
-    private $count;
-
-    function __construct($code, $count) {
-        $this->code = $code;
-        $this->count = $count;
-    }
-
-    function getCode(){
-        return $this->code;
-    }
-
-    function getCount(){
-        return $this->count;
-    }
-
-    function setCount($count){
-        $this->count = $count;
-    }
-}*/
-
 class Cart {
     private $items;
     private $cost;
@@ -42,6 +20,12 @@ class Cart {
             return $this->items[$id];
         }
         return 0;
+    }
+
+    function setItemCount($id, $count){
+        if(array_key_exists($id, $this->items)){
+            $this->items[$id] = $count;
+        }
     }
 
     function getItems(){
@@ -67,10 +51,6 @@ class Cart {
         unset($this->items[$id]);
         $this->updated = true;
     }
-
-    /*function removeItemByID($n){
-
-    }*/
 
     function cleanCart(){
         $this->items = array();
