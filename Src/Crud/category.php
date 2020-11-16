@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Gets all categories.
+ *
+ * @return array
+ *   The found categories.
+ */
 function getCategories() {
     return select("
                 SELECT StockGroupID, StockGroupName, ImagePath
