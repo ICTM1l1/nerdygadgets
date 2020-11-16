@@ -17,8 +17,8 @@ if(session_status() == PHP_SESSION_NONE) {
     <ul>
 <?php foreach($_SESSION["cart"]->getItems() as $item):?>
     <li>Item:<ul>
-        <li>Product ID: <?php print($item->getCode()); ?></li>
-        <li>Item count: <?php print($item->getCount());?></li>
+        <li>Product ID: <?php print($item["id"]); ?></li>
+        <li>Item count: <?php print($item["amount"]);?></li>
     </ul></li>
 <?php endforeach;?>
     </ul>

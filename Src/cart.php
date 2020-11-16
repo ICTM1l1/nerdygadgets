@@ -5,7 +5,7 @@ if(session_status() == PHP_SESSION_NONE) {
 
 include_once __DIR__ . "/../Src/Core/core.php";
 
-class CartItem {
+/*class CartItem {
     private $code;
     private $count;
 
@@ -25,7 +25,7 @@ class CartItem {
     function setCount($count){
         $this->count = $count;
     }
-}
+}*/
 
 class Cart {
     private $items;
@@ -37,27 +37,40 @@ class Cart {
         $updated = true;
     }
 
-    function getItem($n){
-        return $this->items[$n];
+    function getItemCount($id){
+        if(array_key_exists($id, $this->items)){
+            return $this->items[$id];
+        }
+        return 0;
     }
 
     function getItems(){
-        return $this->items;
+        $i = array();
+        foreach($this->items as $id => $count){
+            $i[] = array("id" => $id, "amount" => $count);
+        }
+        return $i;
     }
 
     function getCount(){
         return count($this->items);
     }
 
-    function addItem($code, $count){
-        $this->items[] = new CartItem($code, $count);
+    function addItem($id, $count){
+        if(!array_key_exists($id, $this->items)){
+            $this->items += array($id => $count);
+        }
         $this->updated = true;
     }
 
-    function removeItem($n){
-        array_splice($this->items, $n, 1);
+    function removeItem($id){
+        unset($this->items[$id]);
         $this->updated = true;
     }
+
+    /*function removeItemByID($n){
+
+    }*/
 
     function cleanCart(){
         $this->items = array();
@@ -69,9 +82,9 @@ class Cart {
             return $this->cost;
         }
         $total = 0;
-        foreach($this->items as $item){
+        foreach($this->items as $id => $count){
             $total += selectFirst("SELECT UnitPrice * :count AS total FROM stockitems WHERE StockItemId = :id",
-                                  ["count" => $item->getCount(), "id" => $item->getCode()])["total"];
+                                  ["count" => $count, "id" => $id])["total"];
         }
         $this->updated = false;
         $this->cost = $total;
