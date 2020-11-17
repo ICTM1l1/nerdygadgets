@@ -255,4 +255,5 @@ function getRandomProducts(int $amountOfProducts = 10) {
         WHERE SI.stockitemid IN ($productPlaceholders) 
         AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
         GROUP BY StockItemID", $productIds);
+
 }
