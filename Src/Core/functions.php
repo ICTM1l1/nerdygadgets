@@ -33,7 +33,7 @@ function get_form_data_post(string $key, $default = '') {
 }
 
 /**
- * Gets a specific piece of data from the submitted form data.
+ * Gets a specific piece of data from the session.
  *
  * @param string $key
  *   The key to search for.
@@ -45,6 +45,26 @@ function get_form_data_post(string $key, $default = '') {
  */
 function session_get(string $key, $default = '') {
     return $_SESSION[$key] ?? $default;
+}
+
+/**
+ * Saves a specific piece of data into the session.
+ *
+ * @param string $key
+ *   The key to search for.
+ * @param string $value
+ *   The default value if the key does not exist.
+ * @param bool $overwrite
+ *   May the value of the key be overwritten?
+ */
+function session_save(string $key, $value = '', bool $overwrite = false) {
+    if ($overwrite) {
+        $_SESSION[$key] = $value;
+    }
+
+    if (!isset($_SESSION[$key])) {
+        $_SESSION[$key] = $value;
+    }
 }
 
 /**
@@ -112,6 +132,22 @@ function get_url(string $url) {
  */
 function get_current_url() {
     return htmlspecialchars($_SERVER['PHP_SELF']);
+}
+
+/**
+ * Redirects to an url.
+ *
+ * @param string $url
+ *   The url.
+ */
+function redirect(string $url) {
+    if (headers_sent()) {
+        print("<meta http-equiv='Refresh' content=\"0; url='$url'\" />");
+        exit();
+    }
+
+    header('Location: ' . $url);
+    exit();
 }
 
 /**
