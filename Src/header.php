@@ -3,7 +3,7 @@ session_start();
 
 require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
-
+require_once __DIR__ . '/cart.php';
 $categories = getCategories();
 ?>
 <!DOCTYPE html>
