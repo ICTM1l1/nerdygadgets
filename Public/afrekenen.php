@@ -2,46 +2,81 @@
 require_once __DIR__ . "/../Src/header.php";
 #check hier of the klant is ingelogd, zo wel pak de NAW gegevens en skip de form direct naar afbetalen anders NAW gegevens via de form krijgen
 ?>
-<form class="text-center" action="<?= get_url('payment.php') ?>" method="get">
-    <h1 class="mb-5 my-4">Afrekenen</h1>
-    <h4 class="my-4">1. Bezorggegevens</h4>
-    <div class="progress mx-auto" style="width: 25%; height: 20px">
-        <div class="progress-bar" role="progressbar" style="width: 33.33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100">Bezorggegevens</div>
-    </div>
-    <div class="form-row mb-3 col-2 mx-auto">
-        <label for="Naam">Naam</label>
-        <input type="text" id="Naam" class="form-control" placeholder="Naam">
-    </div>
-    <label for="AdresLabel">Adres</label>
-    <div class="form-row mb-3 justify-content-md-center">
-        <div class="col-2">
-            <label for="Postcode" class="d-none">Postcode</label>
-            <input type="text" id="Postcode" class="form-control" placeholder="Postcode (1234 AB)">
+<div class="container-fluid">
+    <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="mb-5 float-left">1. Bezorggegevens</h1>
+
+                <div class="form-progress float-right">
+                    <!-- Grey with black text -->
+                    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active border-right border-white">
+                                <a class="nav-link" href="#">Bezorggegevens</a>
+                            </li>
+                            <li class="nav-item border-right border-white">
+                                <a class="nav-link" href="#">Afrekenen</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Afronden</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-        <div class="col-1">
-            <label for="Huisnummer" class="d-none">Huisnummer</label>
-            <input type="text" id="Huisnummer" class="form-control" placeholder="Huisnummer">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <form class="text-center w-100" action="<?= get_url('payment.php') ?>" method="post">
+                    <div class="form-group form-row">
+                        <label for="Naam" class="col-sm-2 text-left">Naam</label>
+                        <input type="text" id="Naam" class="form-control col-sm-10" placeholder="Naam">
+                    </div>
+
+                    <div class="form-group form-row">
+                        <label for="Postcode" class="col-sm-2 text-left">Postcode</label>
+                        <input type="text" maxlength="6" id="Postcode" class="form-control col-sm-4" placeholder="Postcode">
+
+                        <label for="Huisnummer" class="col-sm-3 text-left pl-5">Huisnummer</label>
+                        <input type="number" id="Huisnummer" class="form-control col-sm-3" placeholder="Huisnummer">
+                    </div>
+
+                    <div class="form-group form-row">
+                        <label for="Straatnaam" class="col-sm-2 text-left">Straatnaam</label>
+                        <input type="text" id="Straatnaam" class="form-control col-sm-10" placeholder="Straatnaam">
+                    </div>
+
+                    <div class="form-group form-row">
+                        <label for="Woonplaats" class="col-sm-2 text-left">Woonplaats</label>
+                        <input type="text" id="Woonplaats" class="form-control col-sm-10" placeholder="Woonplaats">
+                    </div>
+
+                    <div class="form-group form-row">
+                        <label for="Email" class="col-sm-2 text-left">Email</label>
+                        <input type="email" id="Email" class="form-control col-sm-10" placeholder="Email">
+                    </div>
+
+                    <div class="form-group form-row">
+                        <label for="Telefoonnummer" class="col-sm-2 text-left">Telefoonnummer</label>
+                        <input type="tel" id="Telefoonnummer" class="form-control col-sm-10" placeholder="Telefoonnummer">
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-danger float-left my-4" type="button" name="back"
+                                onclick="window.location.href='<?= get_url('products-overview.php') ?>'">
+                            Terug naar overzicht
+                        </button>
+                        <button class="btn btn-success float-right my-4" type="submit">
+                            2. Afrekenen
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <div class="form-row mb-3 col-2 mx-auto">
-        <label for="Straatnaam">Straatnaam</label>
-        <input type="text" id="Straatnaam" class="form-control" placeholder="Straatnaam">
-    </div>
-    <div class="form-row mb-3 col-2 mx-auto">
-        <label for="Woonplaats">Woonplaats</label>
-        <input type="text" id="Woonplaats" class="form-control" placeholder="Woonplaats">
-    </div>
-    <div class="form-row mb-3 col-2 mx-auto">
-        <label for="Email">E-Mail</label>
-        <input type="email" id="Email" class="form-control" placeholder="E-mail">
-    </div>
-    <div class="form-row mb-3 col-2 mx-auto">
-        <label for="Telefoonnummer">Telefoonnummer</label>
-        <input type="tel" id="Telefoonnummer" class="form-control" placeholder="Telefoonnummer">
-    </div>
-    <button class="btn btn-success my-4" type="submit" name="back">Terug naar overzicht</button>
-    <button class="btn btn-success my-4" type="submit">2. Afrekenen</button>
-</form>
+</div>
 
 <?php
 require_once __DIR__ . "/../Src/footer.php";

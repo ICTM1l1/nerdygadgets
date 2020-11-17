@@ -35,7 +35,7 @@ $products = getRandomProducts(2);
                         </div>
                         <div class="col-sm-3">
                             <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
-                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" Min_Product">
+                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product">
                                 <i class="fas fa-minus"></i>
                                 </button>
                                 <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product">
@@ -78,7 +78,7 @@ $products = getRandomProducts(2);
     <div class="col-sm-8"></div>
     <div class="col-sm-4">
         <div class="border border-white mr-5 ml-5 mt-4 mb-5">
-            <a href="<?= get_url('afrekenen.php') ?>">
+            <a href="<?= get_url('products-overview.php') ?>">
                 <h1 class="p-2 font-weight-bold text-white">Koop producten</h1>
             </a>
         </div>
