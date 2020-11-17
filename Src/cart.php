@@ -6,29 +6,30 @@ if(session_status() == PHP_SESSION_NONE) {
 include_once __DIR__ . "/../Src/Core/core.php";
 
 class Cart {
-    private $items;
-    private $cost;
-    private $updated;
+    private array $items;
+    private float $cost;
+    private bool $updated;
 
     function __construct(){
         $this->items = array();
-        $updated = true;
+        $this->updated = true;
     }
 
-    function getItemCount($id){
-        if(array_key_exists($id, $this->items)){
+    function getItemCount($id): int{
+        if(isset($this->items[$id])){
             return $this->items[$id];
         }
         return 0;
     }
 
-    function setItemCount($id, $count){
-        if(array_key_exists($id, $this->items)){
+    function setItemCount($id, $count): void{
+        if(isset($this->items[$id])){
             $this->items[$id] = $count;
+            $this->updated = true;
         }
     }
 
-    function getItems(){
+    function getItems(): array{
         $i = array();
         foreach($this->items as $id => $count){
             $i[] = array("id" => $id, "amount" => $count);
@@ -36,28 +37,30 @@ class Cart {
         return $i;
     }
 
-    function getCount(){
+    function getCount(): int{
         return count($this->items);
     }
 
-    function addItem($id, $count){
-        if(!array_key_exists($id, $this->items)){
+    function addItem($id, $count): void{
+        if(!isset($this->items[$id])){
             $this->items += array($id => $count);
+            $this->updated = true;
         }
-        $this->updated = true;
     }
 
-    function removeItem($id){
-        unset($this->items[$id]);
-        $this->updated = true;
+    function removeItem($id): void{
+        if(isset($this->items[$id])) {
+            unset($this->items[$id]);
+            $this->updated = true;
+        }
     }
 
-    function cleanCart(){
+    function cleanCart(): void{
         $this->items = array();
         $this->updated = true;
     }
 
-    function getTotalPrice(){
+    function getTotalPrice(): float{
         if(!$this->updated){
             return $this->cost;
         }
