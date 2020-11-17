@@ -1,8 +1,14 @@
 <?php
-session_start();
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
 
 require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
+
+if(!isset($_SESSION["cart"])){
+    $_SESSION["cart"] = new Cart();
+}
 
 $categories = getCategories();
 ?>
