@@ -175,35 +175,36 @@ function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $c
     return $productsAmount["count(*)"] ?? 0;
 }
 /**
- * Gets products from category
+ * Gets the IDs of products from category.
  *
  * @param int $categoryID
- *   The category ID to search for
+ *   The category ID to search for.
  *
  * @return array
- *   The randomly found product from category
+ *   The randomly found product IDs from category.
  */
 function getProductIdsForCategory(int $categoryID) {
-    $productIds = select("
+    return select("
                 SELECT SI.StockItemID
                 FROM stockitems SI 
                 WHERE :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
         ['categoryId' => $categoryID]);
-    return getProductForCatergory($productIds);
 }
 
 /**
- * Gets a random product id from category
+ * Gets a random product id from category.
  *
- * @param array $productIds
- *   The amount of products.
+ * @param int $categoryID
+ *   The category ID to search for.
  *
- * @return array
- *   The randomly found product from category
+ * @return int
+ *   The ID of the randomly found product from category or 0.
  */
-function getProductForCatergory($productIds){
+function getRandomProductForCategory(int $categoryID){
+    $productIds = getProductIdsForCategory($categoryID);
     $amountProductIds = count($productIds);
     $selectedProduct = $productIds[random_int(0, $amountProductIds)] ?? [];
+
     return $selectedProduct["StockItemID"] ?? 0;
 }
 
@@ -219,10 +220,11 @@ function getProductForCatergory($productIds){
 function getRandomProducts(int $amountOfProducts = 10) {
     $productPlaceholders = "";
     $productIds = [];
-    for ($x = 1; $x <= $amountOfProducts; $x++) {
-        $productIds["product_$x"] = getProductIdsForCategory($x);
-        $productPlaceholders .= $x != $amountOfProducts ? ":product_$x, " : ":product_$x";
+    for ($category_id = 1; $category_id <= $amountOfProducts; $category_id++) {
+        $productIds["product_$category_id"] = getRandomProductForCategory($category_id);
+        $productPlaceholders .= $category_id !== $amountOfProducts ? ":product_$category_id, " : ":product_$category_id";
     }
+
     return select("SELECT SI.StockItemID, 
         (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
         StockItemName,
