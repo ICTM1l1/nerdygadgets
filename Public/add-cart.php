@@ -5,11 +5,7 @@ if(session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-if(!isset($_SESSION["cart"])){
-    $_SESSION["cart"] = new Cart();
-}
-
-//$_SESSION["cart"]->cleanCart();
+session_save('cart', new Cart());
 ?>
 
 <html>

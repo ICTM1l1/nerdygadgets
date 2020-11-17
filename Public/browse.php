@@ -67,8 +67,8 @@ if (empty($categoryID)) {
         $queryBuildResult .= " AND ";
     }
 
-    $products = getProductsForCategory($queryBuildResult, $sort, $showStockLevel, $categoryID, $productsOnPage, $offset);
-    $amountProducts = getProductsAmountForCategory($queryBuildResult, $categoryID);
+    $products = getProductsForCategoryWithFilter($queryBuildResult, $sort, $showStockLevel, $categoryID, $productsOnPage, $offset);
+    $amountProducts = getProductsAmountForCategoryWithFilter($queryBuildResult, $categoryID);
 }
 
 $amountOfPages = 0;

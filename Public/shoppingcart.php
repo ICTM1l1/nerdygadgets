@@ -1,100 +1,90 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
+
+$products = getRandomProducts(2);
 ?>
-<!--<div id="ProductFrameShoppingCart">-->
-<!--    <div id="ImageCart">-->
-<!--        <img scr="hoodie.png">-->
-<!--    </div>-->
-<!--    <div id="ProductAmount">-->
-<!--        <h3>Aantal</h3>-->
-<!--    </div>-->
-<!--    <div id="CartPlus">-->
-<!--        <p>+</p>-->
-<!--    </div>-->
-<!--    <div id="CartMin">-->
-<!--        <p>-</p>-->
-<!--    </div>-->
-<!--    <div id="Product">-->
-<!--        <h3>test</h3>-->
-<!--        <h3>Productnaam</h3>-->
-<!--    </div>-->
-<!--    <div id="Price">-->
-<!--        <h3>Prijs</h3>-->
-<!--    </div>-->
-<!--    <br>-->
-<!--    <div id="BTW">-->
-<!--        <h3>Include BTW</h3>-->
-<!--    </div>-->
-<!---->
-<!--    <div id="Guarantee">-->
-<!--        <h3>Garantie</h3>-->
-<!--    </div>-->
-<!--    <div id="ProductAmountStock">-->
-<!--        <h3>Aantal producten</h3>-->
-<!--    </div>-->
-<!--</div>-->
 
 <div class="row">
     <div class="col-sm-4"></div>
     <div class="col-sm-8">
-        <h1>Winkelwagen</h1>
+        <h1 class="pb-2">Winkelwagen</h1>
 
-        <table class="w-100">
-            <tbody>
-            <?php for ($x = 0; $x < 10; $x++) : ?>
-                <tr class="border border-white">
-                    <td>
-                        <div id="ImageFrame" style="background-image:
-                        url('http://localhost/nerdygadgets/Assets/StockItemIMG/The gu (white).png');
-                        background-size: 250px; background-repeat: no-repeat; background-position: center;"
-                    </td>
-                    <td style="margin-top: 5%">
-                        <h1 style="float: left">product X</h1>
-                    </td>
-                    <td>
-                        <?php
-                        $pricePerPieceBTW = 99.99;
-                        $priceTotalBTW = $pricePerPieceBTW * 20;
-                        $pricePerPiece = ($pricePerPieceBTW / 121) * 21;
-                        $priceTotal = $pricePerPieceBTW * 20;
+        <div class="cart-products">
+        <?php
+        $priceTotal = 0;
 
-                        ?>
+        foreach ($products as $product) :
+            $productId = $product['StockItemID'] ?? 0;
+            $image = getProductImage($productId);
 
-                        <b>Per stuk: </b> &euro; <?= number_format($pricePerPieceBTW, 2, ",", ".") ?> <br>
-
-
-
-                    <td style="float: right">
-                        <div class="row">
-
-
-                        <p style="text-align: right">
-                        <form method="get" action="<?= get_current_url() ?>" style="margin-right: 20px; margin-top: 10px">
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success" name="Add_Product">
+            $pricePerPiece = $product['SellPrice'] ?? 0;
+            $productQuantity = 20;
+            $productPriceTotal = $pricePerPiece * $productQuantity;
+            $priceTotal += $productPriceTotal;
+        ?>
+            <div class="row border border-white p-2 mr-4">
+                <div class="col-sm-3 pl-0">
+                    <div id="ImageFrame" style="background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                            background-size: 200px; background-repeat: no-repeat; background-position: center;"></div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h5>#<?= $productId ?></h5>
+                            <h3><?= $product['StockItemName'] ?? '' ?></h3>
+                        </div>
+                        <div class="col-sm-3">
+                            <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
+                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" Min_Product">
+                                <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product">
                                     <i class="fas fa-plus"></i>
                                 </button>
-                                <button type="submit" class="btn btn-danger" name="Min_Product">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </form>
-                        <h1>20 X</h1>
-                        </p>
+
+                                <p class="h5">Aantal</p>
+                            </form>
                         </div>
-                        <br>
-                        <div style="margin-top: 100%">
-                            <b>Totaal excl BTW: </b> &euro; <?= number_format($priceTotal, 2, ',', '.') ?>
-                            <br>
-                            <b>Totaal incl BTW: </b> &euro; <?= number_format($priceTotalBTW, 2, ',', '.') ?>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9" style="position: absolute; bottom: 0;">
+                            <h4 class="mb-3">Garantie</h4>
+                            <h6>Aantal producten op <?= strtolower($product['QuantityOnHand'] ?? 0 )?></h6>
                         </div>
-                    </td>
-                </tr>
-            <?php endfor; ?>
-            </tbody>
-        </table>
+                        <div class="col-sm-3 text-right" style="position: absolute; bottom: 0; right: 0;">
+                            <h3>&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></h3>
+                            <h5>Inclusief BTW</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-4">
+        <div class="border border-white m-5">
+            <h1 class="p-2">
+                <b>Totale kosten: </b> &euro; <?= number_format($priceTotal, 2, ',', '.') ?>
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-8"></div>
+    <div class="col-sm-4">
+        <div class="border border-white mr-5 ml-5 mt-4 mb-5">
+            <a href="<?= get_url('afrekenen.php') ?>">
+                <h1 class="p-2 font-weight-bold text-white">Koop producten</h1>
+            </a>
+        </div>
+    </div>
+</div>
+
 
 <?php
 require_once __DIR__ . "/../Src/footer.php";
