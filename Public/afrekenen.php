@@ -12,9 +12,11 @@ require_once __DIR__ . "/../Src/header.php";
     <label for="AdresLabel">Adres</label>
     <div class="form-row mb-3 justify-content-md-center">
         <div class="col-2">
+            <label for="Postcode" class="d-none">Postcode</label>
             <input type="text" id="Postcode" class="form-control" placeholder="1234 AB">
         </div>
         <div class="col-1">
+            <label for="Huisnummer" class="d-none">Huisnummer</label>
             <input type="text" id="Huisnummer" class="form-control" placeholder="Huisnummer">
         </div>
     </div>
@@ -32,7 +34,7 @@ require_once __DIR__ . "/../Src/header.php";
     </div>
     <div class="form-row mb-3 col-2 mx-auto">
         <label for="Telefoonnummer">Telefoonnummer</label>
-        <input type="text" id="Telefoonnummer" class="form-control" placeholder="Telefoonnummer">
+        <input type="tel" id="Telefoonnummer" class="form-control" placeholder="Telefoonnummer">
     </div>
 
     <button class="btn btn-success my-4" type="submit">Betalen</button>
