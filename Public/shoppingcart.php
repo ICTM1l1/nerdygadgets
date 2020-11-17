@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+
+
 $products = getRandomProducts(2);
 ?>
 
@@ -13,12 +15,13 @@ $products = getRandomProducts(2);
         <?php
         $priceTotal = 0;
 
-        foreach ($products as $product) :
+        foreach ($_SESSION["cart"]->getItems() as $cartItem) :
+            $product = getProduct($cartItem["id"]);
             $productId = $product['StockItemID'] ?? 0;
             $image = getProductImage($productId);
 
             $pricePerPiece = $product['SellPrice'] ?? 0;
-            $productQuantity = 20;
+            $productQuantity = $cartItem["amount"];
             $productPriceTotal = $pricePerPiece * $productQuantity;
             $priceTotal += $productPriceTotal;
         ?>
@@ -35,14 +38,14 @@ $products = getRandomProducts(2);
                         </div>
                         <div class="col-sm-3">
                             <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
-                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" Min_Product">
-                                <i class="fas fa-minus"></i>
+                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product" value="<?=$cartItem["id"]?>">
+                                    <i class="fas fa-minus"></i>
                                 </button>
-                                <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product">
+                                <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product" value="<?=$cartItem["id"]?>">
                                     <i class="fas fa-plus"></i>
                                 </button>
 
-                                <p class="h5">Aantal</p>
+                                <p class="h5"><?= $cartItem["amount"];?>x</p>
                             </form>
                         </div>
                     </div>
