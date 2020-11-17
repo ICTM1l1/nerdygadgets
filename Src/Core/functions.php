@@ -158,7 +158,9 @@ function redirect(string $url) {
  */
 function dd(...$variables) {
     // Removes all previous printed items
-    ob_end_clean();
+    if(ob_get_contents()){
+        ob_end_clean();
+    }
 
     var_dump($variables);
     die();
