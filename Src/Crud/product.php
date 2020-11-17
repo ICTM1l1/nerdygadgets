@@ -183,25 +183,25 @@ function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $c
  * @return array
  *   The randomly found product from category
  */
-function getProductForCategory(int $categoryID) {
+function getProductIdsForCategory(int $categoryID) {
     $productIds = select("
                 SELECT SI.StockItemID
                 FROM stockitems SI 
                 WHERE :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
         ['categoryId' => $categoryID]);
-    return getRandomProductForCatergory($productIds);
+    return getProductForCatergory($productIds);
 }
 
 /**
  * Gets a random product id from category
  *
- * @param int $productIds
+ * @param array $productIds
  *   The amount of products.
  *
  * @return array
  *   The randomly found product from category
  */
-function getRandomProductForCatergory($productIds){
+function getProductForCatergory($productIds){
     $amountProductIds = count($productIds);
     $selectedProduct = $productIds[random_int(0, $amountProductIds)] ?? [];
     return $selectedProduct["StockItemID"] ?? 0;
@@ -220,22 +220,22 @@ function getRandomProducts(int $amountOfProducts = 10) {
     $productPlaceholders = "";
     $productIds = [];
     for ($x = 1; $x <= $amountOfProducts; $x++) {
-        $productIds["product_$x"] = getProductForCategory($x);
+        $productIds["product_$x"] = getProductIdsForCategory($x);
         $productPlaceholders .= $x != $amountOfProducts ? ":product_$x, " : ":product_$x";
     }
-
-        return select("SELECT SI.StockItemID, 
-            (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
-            StockItemName,
-            CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
-            SearchDetails, 
-            (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
-            (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
-            FROM stockitems SI 
-            JOIN stockitemholdings SIH USING(stockitemid)
-            JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
-            JOIN stockgroups USING(StockGroupID)
-            WHERE SI.stockitemid IN ($productPlaceholders) 
-            AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
-            GROUP BY StockItemID", $productIds);
+    dd($productIds, $productPlaceholders);
+    return select("SELECT SI.StockItemID, 
+        (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+        StockItemName,
+        CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
+        SearchDetails, 
+        (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
+        (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
+        FROM stockitems SI 
+        JOIN stockitemholdings SIH USING(stockitemid)
+        JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
+        JOIN stockgroups USING(StockGroupID)
+        WHERE SI.stockitemid IN ($productPlaceholders) 
+        AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
+        GROUP BY StockItemID", $productIds);
 }
