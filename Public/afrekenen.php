@@ -4,7 +4,10 @@ require_once __DIR__ . "/../Src/header.php";
 ?>
 <form class="text-center" action="<?= get_url('payment.php') ?>" method="get">
     <h1 class="mb-5 my-4">Afrekenen</h1>
-
+    <h4 class="my-4">1. Bezorggegevens</h4>
+    <div class="progress mx-auto" style="width: 25%; height: 20px">
+        <div class="progress-bar" role="progressbar" style="width: 33.33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100">Bezorggegevens</div>
+    </div>
     <div class="form-row mb-3 col-2 mx-auto">
         <label for="Naam">Naam</label>
         <input type="text" id="Naam" class="form-control" placeholder="Naam">
@@ -13,7 +16,7 @@ require_once __DIR__ . "/../Src/header.php";
     <div class="form-row mb-3 justify-content-md-center">
         <div class="col-2">
             <label for="Postcode" class="d-none">Postcode</label>
-            <input type="text" id="Postcode" class="form-control" placeholder="1234 AB">
+            <input type="text" id="Postcode" class="form-control" placeholder="Postcode (1234 AB)">
         </div>
         <div class="col-1">
             <label for="Huisnummer" class="d-none">Huisnummer</label>
@@ -36,8 +39,8 @@ require_once __DIR__ . "/../Src/header.php";
         <label for="Telefoonnummer">Telefoonnummer</label>
         <input type="tel" id="Telefoonnummer" class="form-control" placeholder="Telefoonnummer">
     </div>
-
-    <button class="btn btn-success my-4" type="submit">Betalen</button>
+    <button class="btn btn-success my-4" type="submit" name="back">Terug naar overzicht</button>
+    <button class="btn btn-success my-4" type="submit">2. Afrekenen</button>
 </form>
 
 <?php
