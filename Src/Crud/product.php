@@ -137,7 +137,7 @@ function getProductsAmount(string $queryBuildResult = '') {
  * @return array
  *   The found products for the category.
  */
-function getProductsForCategory(string $queryBuildResult, string $sort, int $showStockLevel, int $categoryID, int $productsOnPage, int $offset) {
+function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort, int $showStockLevel, int $categoryID, int $productsOnPage, int $offset) {
     return select("
                 SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, 
                 ROUND(SI.TaxRate * SI.RecommendedRetailPrice / 100 + SI.RecommendedRetailPrice,2) as SellPrice, 
@@ -165,7 +165,7 @@ function getProductsForCategory(string $queryBuildResult, string $sort, int $sho
  * @return int
  *   The amount of products for the category.
  */
-function getProductsAmountForCategory(string $queryBuildResult, int $categoryID) {
+function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $categoryID) {
     $productsAmount = selectFirst("
                 SELECT count(*)
                 FROM stockitems SI 
@@ -174,9 +174,42 @@ function getProductsAmountForCategory(string $queryBuildResult, int $categoryID)
 
     return $productsAmount["count(*)"] ?? 0;
 }
+/**
+ * Gets the IDs of products from category.
+ *
+ * @param int $categoryID
+ *   The category ID to search for.
+ *
+ * @return array
+ *   The randomly found product IDs from category.
+ */
+function getProductIdsForCategory(int $categoryID) {
+    return select("
+                SELECT SI.StockItemID
+                FROM stockitems SI 
+                WHERE :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)",
+        ['categoryId' => $categoryID]);
+}
 
 /**
- * Gets a random of amount of products.
+ * Gets a random product id from category.
+ *
+ * @param int $categoryID
+ *   The category ID to search for.
+ *
+ * @return int
+ *   The ID of the randomly found product from category or 0.
+ */
+function getRandomProductForCategory(int $categoryID){
+    $productIds = getProductIdsForCategory($categoryID);
+    $amountProductIds = count($productIds);
+    $selectedProduct = $productIds[random_int(0, $amountProductIds)] ?? [];
+
+    return $selectedProduct["StockItemID"] ?? 0;
+}
+
+/**
+ * Gets a random amount of products.
  *
  * @param int $amountOfProducts
  *   The amount of products.
@@ -185,12 +218,25 @@ function getProductsAmountForCategory(string $queryBuildResult, int $categoryID)
  *   The randomly found products.
  */
 function getRandomProducts(int $amountOfProducts = 10) {
-    $productsAmount = getProductsAmount();
-
-    $products = [];
-    for ($x = 1; $x <= $amountOfProducts; $x++) {
-        $products[] = getProductWithImage(random_int(1, $productsAmount));
+    $productPlaceholders = "";
+    $productIds = [];
+    for ($category_id = 1; $category_id <= $amountOfProducts; $category_id++) {
+        $productIds["product_$category_id"] = getRandomProductForCategory($category_id);
+        $productPlaceholders .= $category_id !== $amountOfProducts ? ":product_$category_id, " : ":product_$category_id";
     }
 
-    return $products;
+    return select("SELECT SI.StockItemID, 
+        (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
+        StockItemName,
+        CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
+        SearchDetails, 
+        (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
+        (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
+        FROM stockitems SI 
+        JOIN stockitemholdings SIH USING(stockitemid)
+        JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
+        JOIN stockgroups USING(StockGroupID)
+        WHERE SI.stockitemid IN ($productPlaceholders) 
+        AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
+        GROUP BY StockItemID", $productIds);
 }
