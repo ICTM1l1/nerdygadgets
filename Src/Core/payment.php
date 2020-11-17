@@ -30,13 +30,17 @@ function initiatePayment(string $price, int $order_nr) {
 /**
  * Determines if the payment has been payed.
  *
- * @param $paymentId
+ * @param string $paymentId
  *   The payment id.
  *
  * @return bool
  *   Whether the payment has been payed or not.
  */
-function checkPayment($paymentId) {
+function checkPayment(string $paymentId) {
+    if (empty($paymentId)) {
+        return false;
+    }
+
     $mollie = new \Mollie\Api\MollieApiClient();
     $mollie->setApiKey("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
     $payment = $mollie->payments->get($paymentId);

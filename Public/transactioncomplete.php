@@ -37,7 +37,7 @@ session_key_unset('paymentId');
                 </h1>
 
                 <div class="form-group">
-                    <button class="btn btn-danger float-right my-4" type="button" name="back"
+                    <button class="btn btn-success float-right my-4" type="button" name="back"
                             onclick="window.location.href='<?= get_url('index.php') ?>'">
                         3. Afronden
                     </button>
