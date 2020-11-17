@@ -68,6 +68,22 @@ function getProductImages(int $product_id) {
 }
 
 /**
+ * Gets the image for a product for the given id.
+ *
+ * @param int $product_id
+ *   The id to search for.
+ *
+ * @return array
+ *   The found product image.
+ */
+function getProductImage(int $product_id) {
+    return selectFirst("
+                SELECT ImagePath
+                FROM stockitemimages 
+                WHERE StockItemID = :stockitemid", ['stockitemid' => $product_id]);
+}
+
+/**
  * Gets all products.
  *
  * @param string $queryBuildResult
