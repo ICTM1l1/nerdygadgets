@@ -223,7 +223,6 @@ function getRandomProducts(int $amountOfProducts = 10) {
         $productIds["product_$x"] = getProductIdsForCategory($x);
         $productPlaceholders .= $x != $amountOfProducts ? ":product_$x, " : ":product_$x";
     }
-    dd($productIds, $productPlaceholders);
     return select("SELECT SI.StockItemID, 
         (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
         StockItemName,
