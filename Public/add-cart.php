@@ -1,9 +1,15 @@
 <?php
 //Example file, can be deleted or overwritten later.
-require_once __DIR__ . "/../Src/cart.php";
+require_once __DIR__ . "/../Src/Core/core.php";
 if(session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+if(!isset($_SESSION["cart"])){
+    $_SESSION["cart"] = new Cart();
+}
+
+//$_SESSION["cart"]->cleanCart();
 ?>
 
 <html>

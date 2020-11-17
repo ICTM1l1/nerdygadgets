@@ -1,9 +1,13 @@
 <?php
 //Example file, can be deleted or overwritten later.
 
-require_once __DIR__ . "/../Src/cart.php";
+require_once __DIR__ . "/../Src/Core/core.php";
 if(session_status() == PHP_SESSION_NONE) {
     session_start();
+}
+
+if(!isset($_SESSION["cart"])){
+    $_SESSION["cart"] = new Cart();
 }
 //print($_SESSION["cart"]->cleanCart());
 ?>
@@ -24,7 +28,7 @@ if(session_status() == PHP_SESSION_NONE) {
     </ul>
 </p>
 <?php
-print("Total:" . $_SESSION["cart"]->getTotalPrice());
+print("Total: " . $_SESSION["cart"]->getTotalPrice());
 ?>
 </body>
 </html>
