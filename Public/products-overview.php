@@ -59,7 +59,7 @@ $products = getRandomProducts(2);
                     Terug naar winkelwagen
                 </a>
 
-                <a class="btn btn-success float-right" href="<?= get_url('afrekenen.php') ?>">
+                <a class="btn btn-success float-right" href="<?= get_url('checkout.php') ?>">
                     Afrekenen
                 </a>
             </div>
