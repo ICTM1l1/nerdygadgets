@@ -11,7 +11,7 @@ elseif(get_form_data_post("Min_Product", NULL) != NULL){
     $id = get_form_data_post("Min_Product");
     $cart = session_get("cart");
     $count = $cart->getItemCount($id);
-    $cart->setItemCount($id, $count-1);
+    $cart->setItemCount($id, $count-1 ?: $count);
 }
 
 //$products = getRandomProducts(2);
