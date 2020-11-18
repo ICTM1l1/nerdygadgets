@@ -13,14 +13,13 @@ if (empty($price) || empty($cart->getItems())) {
 if (isset($_POST['checkout'])) {
     $name = get_form_data_post('name');
     $postalCode = get_form_data_post('postalcode');
-    $houseNumber = (int) get_form_data_post('housenumber');
     $street = get_form_data_post('streetname');
     $city = get_form_data_post('city');
     $email = get_form_data_post('email');
     $phoneNumber = get_form_data_post('phonenumber');
 
     $values_valid = true;
-    if (empty($name) || empty($postalCode) || empty($houseNumber) || empty($street) || empty($city) || empty($email) || empty($phoneNumber)) {
+    if (empty($name) || empty($postalCode) || empty($street) || empty($city) || empty($email) || empty($phoneNumber)) {
         $values_valid = false;
         add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
     }
@@ -57,10 +56,7 @@ if (isset($_POST['checkout'])) {
 
                         <div class="form-group form-row">
                             <label for="postalcode" class="col-sm-3 text-left">Postcode <span class="text-danger">*</span></label>
-                            <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-3" placeholder="Postcode">
-
-                            <label for="housenumber" class="col-sm-3 text-left pl-5">Huisnummer <span class="text-danger">*</span></label>
-                            <input type="number" id="housenumber" name="housenumber" class="form-control col-sm-3" placeholder="Huisnummer">
+                            <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9" placeholder="Postcode">
                         </div>
 
                         <div class="form-group form-row">
