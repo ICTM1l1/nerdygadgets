@@ -13,14 +13,14 @@ class Cart {
         $this->updated = true;
     }
 
-    function getItemCount($id): int{
+    function getItemCount(int $id): int{
         if(isset($this->items[$id])){
             return $this->items[$id];
         }
         return 0;
     }
 
-    function setItemCount($id, $count): void{
+    function setItemCount(int $id, int $count): void{
         if(isset($this->items[$id])){
             $this->items[$id] = $count;
             $this->updated = true;
@@ -39,14 +39,14 @@ class Cart {
         return count($this->items);
     }
 
-    function addItem($id, $count): void{
+    function addItem(int $id, int $count): void{
         if(!isset($this->items[$id])){
             $this->items += array($id => $count);
             $this->updated = true;
         }
     }
 
-    function removeItem($id): void{
+    function removeItem(int $id): void{
         if(isset($this->items[$id])) {
             unset($this->items[$id]);
             $this->updated = true;
