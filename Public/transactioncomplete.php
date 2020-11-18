@@ -1,12 +1,21 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+/** @var Cart $cart */
+$cart = session_get('cart');
+$price = $cart->getTotalPrice();
+
+if (empty($price) || empty($cart->getItems())) {
+    add_user_error('Er zijn geen items in de winkelwagen gevonden om af te rekenen.');
+    redirect(get_url('shoppingcart.php'));
+}
+
 $paymentPaid = checkPayment(session_get('paymentId'));
 if ($paymentPaid) {
     // Add order, order lines and decrease the quantity on hand value.
-    $cart = unserialize(session_get("cart"), [Cart::class]);
+    $cart = session_get("cart");
     $products = $cart->getItems();
-    $customerId = 832;
+    $customerId = session_get('customer_id');
     $currentDate = date('Y-m-d');
 
     $orderId = insert("orders", [
@@ -48,34 +57,13 @@ if ($paymentPaid) {
     // Clear the cart and payment process.
     $cart = new Cart();
     session_key_unset('paymentId');
-    session_save('cart', serialize($cart), true);
+    session_save('cart', $cart, true);
 }
 ?>
 
 <div class="container-fluid">
     <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1 class="mb-5 float-left">3. Afronden</h1>
-
-                <div class="form-progress float-right">
-                    <!-- Grey with black text -->
-                    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-                        <ul class="navbar-nav">
-                            <li class="nav-item border-right border-white">
-                                <a class="nav-link" href="#">Bezorggegevens</a>
-                            </li>
-                            <li class="nav-item border-right border-white">
-                                <a class="nav-link" href="#">Afrekenen</a>
-                            </li>
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Afronden</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <?php include_once __DIR__ . '/../Src/Html/order-progress.php'; ?>
 
         <div class="row">
             <div class="col-sm-12">

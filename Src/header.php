@@ -75,4 +75,4 @@ $categories = getCategories();
         <div class="col-12">
             <div id="SubContent">
 
-
+                <?php include __DIR__ . '/Html/alert.php'; ?>
