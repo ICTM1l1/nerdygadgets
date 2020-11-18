@@ -2,7 +2,54 @@
 require_once __DIR__ . "/../Src/header.php";
 
 $paymentPaid = checkPayment(session_get('paymentId'));
-session_key_unset('paymentId');
+if ($paymentPaid) {
+    // Add order, order lines and decrease the quantity on hand value.
+    $cart = unserialize(session_get("cart"), [Cart::class]);
+    $products = $cart->getItems();
+    $customerId = 832;
+    $currentDate = date('Y-m-d');
+
+    $orderId = insert("orders", [
+        "CustomerId" => $customerId,
+        "SalespersonPersonID" => "2",
+        "ContactPersonID" => "3032",
+        "OrderDate" => date("Y-m-d"),
+        "ExpectedDeliveryDate" => $currentDate,
+        "IsUndersupplyBackordered" => 0,
+        "LastEditedBy" => 7
+    ]);
+
+    foreach ($products as $product) {
+        $productId = (int) ($product["id"] ?? 0);
+        $productAmount = (int) ($product["amount"] ?? 0);
+        $productFromDB = getProduct($productId);
+        $currentQuantity = (int) ($productfromDB["QuantityOnHand"] ?? 0);
+
+        insert("orderlines", [
+            "OrderID" => $orderId,
+            "StockItemID" => $productId,
+            "Description" => $productFromDB["StockItemName"] ?? '',
+            "PackageTypeID" => '7',
+            "Quantity" => $productAmount,
+            "UnitPrice" => $productFromDB["SellPrice"] ?? 0,
+            "TaxRate" => '15',
+            "PickedQuantity" => $productAmount,
+            "PickingCompletedWhen" => $currentDate,
+            "LastEditedBy" => "4"
+        ]);
+
+        update("stockitemholdings", [
+            "QuantityOnHand" => $currentQuantity - $productAmount,
+        ], [
+            "StockItemId" => $productId,
+        ]);
+    }
+
+    // Clear the cart and payment process.
+    $cart = new Cart();
+    session_key_unset('paymentId');
+    session_save('cart', serialize($cart), true);
+}
 ?>
 
 <div class="container-fluid">

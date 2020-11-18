@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-$products = getRandomProducts(2);
+/** @var Cart $cart */
+$cart = unserialize(session_get('cart'), [Cart::class]);
+$products = $cart->getItems();
 ?>
 
 <div class="container-fluid">
@@ -14,11 +16,12 @@ $products = getRandomProducts(2);
                 $priceTotal = 0;
 
                 foreach ($products as $product) :
-                    $productId = $product['StockItemID'] ?? 0;
+                    $productId = (int) ($product["id"] ?? 0);
+                    $productFromDb = getProduct($productId);
                     $image = getProductImage($productId);
 
-                    $pricePerPiece = $product['SellPrice'] ?? 0;
-                    $productQuantity = 20;
+                    $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
+                    $productQuantity = (int) ($product["amount"] ?? 0);
                     $productPriceTotal = $pricePerPiece * $productQuantity;
                     $priceTotal += $productPriceTotal;
                     ?>
@@ -31,10 +34,10 @@ $products = getRandomProducts(2);
                             <div class="product-details" style="position: absolute; top: 35%; right: 0; left: 0;">
                                 <div class="row">
                                     <div class="col-sm-1">
-                                        <p class="h4">2x</p>
+                                        <p class="h4"><?= $productQuantity ?>x</p>
                                     </div>
                                     <div class="col-sm-8">
-                                        <p class="h4"><?= $product['StockItemName'] ?? '' ?></p>
+                                        <p class="h4"><?= $productFromDb['StockItemName'] ?? '' ?></p>
                                     </div>
                                     <div class="col-sm-3">
                                         <p class="h4">&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></p>

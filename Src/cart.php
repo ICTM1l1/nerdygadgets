@@ -76,5 +76,6 @@ class Cart {
 }
 
 if(!isset($_SESSION["cart"])){
-    $_SESSION["cart"] = new Cart();
+    $cart = new Cart();
+    $_SESSION["cart"] = serialize($cart);
 }
