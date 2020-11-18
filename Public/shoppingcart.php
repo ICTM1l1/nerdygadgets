@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-$cart = unserialize($_SESSION["cart"]);
-$productIds = $cart->getItems();
+/** @var Cart $cart */
+$cart = unserialize(session_get('cart'), [Cart::class]);
+$products = $cart->getItems();
 
 if (isset($_POST["Min_Product"])) {
     if (isset($_POST["product_id"])) {
@@ -25,17 +26,15 @@ elseif (isset($_POST["Add_Product"])) {
         <?php
         $priceTotal = 0;
 
-        foreach ($productIds as $prod) :
-            $productId = $prod["id"];
-            $_SESSION['currentProductId'] = $productId;
-            $product = getProduct($productId);
+        foreach ($products as $product) :
+            $productId = $product["id"];
+            $productFromDb = getProduct($productId);
             $image = getProductImage($productId);
 
-            $pricePerPiece = $product['SellPrice'] ?? 0;
-            $productQuantity = $prod["amount"];
+            $pricePerPiece = $productFromDb['SellPrice'] ?? 0;
+            $productQuantity = $product["amount"];
             $productPriceTotal = $pricePerPiece * $productQuantity;
             $priceTotal += $productPriceTotal;
-            //deze prijs verschilt met degene die uit de cart komt
             ?>
             <div class="row border border-white p-2 mr-4">
                 <div class="col-sm-4 pl-0">
@@ -46,10 +45,11 @@ elseif (isset($_POST["Add_Product"])) {
                     <div class="row">
                         <div class="col-sm-8">
                             <h5>#<?= $productId ?></h5>
-                            <h3><?= $product['StockItemName'] ?? '' ?></h3>
+                            <h3><?= $productFromDb['StockItemName'] ?? '' ?></h3>
                         </div>
                         <div class="col-sm-4">
-                            <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
+                            <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;"
+                                  method="post" action="<?= get_current_url() ?>">
                                 <input type="hidden" name="product_id" value="<?= $productId ?>">
 
                                 <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product">
@@ -66,7 +66,7 @@ elseif (isset($_POST["Add_Product"])) {
                     <div class="row">
                         <div class="col-sm-9" style="position: absolute; bottom: 0;">
                             <h4 class="mb-3">Garantie</h4>
-                            <h6>Aantal producten op <?= strtolower($product['QuantityOnHand'] ?? 0 )?></h6>
+                            <h6>Aantal producten op <?= strtolower($productFromDb['QuantityOnHand'] ?? 0 )?></h6>
                         </div>
                         <div class="col-sm-3 text-right" style="position: absolute; bottom: 0; right: 0;">
                             <h3>&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></h3>

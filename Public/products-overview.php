@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-$cart = unserialize($_SESSION["cart"]);
-$productIds = $cart->getItems();
+/** @var Cart $cart */
+$cart = unserialize(session_get('cart'), [Cart::class]);
+$products = $cart->getItems();
 ?>
 
 <div class="container-fluid">
@@ -14,17 +15,15 @@ $productIds = $cart->getItems();
                 <?php
                 $priceTotal = 0;
 
-                foreach ($productIds as $prod) :
-                    $productId = $prod["id"];
-                    $_SESSION['currentProductId'] = $productId;
-                    $product = getProduct($productId);
+                foreach ($products as $product) :
+                    $productId = $product["id"];
+                    $productFromDb = getProduct($productId);
                     $image = getProductImage($productId);
 
-                    $pricePerPiece = $product['SellPrice'] ?? 0;
-                    $productQuantity = $prod["amount"];
+                    $pricePerPiece = $productFromDb['SellPrice'] ?? 0;
+                    $productQuantity = $product["amount"];
                     $productPriceTotal = $pricePerPiece * $productQuantity;
                     $priceTotal += $productPriceTotal;
-                    //deze prijs verschilt met degene die uit de cart komt
                     ?>
                     <div class="row mb-4">
                         <div class="col-sm-3 pl-0">
@@ -35,10 +34,10 @@ $productIds = $cart->getItems();
                             <div class="product-details" style="position: absolute; top: 35%; right: 0; left: 0;">
                                 <div class="row">
                                     <div class="col-sm-1">
-                                        <p class="h4">2x</p>
+                                        <p class="h4"><?= $productQuantity ?>x</p>
                                     </div>
                                     <div class="col-sm-8">
-                                        <p class="h4"><?= $product['StockItemName'] ?? '' ?></p>
+                                        <p class="h4"><?= $productFromDb['StockItemName'] ?? '' ?></p>
                                     </div>
                                     <div class="col-sm-3">
                                         <p class="h4">&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></p>

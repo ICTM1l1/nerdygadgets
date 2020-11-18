@@ -3,46 +3,52 @@ require_once __DIR__ . "/../Src/header.php";
 
 $paymentPaid = checkPayment(session_get('paymentId'));
 if ($paymentPaid) {
-    //Vul de NAW gegevens in de database in en verklein het voorraad van de producten met het aantal dat is gekocht
-    $cart = unserialize(session_get("cart"));
+    // Add order, order lines and decrease the quantity on hand value.
+    $cart = unserialize(session_get("cart"), [Cart::class]);
     $products = $cart->getItems();
-    $customerId = random_int(1,9e9);
+    $customerId = 832;
+    $currentDate = date('Y-m-d');
+
     $orderId = insert("orders", [
-        "CustomerId" => 832,
+        "CustomerId" => $customerId,
         "SalespersonPersonID" => "2",
         "ContactPersonID" => "3032",
         "OrderDate" => date("Y-m-d"),
-        "ExpectedDeliveryDate" => date("Y-m-d" , time() + (1  * 1 * 1 * 60 * 60)),// year month day hour minutes seconds,
+        "ExpectedDeliveryDate" => $currentDate,
         "IsUndersupplyBackordered" => 0,
         "LastEditedBy" => 7
     ]);
 
     foreach ($products as $product) {
-        $productId = $product["id"];
-        $productAmount = (int) $product["amount"] ?? 0;
-        $productfromDB = getProduct($productId);
-        $currentQuantity = (int) $productfromDB["QuantityOnHand"] ?? 0;
+        $productId = (int) ($product["id"] ?? 0);
+        $productAmount = (int) ($product["amount"] ?? 0);
+        $productFromDB = getProduct($productId);
+        $currentQuantity = (int) ($productfromDB["QuantityOnHand"] ?? 0);
 
         insert("orderlines", [
             "OrderID" => $orderId,
             "StockItemID" => $productId,
-            "Description" => $productfromDB["StockItemName"],
+            "Description" => $productFromDB["StockItemName"] ?? '',
             "PackageTypeID" => '7',
             "Quantity" => $productAmount,
-            "UnitPrice" => $productfromDB["SellPrice"],
+            "UnitPrice" => $productFromDB["SellPrice"] ?? 0,
             "TaxRate" => '15',
             "PickedQuantity" => $productAmount,
-            "PickingCompletedWhen" => date("Y-m-d", time()),
+            "PickingCompletedWhen" => $currentDate,
             "LastEditedBy" => "4"
         ]);
-        update("stockitemholdings",
-            ["QuantityOnHand" => $currentQuantity - $productAmount],
-            ["StockItemId" => $productId]);
-        //Remove $productAmount aantal producten van $productId
+
+        update("stockitemholdings", [
+            "QuantityOnHand" => $currentQuantity - $productAmount,
+        ], [
+            "StockItemId" => $productId,
+        ]);
     }
-    $cart = new Cart(); //leeg de winkelwagen
-    unset($_SESSION["paymentId"]);
-    $_SESSION["cart"] = serialize($cart); //stop de nieuwe winkelwagen in de session
+
+    // Clear the cart and payment process.
+    $cart = new Cart();
+    session_key_unset('paymentId');
+    session_save('cart', serialize($cart), true);
 }
 ?>
 
