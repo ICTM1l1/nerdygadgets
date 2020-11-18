@@ -51,7 +51,9 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                     <div class="row">
                         <div class="col-sm-9">
                             <h5>#<?= $productId ?></h5>
-                            <h3><?= $product['StockItemName'] ?? '' ?></h3>
+                            <a class="ListItem text-white" href='<?= get_url('view.php?id=' . $cartItem["id"] ?? 0) ?>'>
+                                <h3><?= $product['StockItemName'] ?? '' ?></h3>
+                            </a>
                         </div>
                         <div class="col-sm-3">
                             <form class="form-inline float-right mr-3 w-100" method="post" action="shoppingcart.php">
