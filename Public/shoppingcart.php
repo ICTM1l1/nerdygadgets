@@ -27,12 +27,12 @@ elseif (isset($_POST["Add_Product"])) {
         $priceTotal = 0;
 
         foreach ($products as $product) :
-            $productId = $product["id"];
+            $productId = (int) ($product["id"] ?? 0);
             $productFromDb = getProduct($productId);
             $image = getProductImage($productId);
 
-            $pricePerPiece = $productFromDb['SellPrice'] ?? 0;
-            $productQuantity = $product["amount"];
+            $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
+            $productQuantity = (int) ($product["amount"] ?? 0);
             $productPriceTotal = $pricePerPiece * $productQuantity;
             $priceTotal += $productPriceTotal;
             ?>
