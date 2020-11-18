@@ -2,7 +2,7 @@
 require_once __DIR__ . "/../Src/header.php";
 
 /** @var Cart $cart */
-$cart = unserialize(session_get('cart'), [Cart::class]);
+$cart = session_get('cart');
 $products = $cart->getItems();
 
 if (isset($_POST["Min_Product"])) {

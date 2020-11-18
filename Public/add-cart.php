@@ -19,9 +19,10 @@ if(session_status() == PHP_SESSION_NONE) {
 
 <?php
 if(isset($_POST["prodid"], $_POST["amount"])){
-    $cart = unserialize($_SESSION["cart"]);
+    /** @var Cart $cart */
+    $cart = session_get('cart');
     $cart->addItem($_POST["prodid"], $_POST["amount"]);
-    $_SESSION["cart"] = serialize($cart);
+    session_save('cart', $cart, true);
 }
 ?>
 </body>

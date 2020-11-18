@@ -2,7 +2,7 @@
 require_once __DIR__ . "/../Src/header.php";
 
 /** @var Cart $cart */
-$cart = unserialize(session_get('cart'), [Cart::class]);
+$cart = session_get('cart');
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
@@ -13,7 +13,7 @@ if (empty($price) || empty($cart->getItems())) {
 $paymentPaid = checkPayment(session_get('paymentId'));
 if ($paymentPaid) {
     // Add order, order lines and decrease the quantity on hand value.
-    $cart = unserialize(session_get("cart"), [Cart::class]);
+    $cart = session_get("cart");
     $products = $cart->getItems();
     $customerId = session_get('customer_id');
     $currentDate = date('Y-m-d');
@@ -57,7 +57,7 @@ if ($paymentPaid) {
     // Clear the cart and payment process.
     $cart = new Cart();
     session_key_unset('paymentId');
-    session_save('cart', serialize($cart), true);
+    session_save('cart', $cart, true);
 }
 ?>
 
