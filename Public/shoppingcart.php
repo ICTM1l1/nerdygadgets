@@ -67,11 +67,9 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
 
                                 <button class="btn btn-outline-danger float-right mr-2" style="position: absolute; top: 80px; right: 75px; width: 60%;"
                                         type="submit" name="Del_Product" onclick="return confirm('Wilt u dit product verwijderen?')"
-                                        name="Del_Product" value="<?=$cartItem["id"]?>">
+                                        value="<?=$cartItem["id"]?>">
                                     <i class="fas fa-trash"></i>
                                 </button>
-
-                                <p class="h5">Aantal</p>
                             </form>
                         </div>
                     </div>
@@ -107,7 +105,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
     <div class="col-sm-8"></div>
     <div class="col-sm-4">
         <div class="border border-white mr-5 ml-5 mt-4 mb-5">
-            <a href="<?= get_url('afrekenen.php') ?>">
+            <a href="<?= get_url('checkout.php') ?>">
                 <h1 class="p-2 font-weight-bold text-white">Koop producten</h1>
             </a>
         </div>
