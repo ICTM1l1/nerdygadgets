@@ -25,7 +25,7 @@ $products = getRandomProducts(2);
                     <div class="row mb-4">
                         <div class="col-sm-3 pl-0">
                             <div id="ImageFrame" style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
-                                    background-size: 200px; background-repeat: no-repeat; background-position: center;"></div>
+                                    background-size: 125px; background-repeat: no-repeat; background-position: center;"></div>
                         </div>
                         <div class="col-sm-9">
                             <div class="product-details" style="position: absolute; top: 35%; right: 0; left: 0;">
