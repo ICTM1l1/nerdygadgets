@@ -35,8 +35,10 @@ $products = getRandomProducts(2);
                         </div>
                         <div class="col-sm-4">
                             <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
+                                <input type="hidden" name="product_id" value="<?= $productId ?>">
+
                                 <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product">
-                                <i class="fas fa-minus"></i>
+                                    <i class="fas fa-minus"></i>
                                 </button>
                                 <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product">
                                     <i class="fas fa-plus"></i>
