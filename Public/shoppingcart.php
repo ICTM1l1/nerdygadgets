@@ -70,6 +70,8 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                                         name="Del_Product" value="<?=$cartItem["id"]?>">
                                     <i class="fas fa-trash"></i>
                                 </button>
+
+                                <p class="h5">Aantal</p>
                             </form>
                         </div>
                     </div>
@@ -95,7 +97,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
     <div class="col-sm-4">
         <div class="border border-white m-5">
             <h1 class="p-2">
-                <b>Totale kosten: </b> &euro; <?= number_format(session_get("cart")->getTotalPrice(), 2, ',', '.') ?>
+                <b>Totale kosten: </b> &euro; <?= number_format($priceTotal, 2, ',', '.') ?>
             </h1>
         </div>
     </div>

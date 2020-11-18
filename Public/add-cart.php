@@ -13,16 +13,18 @@ session_save('cart', new Cart());
     <title>Add to cart.</title>
 </head>
 <body>
-    <form action="add-cart.php" method="post">
-        ID: <input type="text" name="prodid">
-        N : <input type="text" name="amount">
-        <input type="submit">
-    </form>
+<form action="add-cart.php" method="post">
+    ID: <input type="text" name="prodid">
+    N : <input type="text" name="amount">
+    <input type="submit">
+</form>
 
-    <?php
-    if(isset($_POST["prodid"], $_POST["amount"])){
-        $_SESSION["cart"]->addItem($_POST["prodid"], $_POST["amount"]);
-    }
-    ?>
+<?php
+if(isset($_POST["prodid"], $_POST["amount"])){
+    $cart = unserialize($_SESSION["cart"]);
+    $cart->addItem($_POST["prodid"], $_POST["amount"]);
+    $_SESSION["cart"] = serialize($cart);
+}
+?>
 </body>
 </html>

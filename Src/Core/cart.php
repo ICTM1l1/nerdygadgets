@@ -71,7 +71,3 @@ class Cart {
         return $total;
     }
 }
-
-/*if(!isset($_SESSION["cart"])){
-    $_SESSION["cart"] = new Cart();
-}*/

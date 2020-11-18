@@ -124,10 +124,16 @@ function insert(string $table, array $parameters = []) {
     }
 
     $query = "INSERT INTO {$table} ({$columns}) VALUES ({$values})";
-    $statement = executeQuery($query, $parameters);
 
-    // Checks if the query has been executed successfully.
-    return empty($statement->errorInfo());
+    $connection = getDatabaseConnection();
+    $statement = $connection->prepare($query);
+    foreach ($parameters as $column => $value) {
+        $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
+    }
+
+    $statement->execute();
+
+    return $connection->lastInsertId();
 }
 
 /**
@@ -137,8 +143,10 @@ function insert(string $table, array $parameters = []) {
  *   The table to update data in.
  * @param array $parameters
  *   The parameters of the query.
+ *   [coloumn => value]
  * @param array $conditions
  *   The conditions of the query.
+ *   [column_id => column_id_value]
  *
  * @return int
  *   The result of executing the query.
