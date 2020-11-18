@@ -33,7 +33,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
         $priceTotal = 0;
 
         foreach ($_SESSION["cart"]->getItems() as $cartItem) :
-            $product = getProduct($cartItem["id"]);
+            $product = getProduct($cartItem["id"] ?? 0);
             $productId = $product['StockItemID'] ?? 0;
             $image = getProductImage($productId);
 
@@ -51,25 +51,25 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                     <div class="row">
                         <div class="col-sm-9">
                             <h5>#<?= $productId ?></h5>
-                            <a class="ListItem text-white" href='<?= get_url('view.php?id=' . $cartItem["id"] ?? 0) ?>'>
+                            <a class="ListItem text-white" href='<?= get_url('view.php?id=' . $productId) ?>'>
                                 <h3><?= $product['StockItemName'] ?? '' ?></h3>
                             </a>
                         </div>
                         <div class="col-sm-3">
                             <form class="form-inline float-right mr-3 w-100" method="post" action="shoppingcart.php">
                                 <div class="edit-actions"  style="position: absolute; top: 30px; right: 75px;">
-                                    <button type="submit" class="btn btn-outline-danger mr-2" name="Min_Product" value="<?=$cartItem["id"]?>">
+                                    <button type="submit" class="btn btn-outline-danger mr-2" name="Min_Product" value="<?= $productId ?>">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <button type="submit" class="btn btn-outline-success mr-3" name="Add_Product" value="<?=$cartItem["id"]?>">
+                                    <button type="submit" class="btn btn-outline-success mr-3" name="Add_Product" value="<?= $productId ?>">
                                         <i class="fas fa-plus"></i>
                                     </button>
-                                    <p class="h4 font-weight-bold float-right mr-1"><?= $cartItem["amount"];?>x</p>
+                                    <p class="h4 font-weight-bold float-right mr-1"><?= $cartItem["amount"] ?? 0 ?>x</p>
                                 </div>
 
                                 <button class="btn btn-outline-danger float-right mr-2" style="position: absolute; top: 80px; right: 75px; width: 60%;"
                                         type="submit" name="Del_Product" onclick="return confirm('Wilt u dit product verwijderen?')"
-                                        value="<?=$cartItem["id"]?>">
+                                        value="<?= $productId ?>">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
