@@ -64,8 +64,7 @@ class Cart {
         }
         $total = 0;
         foreach($this->items as $id => $count){
-            $total += selectFirst("SELECT UnitPrice * :count AS total FROM stockitems WHERE StockItemId = :id",
-                ["count" => $count, "id" => $id])["total"];
+            $total += getProduct($id)["SellPrice"] * $count;
         }
         $this->updated = false;
         $this->cost = $total;
