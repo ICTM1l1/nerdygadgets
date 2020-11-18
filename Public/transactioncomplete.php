@@ -15,7 +15,7 @@ if ($paymentPaid) {
     // Add order, order lines and decrease the quantity on hand value.
     $cart = unserialize(session_get("cart"), [Cart::class]);
     $products = $cart->getItems();
-    $customerId = 832;
+    $customerId = session_get('customer_id');
     $currentDate = date('Y-m-d');
 
     $orderId = insert("orders", [
@@ -63,7 +63,7 @@ if ($paymentPaid) {
 
 <div class="container-fluid">
     <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
-        <?php include_once __DIR__ . '/Html/order-progress.php'; ?>
+        <?php include_once __DIR__ . '/../Src/Html/order-progress.php'; ?>
 
         <div class="row">
             <div class="col-sm-12">
