@@ -68,6 +68,18 @@ function session_save(string $key, $value = '', bool $overwrite = false) {
 }
 
 /**
+ * Unsets a specific piece of data from the session.
+ *
+ * @param string $key
+ *   The key to be destroyed.
+ */
+function session_key_unset(string $key) {
+    if (isset($_SESSION[$key])) {
+        unset($_SESSION[$key]);
+    }
+}
+
+/**
  * Gets a specific piece of data from the config data.
  *
  * @param string $key

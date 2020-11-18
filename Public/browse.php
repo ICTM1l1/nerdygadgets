@@ -82,12 +82,16 @@ if ($amountProducts !== 0) {
 
         <div id="FilterOptions">
             <div class="form-group">
-                <h4 class="FilterTopMargin"><i class="fas fa-search"></i> Zoeken</h4>
+                <label for="search_string" class="h4 FilterTopMargin">
+                    <i class="fas fa-search"></i> Zoeken
+                </label>
                 <input type="text" name="search_string" id="search_string" value="<?= $searchString ?>" class="form-submit">
             </div>
 
             <div class="form-group">
-                <h4 class="FilterTopMargin"><i class="fas fa-list-ol"></i> Aantal producten op pagina</h4>
+                <label for="products_on_page" class="h4 FilterTopMargin">
+                    <i class="fas fa-list-ol"></i> Aantal producten op pagina
+                </label>
                 <select name="products_on_page" id="products_on_page" onchange="this.form.submit()">>
                     <option value="25" <?= $productsOnPage === 25 ? 'selected' : '' ?>>25</option>
                     <option value="50" <?= $productsOnPage === 50 ? 'selected' : '' ?>>50</option>
@@ -96,7 +100,7 @@ if ($amountProducts !== 0) {
             </div>
 
             <div class="form-group">
-                <h4 class="FilterTopMargin"><i class="fas fa-sort"></i> Sorteren</h4>
+                <label for="sort" class="h4 FilterTopMargin"><i class="fas fa-sort"></i> Sorteren</label>
                 <select name="sort" id="sort" onchange="this.form.submit()">>
                     <option value="price_low_high" <?= $sortName === "price_low_high" ? 'selected' : '' ?>>
                         Prijs oplopend
@@ -113,8 +117,9 @@ if ($amountProducts !== 0) {
                 </select>
             </div>
 
-            <div class="form-group">
-                <button type="button" class="button button-danger float-left" onclick="document.location.href='<?= get_url('browse.php') ?>'">
+            <div class="form-group mt-4">
+                <button type="button" class="button button-danger float-left"
+                        onclick="document.location.href='<?= get_url('browse.php?category_id=' . $categoryID) ?>'">
                     Reset
                 </button>
 

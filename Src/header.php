@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 
 require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
