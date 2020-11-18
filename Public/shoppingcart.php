@@ -1,9 +1,20 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+if(get_form_data_post("Add_Product", NULL) != NULL){
+    $id = get_form_data_post("Add_Product");
+    $cart = session_get("cart");
+    $count = $cart->getItemCount($id);
+    $cart->setItemCount($id, $count+1);
+}
+elseif(get_form_data_post("Min_Product", NULL) != NULL){
+    $id = get_form_data_post("Min_Product");
+    $cart = session_get("cart");
+    $count = $cart->getItemCount($id);
+    $cart->setItemCount($id, $count-1);
+}
 
-
-$products = getRandomProducts(2);
+//$products = getRandomProducts(2);
 ?>
 
 <div class="row">
@@ -37,7 +48,7 @@ $products = getRandomProducts(2);
                             <h3><?= $product['StockItemName'] ?? '' ?></h3>
                         </div>
                         <div class="col-sm-3">
-                            <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
+                            <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="shoppingcart.php">
                                 <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product" value="<?=$cartItem["id"]?>">
                                     <i class="fas fa-minus"></i>
                                 </button>
