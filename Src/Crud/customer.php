@@ -53,3 +53,19 @@ function createCustomer(string $name, string $phoneNumber, string $street, strin
         'ValidTo' => $current_date,
     ]);
 }
+
+/**
+ * Gets a specific customer.
+ *
+ * @param string $customer
+ *   The customer to search for.
+ *
+ * @return array
+ *   The found customer.
+ */
+function getCustomerByName(string $customer) {
+    return selectFirst("
+        SELECT * FROM customers
+        WHERE CustomerName = :customerName
+    ", ['customerName' => $customer]);
+}

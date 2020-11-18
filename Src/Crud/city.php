@@ -17,6 +17,14 @@ function getCity(string $city) {
                 ", ['cityName' => $city,]);
 }
 
+function getLastCityId() {
+    return selectFirst("
+                SELECT CityID, CityName
+                FROM cities 
+                ORDER BY CityID DESC
+                ")['CityID'] ?? 0;
+}
+
 /**
  * Creates a city.
  *
@@ -28,10 +36,9 @@ function getCity(string $city) {
  */
 function createCity(string $cityName) {
     return insert('cities', [
+        'CityId' => getLastCityId() + 1, // TODO make the city id auto increment
         'CityName' => $cityName,
         'StateProvinceId' => 27,
-        'Location' => 'E6100000010C3FF152A005E146401BE4E4347AD45BC0',
-        'LatestRecordedPopulation' => 1,
         'LastEditedBy' => 1,
         'ValidFrom' => date('Y-m-d'),
         'ValidTo' => date('Y-m-d'),

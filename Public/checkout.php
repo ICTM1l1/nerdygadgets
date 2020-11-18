@@ -30,7 +30,11 @@ if (isset($_POST['checkout'])) {
     }
 
     if ($values_valid) {
-        $customer_id = createCustomer($name, $phoneNumber, $street, $postalCode, $city, $email);
+        $customer = getCustomerByName($name);
+        $customer_id = $customer['CustomerID'] ?? 0;
+        if (empty($customer_id)) {
+            $customer_id = createCustomer($name, $phoneNumber, $street, $postalCode, $city, $email);
+        }
 
         if (!empty($customer_id)) {
             session_save('customer_id', $customer_id);
