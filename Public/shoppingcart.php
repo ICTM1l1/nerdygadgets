@@ -6,15 +6,21 @@ if(get_form_data_post("Add_Product", NULL) != NULL){
     $cart = session_get("cart");
     $count = $cart->getItemCount($id);
     $cart->setItemCount($id, $count+1);
+    redirect(get_current_url());
 }
 elseif(get_form_data_post("Min_Product", NULL) != NULL){
     $id = get_form_data_post("Min_Product");
     $cart = session_get("cart");
     $count = $cart->getItemCount($id);
     $cart->setItemCount($id, $count-1 ?: $count);
+    redirect(get_current_url());
 }
-
-//$products = getRandomProducts(2);
+elseif(get_form_data_post("Del_Product", NULL) != NULL){
+    $id = get_form_data_post("Del_Product");
+    $cart = session_get("cart");
+    $cart->removeItem($id);
+    redirect(get_current_url());
+}
 ?>
 
 <div class="row">
@@ -48,15 +54,23 @@ elseif(get_form_data_post("Min_Product", NULL) != NULL){
                             <h3><?= $product['StockItemName'] ?? '' ?></h3>
                         </div>
                         <div class="col-sm-3">
-                            <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="shoppingcart.php">
-                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product" value="<?=$cartItem["id"]?>">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product" value="<?=$cartItem["id"]?>">
-                                    <i class="fas fa-plus"></i>
+                            <form class="form-inline float-right mr-3 w-100" method="post" action="shoppingcart.php">
+                                <div class="edit-actions"  style="position: absolute; top: 30px; right: 75px;">
+                                    <button type="submit" class="btn btn-outline-danger mr-2" name="Min_Product" value="<?=$cartItem["id"]?>">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="submit" class="btn btn-outline-success mr-3" name="Add_Product" value="<?=$cartItem["id"]?>">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <p class="h4 font-weight-bold float-right mr-2"><?= $cartItem["amount"];?>x</p>
+                                </div>
+
+                                <button class="btn btn-outline-danger float-right mr-2" style="position: absolute; top: 80px; right: 75px; width: 60%;"
+                                        type="submit" name="Del_Product" onclick="return confirm('Wilt u dit product verwijderen?')"
+                                        name="Del_Product" value="<?=$cartItem["id"]?>">
+                                    <i class="fas fa-trash"></i>
                                 </button>
 
-                                <p class="h5"><?= $cartItem["amount"];?>x</p>
                             </form>
                         </div>
                     </div>
@@ -82,7 +96,7 @@ elseif(get_form_data_post("Min_Product", NULL) != NULL){
     <div class="col-sm-4">
         <div class="border border-white m-5">
             <h1 class="p-2">
-                <b>Totale kosten: </b> &euro; <?= number_format($priceTotal, 2, ',', '.') ?>
+                <b>Totale kosten: </b> &euro; <?= number_format(session_get("cart")->getTotalPrice(), 2, ',', '.') ?>
             </h1>
         </div>
     </div>
