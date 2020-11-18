@@ -24,7 +24,9 @@ set_error_handler('errorHandler');
  */
 function errorHandler($errno, $errstr, $errfile, $errline) {
     // Removes all previous printed items
-    ob_end_clean();
+    if(ob_get_contents()){
+        ob_end_clean();
+    }
 
     $debug = (bool) config_get('debug', false);
     if (!$debug) {
@@ -49,7 +51,9 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
  */
 function errorException($exception) {
     // Removes all previous printed items
-    ob_end_clean();
+    if(ob_get_contents()){
+        ob_end_clean();
+    }
 
     $debug = (bool) config_get('debug', false);
     if (!$debug) {

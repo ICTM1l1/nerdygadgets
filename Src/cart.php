@@ -6,9 +6,9 @@ if(session_status() == PHP_SESSION_NONE) {
 include_once __DIR__ . "/../Src/Core/core.php";
 
 class Cart {
-    private $items;
-    private $cost;
-    private $updated;
+    private array $items;
+    private float $cost;
+    private bool $updated;
 
     function __construct(){
         $this->items = array();

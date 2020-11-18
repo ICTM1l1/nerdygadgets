@@ -4,6 +4,7 @@ require_once __DIR__ . "/../Src/header.php";
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
+
 $productCustomFields = $product['CustomFields'] ?? null;
 $customFields = [];
 if (!empty($productCustomFields)) {

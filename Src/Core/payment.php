@@ -11,7 +11,6 @@ require_once __DIR__ . "/../Mollie/vendor/autoload.php";
  *   The order number.
  */
 function initiatePayment(string $price, int $order_nr) {
-    $_SESSION["orderId"] = $order_nr;
     $mollie = new \Mollie\Api\MollieApiClient();
     $mollie->setApiKey("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
     $payment = $mollie->payments->create([
@@ -24,20 +23,24 @@ function initiatePayment(string $price, int $order_nr) {
         "webhookUrl"  => "",
     ]);
 
-    session_save('paymentId', $payment->id, true);
+    session_save('paymentId', $payment->id);
     redirect($payment->getCheckoutUrl());
 }
 
 /**
  * Determines if the payment has been payed.
  *
- * @param $paymentId
+ * @param string $paymentId
  *   The payment id.
  *
  * @return bool
  *   Whether the payment has been payed or not.
  */
-function checkPayment($paymentId) {
+function checkPayment(string $paymentId) {
+    if (empty($paymentId)) {
+        return false;
+    }
+
     $mollie = new \Mollie\Api\MollieApiClient();
     $mollie->setApiKey("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
     $payment = $mollie->payments->get($paymentId);

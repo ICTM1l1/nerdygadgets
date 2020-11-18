@@ -68,6 +68,18 @@ function session_save(string $key, $value = '', bool $overwrite = false) {
 }
 
 /**
+ * Unsets a specific piece of data from the session.
+ *
+ * @param string $key
+ *   The key to be destroyed.
+ */
+function session_key_unset(string $key) {
+    if (isset($_SESSION[$key])) {
+        unset($_SESSION[$key]);
+    }
+}
+
+/**
  * Gets a specific piece of data from the config data.
  *
  * @param string $key
@@ -158,7 +170,9 @@ function redirect(string $url) {
  */
 function dd(...$variables) {
     // Removes all previous printed items
-    ob_end_clean();
+    if(ob_get_contents()){
+        ob_end_clean();
+    }
 
     var_dump($variables);
     die();

@@ -1,18 +1,17 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
+
 $cart = unserialize($_SESSION["cart"]);
 $productIds = $cart->getItems();
 
-//Werkt niet want er word niks in POST megegeven en weet niet waarom
 if (isset($_POST["Min_Product"])) {
-    print("s");
-    if (isset($_SESSION["currentProductId"])) {
-        $cart->setItemCount($_SESSION["currentProductId"], $cart->getItemCount($_SESSION["currentProductId"]) - 1);
+    if (isset($_POST["product_id"])) {
+        $cart->setItemCount($_POST["product_id"], $cart->getItemCount($_POST["product_id"]) - 1);
     }
 }
 elseif (isset($_POST["Add_Product"])) {
-    if (isset($_SESSION["currentProductId"])) {
-        $cart->setItemCount($_SESSION["currentProductId"], $cart->getItemCount($_SESSION["currentProductId"]) + 1);
+    if (isset($_POST["product_id"])) {
+        $cart->setItemCount($_POST["product_id"], $cart->getItemCount($_POST["product_id"]) + 1);
     }
 }
 ?>
@@ -37,29 +36,30 @@ elseif (isset($_POST["Add_Product"])) {
             $productPriceTotal = $pricePerPiece * $productQuantity;
             $priceTotal += $productPriceTotal;
             //deze prijs verschilt met degene die uit de cart komt
-        ?>
+            ?>
             <div class="row border border-white p-2 mr-4">
-                <div class="col-sm-3 pl-0">
+                <div class="col-sm-4 pl-0">
                     <div id="ImageFrame" style="background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
                             background-size: 200px; background-repeat: no-repeat; background-position: center;"></div>
                 </div>
-                <div class="col-sm-9">
+                <div class="col-sm-8">
                     <div class="row">
-                        <div class="col-sm-9">
+                        <div class="col-sm-8">
                             <h5>#<?= $productId ?></h5>
                             <h3><?= $product['StockItemName'] ?? '' ?></h3>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <form class="form-inline float-right mr-3" style="position: absolute; top: 50%; right: 0; left: 0;" method="post" action="<?= get_current_url() ?>">
+                                <input type="hidden" name="product_id" value="<?= $productId ?>">
 
-                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" id="Min_Product" name="Min_Product" value="Remove">
-                                <i class="fas fa-minus"></i>
+                                <button type="submit" class="btn btn-outline-danger ml-auto mr-2" name="Min_Product">
+                                    <i class="fas fa-minus"></i>
                                 </button>
-                                <button type="submit" class="btn btn-outline-success mr-2" id="Add_Product" name="Add_Product" value="Add">
+                                <button type="submit" class="btn btn-outline-success mr-2" name="Add_Product">
                                     <i class="fas fa-plus"></i>
                                 </button>
 
-                                <p class="h5">Aantal: <?= $productQuantity ?></p>
+                                <p class="h5">Aantal</p>
                             </form>
                         </div>
                     </div>
@@ -81,8 +81,8 @@ elseif (isset($_POST["Add_Product"])) {
 </div>
 
 <div class="row">
-    <div class="col-sm-8"></div>
-    <div class="col-sm-4">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6">
         <div class="border border-white m-5">
             <h1 class="p-2">
                 <b>Totale kosten: </b> &euro; <?= number_format($priceTotal, 2, ',', '.') ?>
@@ -92,10 +92,10 @@ elseif (isset($_POST["Add_Product"])) {
 </div>
 
 <div class="row">
-    <div class="col-sm-8"></div>
-    <div class="col-sm-4">
+    <div class="col-sm-6"></div>
+    <div class="col-sm-6">
         <div class="border border-white mr-5 ml-5 mt-4 mb-5">
-            <a href="<?= get_url('afrekenen.php') ?>">
+            <a href="<?= get_url('products-overview.php') ?>">
                 <h1 class="p-2 font-weight-bold text-white">Koop producten</h1>
             </a>
         </div>

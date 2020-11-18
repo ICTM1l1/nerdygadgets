@@ -1,9 +1,11 @@
 <?php
 session_start();
+ob_start();
 
 require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
 require_once __DIR__ . '/cart.php';
+
 $categories = getCategories();
 ?>
 <!DOCTYPE html>
@@ -61,6 +63,7 @@ $categories = getCategories();
         </div>
         <ul id="ul-class-navigation">
             <li>
+                <a href="<?= get_url('shoppingcart.php') ?>" class="HrefDecoration mr-3"><i class="fas fa-shopping-cart" style="color:#676EFF;"></i> Winkelwagen </a>
                 <a href="<?= get_url('browse.php') ?>" class="HrefDecoration"><i class="fas fa-search" style="color:#676EFF;"></i> Zoeken</a>
             </li>
         </ul>
