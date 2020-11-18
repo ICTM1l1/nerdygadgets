@@ -62,7 +62,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                                     <button type="submit" class="btn btn-outline-success mr-3" name="Add_Product" value="<?=$cartItem["id"]?>">
                                         <i class="fas fa-plus"></i>
                                     </button>
-                                    <p class="h4 font-weight-bold float-right mr-2"><?= $cartItem["amount"];?>x</p>
+                                    <p class="h4 font-weight-bold float-right mr-1"><?= $cartItem["amount"];?>x</p>
                                 </div>
 
                                 <button class="btn btn-outline-danger float-right mr-2" style="position: absolute; top: 80px; right: 75px; width: 60%;"
