@@ -44,7 +44,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
         ?>
             <div class="row border border-white p-2 mr-4">
                 <div class="col-sm-3 pl-0">
-                    <div id="ImageFrame" style="background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                    <div id="ImageFrame" style="background-image: url('<?= get_asset_url('StockItemIMG/' . ($image['ImagePath'] ?? '')) ?>');
                             background-size: 200px; background-repeat: no-repeat; background-position: center;"></div>
                 </div>
                 <div class="col-sm-9">
@@ -70,7 +70,6 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                                         name="Del_Product" value="<?=$cartItem["id"]?>">
                                     <i class="fas fa-trash"></i>
                                 </button>
-
                             </form>
                         </div>
                     </div>
