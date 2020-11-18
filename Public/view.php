@@ -74,7 +74,7 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
                     <div class="CenterPriceLeft">
                         <div class="CenterPriceCartButton">
                             <form class="text-center" style="margin-top: 65px;" method="post" action="">
-                                <button type="submit" class="btn btn-success" style="width: 100%;" name="Add_Cart" value="<?=$product["StockItemID"];?>">
+                                <button type="submit" class="btn btn-outline-success" style="width: 100%;" name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
                                     <i class="fas fa-shopping-cart h1"></i>
                                 </button>
                             </form>

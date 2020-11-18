@@ -193,7 +193,7 @@ ul#ul-class-navigation li {
 }
 .CenterPriceLeftChild {
     position: relative;
-    top: 40%;
+    top: 20%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }

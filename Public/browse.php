@@ -75,6 +75,12 @@ $amountOfPages = 0;
 if ($amountProducts !== 0) {
     $amountOfPages = ceil($amountProducts / $productsOnPage);
 }
+
+if(get_form_data_post("Add_Cart", NULL) != NULL){
+    $id = get_form_data_post("Add_Cart", NULL);
+    $cart = session_get("cart");
+    $cart->addItem($id, 1);
+}
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
     <form method="get" action="<?= get_current_url() ?>">
@@ -146,6 +152,11 @@ if ($amountProducts !== 0) {
 
                         <div id="StockItemFrameRight">
                             <div class="CenterPriceLeftChild">
+                                <form class="text-center" style="margin-top: 65px;" method="post" action="">
+                                    <button type="submit" class="btn btn-outline-success" style="width: 100%;" name="Add_Cart" value="<?=$product["StockItemID"];?>">
+                                        <i class="fas fa-shopping-cart h1"></i>
+                                    </button>
+                                </form>
                                 <h1 class="StockItemPriceText">
                                     &euro; <?= number_format($product["SellPrice"] ?? 0, 2, ',', '.') ?>
                                 </h1>
