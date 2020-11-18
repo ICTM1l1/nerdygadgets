@@ -23,7 +23,7 @@ function createCustomer(string $name, string $phoneNumber, string $street, strin
     $current_date = date('Y-m-d');
 
     $cityFromDb = getCity($city);
-    $cityId = $cityFromDb['CityId'] ?? 0;
+    $cityId = $cityFromDb['CityID'] ?? 0;
     if (empty($cityFromDb)) {
         $cityId = createCity($city);
     }
