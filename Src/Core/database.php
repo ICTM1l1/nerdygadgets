@@ -98,7 +98,8 @@ function select(string $query, array $parameters = []) {
 function selectFirst(string $query, array $parameters = []) {
     $statement = executeQuery($query, $parameters);
 
-    return $statement->fetch(PDO::FETCH_NAMED);
+    $values = $statement->fetch(PDO::FETCH_NAMED);
+    return !empty($values) ? $values : [];
 }
 
 /**

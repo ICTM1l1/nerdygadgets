@@ -3,8 +3,6 @@ if(session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-include_once __DIR__ . "/../Src/Core/core.php";
-
 class Cart {
     private array $items;
     private float $cost;
@@ -15,14 +13,14 @@ class Cart {
         $this->updated = true;
     }
 
-    function getItemCount($id): int{
+    function getItemCount(int $id): int{
         if(isset($this->items[$id])){
             return $this->items[$id];
         }
         return 0;
     }
 
-    function setItemCount($id, $count): void{
+    function setItemCount(int $id, int $count): void{
         if(isset($this->items[$id])){
             $this->items[$id] = $count;
             $this->updated = true;
@@ -41,14 +39,14 @@ class Cart {
         return count($this->items);
     }
 
-    function addItem($id, $count): void{
+    function addItem(int $id, int $count): void{
         if(!isset($this->items[$id])){
             $this->items += array($id => $count);
             $this->updated = true;
         }
     }
 
-    function removeItem($id): void{
+    function removeItem(int $id): void{
         if(isset($this->items[$id])) {
             unset($this->items[$id]);
             $this->updated = true;
@@ -66,16 +64,10 @@ class Cart {
         }
         $total = 0;
         foreach($this->items as $id => $count){
-            $total += selectFirst("SELECT UnitPrice * :count AS total FROM stockitems WHERE StockItemId = :id",
-                                  ["count" => $count, "id" => $id])["total"];
+            $total += getProduct($id)["SellPrice"] * $count;
         }
         $this->updated = false;
         $this->cost = $total;
         return $total;
     }
-}
-
-if(!isset($_SESSION["cart"])){
-    $cart = new Cart();
-    $_SESSION["cart"] = $cart;
 }

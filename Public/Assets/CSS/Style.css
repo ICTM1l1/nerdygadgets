@@ -30,8 +30,8 @@ a {
     color:#000000;
 }
 a:hover {
-     text-decoration: none !important;
- }
+    text-decoration: none !important;
+}
 a span {
     display: none;
     position: absolute;
@@ -193,6 +193,12 @@ ul#ul-class-navigation li {
 }
 .CenterPriceLeftChild {
     position: relative;
+    top: 40%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.CenterPriceCartButton {
+    position: absolute;
     top: 40%;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
