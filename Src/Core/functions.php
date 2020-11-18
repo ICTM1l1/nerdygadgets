@@ -68,6 +68,29 @@ function session_save(string $key, $value = '', bool $overwrite = false) {
 }
 
 /**
+ * Adds an user error.
+ *
+ * @param string $value
+ *   The value.
+ */
+function add_user_error(string $value) {
+    $_SESSION['errors'][] = $value;
+}
+
+/**
+ * Gets the user errors.
+ *
+ * @return array
+ *   The found user errors.
+ */
+function get_user_errors() {
+    $errors = $_SESSION['errors'] ?? [];
+    session_key_unset('errors');
+
+    return $errors;
+}
+
+/**
  * Unsets a specific piece of data from the session.
  *
  * @param string $key
