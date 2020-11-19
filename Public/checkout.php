@@ -10,14 +10,14 @@ if (empty($price) || empty($cart->getItems())) {
     redirect(get_url('shoppingcart.php'));
 }
 
-if (isset($_POST['checkout'])) {
-    $name = get_form_data_post('name');
-    $postalCode = get_form_data_post('postalcode');
-    $street = get_form_data_post('streetname');
-    $city = get_form_data_post('city');
-    $email = get_form_data_post('email');
-    $phoneNumber = get_form_data_post('phonenumber');
+$name = get_form_data_post('name');
+$postalCode = get_form_data_post('postalcode');
+$street = get_form_data_post('streetname');
+$city = get_form_data_post('city');
+$email = get_form_data_post('email');
+$phoneNumber = get_form_data_post('phonenumber');
 
+if (isset($_POST['checkout'])) {
     $values_valid = true;
     if (empty($name) || empty($postalCode) || empty($street) || empty($city) || empty($email) || empty($phoneNumber)) {
         $values_valid = false;
@@ -55,32 +55,38 @@ if (isset($_POST['checkout'])) {
                     <form class="text-center w-100" action="<?= get_url('checkout.php') ?>" method="post">
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
-                            <input type="text" id="name" name="name" class="form-control col-sm-9" placeholder="Naam">
+                            <input type="text" id="name" name="name" class="form-control col-sm-9"
+                                   placeholder="Naam" value="<?= $name ?>">
                         </div>
 
                         <div class="form-group form-row">
                             <label for="postalcode" class="col-sm-3 text-left">Postcode <span class="text-danger">*</span></label>
-                            <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9" placeholder="Postcode">
+                            <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9"
+                                   placeholder="Postcode" value="<?= $postalCode ?>">
                         </div>
 
                         <div class="form-group form-row">
                             <label for="streetname" class="col-sm-3 text-left">Straatnaam <span class="text-danger">*</span></label>
-                            <input type="text" id="streetname" name="streetname" class="form-control col-sm-9" placeholder="Straatnaam">
+                            <input type="text" id="streetname" name="streetname" class="form-control col-sm-9"
+                                   placeholder="Straatnaam" value="<?= $street ?>">
                         </div>
 
                         <div class="form-group form-row">
                             <label for="city" class="col-sm-3 text-left">Woonplaats <span class="text-danger">*</span></label>
-                            <input type="text" id="city" name="city" class="form-control col-sm-9" placeholder="Woonplaats">
+                            <input type="text" id="city" name="city" class="form-control col-sm-9"
+                                   placeholder="Woonplaats" value="<?= $city ?>">
                         </div>
 
                         <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
-                            <input type="email" id="email" name="email" class="form-control col-sm-9" placeholder="Email">
+                            <input type="email" id="email" name="email" class="form-control col-sm-9"
+                                   placeholder="Email" value="<?= $email ?>">
                         </div>
 
                         <div class="form-group form-row">
                             <label for="phonenumber" class="col-sm-3 text-left">Telefoonnummer <span class="text-danger">*</span></label>
-                            <input type="tel" id="phonenumber" name="phonenumber" class="form-control col-sm-9" placeholder="Telefoonnummer">
+                            <input type="tel" id="phonenumber" name="phonenumber" class="form-control col-sm-9"
+                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>">
                         </div>
 
                         <div class="form-group">
