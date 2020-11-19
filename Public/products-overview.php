@@ -33,7 +33,7 @@ if (empty($price) || empty($cart->getItems())) {
                     ?>
                     <div class="row mb-4">
                         <div class="col-sm-3 pl-0">
-                            <div id="ImageFrame" style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                            <div id="ImageFrame" style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockItemIMG/' . ($image['ImagePath'] ?? '')) ?>');
                                     background-size: 125px; background-repeat: no-repeat; background-position: center;"></div>
                         </div>
                         <div class="col-sm-9">
