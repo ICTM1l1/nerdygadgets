@@ -35,7 +35,7 @@ function getLastCityId() {
  *   The id of the city.
  */
 function createCity(string $cityName) {
-    return insert('cities', [
+    insert('cities', [
         'CityId' => getLastCityId() + 1, // TODO make the city id auto increment
         'CityName' => $cityName,
         'StateProvinceId' => 27,
@@ -43,4 +43,6 @@ function createCity(string $cityName) {
         'ValidFrom' => date('Y-m-d'),
         'ValidTo' => date('Y-m-d'),
     ]);
+
+    return getCity($cityName)['CityID'] ?? 0;
 }
