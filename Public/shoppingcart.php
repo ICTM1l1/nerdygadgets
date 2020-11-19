@@ -107,7 +107,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
     <div class="col-sm-7"></div>
     <div class="col-sm-5">
         <div class="border border-white mr-5 ml-5 mt-4 mb-5">
-            <a href="<?= get_url('checkout.php') ?>">
+            <a href="<?= get_url('products-overview.php') ?>">
                 <h1 class="p-2 font-weight-bold text-white">Koop producten</h1>
             </a>
         </div>
