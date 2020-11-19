@@ -23,7 +23,7 @@ function initiatePayment(string $price, int $order_nr) {
         "webhookUrl"  => "",
     ]);
 
-    session_save('paymentId', $payment->id);
+    session_save('paymentId', $payment->id, true);
     redirect($payment->getCheckoutUrl());
 }
 
