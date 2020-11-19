@@ -16,7 +16,7 @@
             <nav class="navbar navbar-expand-sm bg-primary navbar-dark border border-white" style="border-radius: 5px">
                 <ul class="navbar-nav">
                     <li class="nav-item border-right border-white <?= strpos(get_current_url(), 'checkout') !== false ? 'active' : '' ?>">
-                        <a class="nav-link" href="#">1. Bezorggegevens</a>
+                        <a class="nav-link" href="<?= get_url('checkout.php') ?>">1. Bezorggegevens</a>
                     </li>
                     <li class="nav-item border-right border-white  <?= strpos(get_current_url(), 'payment') !== false ? 'active' : '' ?>">
                         <a class="nav-link" href="#">2. Afrekenen</a>

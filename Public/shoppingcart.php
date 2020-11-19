@@ -44,7 +44,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
         ?>
             <div class="row border border-white p-2 mr-4">
                 <div class="col-sm-3 pl-0">
-                    <div id="ImageFrame" style="background-image: url('<?= get_asset_url('StockItemIMG/' . ($image['ImagePath'] ?? '')) ?>');
+                    <div id="ImageFrame" style="width: 230px; height: 230px; background-image: url('<?= get_asset_url('StockItemIMG/' . ($image['ImagePath'] ?? '')) ?>');
                             background-size: 200px; background-repeat: no-repeat; background-position: center;"></div>
                 </div>
                 <div class="col-sm-9">
@@ -52,22 +52,22 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                         <div class="col-sm-9">
                             <h5>#<?= $productId ?></h5>
                             <a class="ListItem text-white" href='<?= get_url('view.php?id=' . $productId) ?>'>
-                                <h3><?= $product['StockItemName'] ?? '' ?></h3>
+                                <h4><?= $product['StockItemName'] ?? '' ?></h4>
                             </a>
                         </div>
                         <div class="col-sm-3">
-                            <form class="form-inline float-right mr-3 w-100" method="post" action="shoppingcart.php">
-                                <div class="edit-actions"  style="position: absolute; top: 30px; right: 75px;">
+                            <form class="form-inline float-right w-100" method="post" action="shoppingcart.php">
+                                <div class="edit-actions w-100 mb-2">
                                     <button type="submit" class="btn btn-outline-danger mr-2" name="Min_Product" value="<?= $productId ?>">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <button type="submit" class="btn btn-outline-success mr-3" name="Add_Product" value="<?= $productId ?>">
+                                    <button type="submit" class="btn btn-outline-success" name="Add_Product" value="<?= $productId ?>">
                                         <i class="fas fa-plus"></i>
                                     </button>
-                                    <p class="h4 font-weight-bold float-right mr-1"><?= $cartItem["amount"] ?? 0 ?>x</p>
+                                    <p class="h4 font-weight-bold float-right"><?= $cartItem["amount"] ?? 0 ?>x</p>
                                 </div>
 
-                                <button class="btn btn-outline-danger float-right mr-2" style="position: absolute; top: 80px; right: 75px; width: 60%;"
+                                <button class="btn btn-outline-danger float-right w-100"
                                         type="submit" name="Del_Product" onclick="return confirm('Wilt u dit product verwijderen?')"
                                         value="<?= $productId ?>">
                                     <i class="fas fa-trash"></i>
@@ -75,14 +75,14 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                             </form>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-9" style="position: absolute; bottom: 0;">
-                            <h4 class="mb-3">Garantie</h4>
+                    <div class="row" style="margin-top: 80px;">
+                        <div class="col-sm-9">
+                            <h4>Garantie</h4>
                             <h6>Aantal producten op <?= strtolower($product['QuantityOnHand'] ?? 0 )?></h6>
                         </div>
-                        <div class="col-sm-3 text-right" style="position: absolute; bottom: 0; right: 0;">
-                            <h3>&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></h3>
-                            <h5>Inclusief BTW</h5>
+                        <div class="col-sm-3 text-right">
+                            <h4>&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></h4>
+                            <h6>Inclusief BTW</h6>
                         </div>
                     </div>
                 </div>
@@ -93,8 +93,8 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
 </div>
 
 <div class="row">
-    <div class="col-sm-8"></div>
-    <div class="col-sm-4">
+    <div class="col-sm-7"></div>
+    <div class="col-sm-5">
         <div class="border border-white m-5">
             <h1 class="p-2">
                 <b>Totale kosten: </b> &euro; <?= number_format($priceTotal, 2, ',', '.') ?>
@@ -104,10 +104,10 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
 </div>
 
 <div class="row">
-    <div class="col-sm-8"></div>
-    <div class="col-sm-4">
+    <div class="col-sm-7"></div>
+    <div class="col-sm-5">
         <div class="border border-white mr-5 ml-5 mt-4 mb-5">
-            <a href="<?= get_url('checkout.php') ?>">
+            <a href="<?= get_url('products-overview.php') ?>">
                 <h1 class="p-2 font-weight-bold text-white">Koop producten</h1>
             </a>
         </div>

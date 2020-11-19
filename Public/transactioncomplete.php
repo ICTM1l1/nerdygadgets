@@ -11,6 +11,10 @@ if (empty($price) || empty($cart->getItems())) {
 }
 
 $paymentPaid = checkPayment(session_get('paymentId'));
+
+// Always clear the payment id in order to be able to start a new payment.
+session_key_unset('paymentId');
+
 if ($paymentPaid) {
     // Add order, order lines and decrease the quantity on hand value.
     $cart = session_get("cart");
@@ -56,7 +60,6 @@ if ($paymentPaid) {
 
     // Clear the cart and payment process.
     $cart = new Cart();
-    session_key_unset('paymentId');
     session_save('cart', $cart, true);
 }
 ?>
