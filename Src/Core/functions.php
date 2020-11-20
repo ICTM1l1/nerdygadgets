@@ -91,6 +91,29 @@ function get_user_errors() {
 }
 
 /**
+ * Adds an user message.
+ *
+ * @param string $message
+ *   The message.
+ */
+function add_user_message(string $message) {
+    $_SESSION['messages'][] = $message;
+}
+
+/**
+ * Gets the user messages.
+ *
+ * @return array
+ *   The found user message.
+ */
+function get_user_messages() {
+    $messages = $_SESSION['messages'] ?? [];
+    session_key_unset('messages');
+
+    return $messages;
+}
+
+/**
  * Unsets a specific piece of data from the session.
  *
  * @param string $key
@@ -166,7 +189,7 @@ function get_url(string $url) {
  *   The current url.
  */
 function get_current_url() {
-    return htmlspecialchars($_SERVER['PHP_SELF']);
+    return 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 }
 
 /**
