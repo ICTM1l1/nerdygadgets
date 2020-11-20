@@ -79,6 +79,9 @@ if ($amountProducts !== 0) {
 if($id = get_form_data_post("Add_Cart", NULL)){
     $cart = session_get("cart");
     $cart->addItem($id, 1);
+
+    add_user_message('Item is toegevoegd aan de winkelwagen.');
+    redirect(get_current_url());
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>

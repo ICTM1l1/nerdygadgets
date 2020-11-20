@@ -15,6 +15,9 @@ if (!empty($productCustomFields)) {
 if ($id = get_form_data_post("Add_Cart", NULL)) {
     $cart = session_get("cart");
     $cart->addItem($id, 1);
+
+    add_user_message('Item is toegevoegd aan de winkelwagen.');
+    redirect(get_current_url());
 }
 ?>
     <div id="CenteredContent">
