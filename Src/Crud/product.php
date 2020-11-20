@@ -12,7 +12,7 @@
 function getProduct(int $product_id) {
     return selectFirst("SELECT SI.StockItemID, 
             (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
-            StockItemName,
+            StockItemName, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails, 
             (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
@@ -37,7 +37,7 @@ function getProduct(int $product_id) {
 function getProductWithImage(int $product_id) {
     return selectFirst("SELECT SI.StockItemID, 
             (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
-            StockItemName,
+            StockItemName, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
             CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
             SearchDetails, 
             (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
@@ -103,6 +103,7 @@ function getProductImage(int $product_id) {
 function getProducts(string $queryBuildResult, string $sort, int $showStockLevel, int $productsOnPage, int $offset) {
     return select("
                 SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, ROUND(TaxRate * RecommendedRetailPrice / 100 + RecommendedRetailPrice,2) as SellPrice,
+                SIH.QuantityOnHand AS 'QuantityOnHandRaw',
                 (CASE WHEN (SIH.QuantityOnHand) >= :showStockLevel THEN 'Ruime voorraad beschikbaar.' ELSE CONCAT('Voorraad: ',QuantityOnHand) END) AS QuantityOnHand, 
                 (SELECT ImagePath
                 FROM stockitemimages 
@@ -155,7 +156,7 @@ function getProductsAmount(string $queryBuildResult = '') {
  */
 function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort, int $showStockLevel, int $categoryID, int $productsOnPage, int $offset) {
     return select("
-                SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, 
+                SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
                 ROUND(SI.TaxRate * SI.RecommendedRetailPrice / 100 + SI.RecommendedRetailPrice,2) as SellPrice, 
                 (CASE WHEN (SIH.QuantityOnHand) >= :showStockLevel THEN 'Ruime voorraad beschikbaar.' ELSE CONCAT('Voorraad: ',QuantityOnHand) END) AS QuantityOnHand,
                 (SELECT ImagePath FROM stockitemimages WHERE StockItemID = SI.StockItemID LIMIT 1) as ImagePath,
@@ -243,7 +244,7 @@ function getRandomProducts(int $amountOfProducts = 10) {
 
     return select("SELECT SI.StockItemID, 
         (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
-        StockItemName,
+        StockItemName, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
         CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
         SearchDetails, 
         (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
