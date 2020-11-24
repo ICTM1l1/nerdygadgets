@@ -51,21 +51,34 @@ $categories = getCategories();
             </a></div>
         <div class="col-8" id="CategoriesBar">
             <ul id="ul-class">
-                <?php foreach($categories as $category) : ?>
+                <?php foreach($categories as $category) :
+                    $category_id = $category['StockGroupID'] ?? '';
+                    ?>
                     <li>
-                        <a href="<?= get_url('browse.php?category_id=' . $category['StockGroupID'] ?? '') ?>"
-                           class="HrefDecoration"><?= $category['StockGroupName'] ?? '' ?></a>
+                        <a href="<?= get_url("browse.php?category_id={$category_id}") ?>"
+                           class="HrefDecoration <?= strpos(get_current_url(), "category_id={$category_id}") !== false ? 'active' : '' ?>">
+                            <?= $category['StockGroupName'] ?? '' ?>
+                        </a>
                     </li>
                 <?php endforeach; ?>
                 <li>
-                    <a href="<?= get_url('categories.php') ?>" class="HrefDecoration">Alle categorieën</a>
+                    <a href="<?= get_url('categories.php') ?>"
+                       class="HrefDecoration <?= strpos(get_current_url(), 'categories') !== false ? 'active' : '' ?>">
+                        Alle categorieën
+                    </a>
                 </li>
             </ul>
         </div>
         <ul id="ul-class-navigation">
             <li>
-                <a href="<?= get_url('shoppingcart.php') ?>" class="HrefDecoration mr-3"><i class="fas fa-shopping-cart" style="color:#676EFF;"></i> Winkelwagen </a>
-                <a href="<?= get_url('browse.php') ?>" class="HrefDecoration"><i class="fas fa-search" style="color:#676EFF;"></i> Zoeken</a>
+                <a href="<?= get_url('shoppingcart.php') ?>"
+                   class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'shoppingcart') !== false ? 'active' : '' ?>">
+                    <i class="fas fa-shopping-cart" style="color:#676EFF;"></i> Winkelwagen
+                </a>
+                <a href="<?= get_url('browse.php') ?>"
+                   class="HrefDecoration  <?= strpos(get_current_url(), 'browse') !== false && strpos(get_current_url(), 'category_id') === false ? 'active' : '' ?>">
+                    <i class="fas fa-search" style="color:#676EFF;"></i> Zoeken
+                </a>
             </li>
         </ul>
     </div>
