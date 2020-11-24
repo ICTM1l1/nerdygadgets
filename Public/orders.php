@@ -59,13 +59,11 @@ $amountOrders = count($orders);
                                                            data-toggle="list" style="z-index: 0;"
                                                            href="#list-<?= $key ?>" role="tab"
                                                            aria-controls="<?= $key ?>">
-                                                            <div class="row">
-                                                                <div class="col-sm-6">
-                                                                    #<?= $order['OrderID'] ?? 0 ?>
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <?= dateFormatShort($order['OrderDate'] ?? '') ?>
-                                                                </div>
+                                                            <div class="float-left">
+                                                                #<?= $order['OrderID'] ?? 0 ?>
+                                                            </div>
+                                                            <div class="float-right">
+                                                                <?= dateFormatShort($order['OrderDate'] ?? '') ?>
                                                             </div>
                                                         </a>
                                                         <?php $active = '';
