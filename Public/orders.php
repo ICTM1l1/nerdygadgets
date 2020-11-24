@@ -41,10 +41,10 @@ $amountOrders = count($orders);
                                     <?php if ($amountOrders > 0) : ?>
                                         <div class="col-sm-3 pt-0 mt-0">
                                             <div class="form-label-group">
-                                                <label for="searchLog" class="d-none">
+                                                <label for="searchListGroupItems" class="d-none">
                                                     <b>Zoeken</b>
                                                 </label>
-                                                <input type="text" id="searchLog"
+                                                <input type="text" id="searchListGroupItems"
                                                        class="form-control mb-2"
                                                        autocomplete="off" placeholder="Zoeken">
                                             </div>
