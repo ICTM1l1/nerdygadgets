@@ -10,6 +10,7 @@ session_save('cart', new Cart());
 /** @var Cart $cart */
 $cart = session_get('cart');
 $categories = getCategories();
+$countedCategories = count($categories);
 ?>
 <!DOCTYPE html>
 <html lang="en" style="background-color: rgb(35, 35, 47);">
@@ -53,16 +54,16 @@ $categories = getCategories();
             </a></div>
         <div class="col-6" id="CategoriesBar">
             <ul id="ul-class">
-                <?php foreach($categories as $category) :
-                    $category_id = $category['StockGroupID'] ?? '';
+                <?php for ($x = 0; $x < $countedCategories && $x < 4; $x++) :
+                    $category_id = $categories[$x]['StockGroupID'] ?? '';
                     ?>
                     <li>
                         <a href="<?= get_url("browse.php?category_id={$category_id}") ?>"
                            class="HrefDecoration <?= strpos(get_current_url(), "category_id={$category_id}") !== false ? 'active' : '' ?>">
-                            <?= $category['StockGroupName'] ?? '' ?>
+                            <?= $categories[$x]['StockGroupName'] ?? '' ?>
                         </a>
                     </li>
-                <?php endforeach; ?>
+                <?php endfor; ?>
                 <li>
                     <a href="<?= get_url('categories.php') ?>"
                        class="HrefDecoration <?= strpos(get_current_url(), 'categories') !== false ? 'active' : '' ?>">
