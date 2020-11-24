@@ -209,6 +209,36 @@ function redirect(string $url) {
 }
 
 /**
+ * Formats a given date.
+ *
+ * @param string $date
+ *   The date.
+ *
+ * @return string
+ *   The formatted date.
+ */
+function dateFullFormatted(string $date) {
+    setlocale(LC_TIME, 'nl_NL');
+
+    return strtolower(strftime('%d %B %Y', strtotime($date)));
+}
+
+/**
+ * Formats a given date.
+ *
+ * @param string $date
+ *   The date.
+ *
+ * @return string
+ *   The formatted date.
+ */
+function dateShortFormatted(string $date) {
+    setlocale(LC_TIME, 'nl_NL');
+
+    return strtolower(strftime('%d-%m-%Y', strtotime($date)));
+}
+
+/**
  * Dump and dies the script in order to debug a variable value.
  *
  * @param mixed ...$variables
