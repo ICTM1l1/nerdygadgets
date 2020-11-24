@@ -51,7 +51,7 @@ $categories = getCategories();
         <div class="col-2"><a href="<?= get_url('index.php') ?>" id="LogoA">
                 <div id="LogoImage"></div>
             </a></div>
-        <div class="col-8" id="CategoriesBar">
+        <div class="col-6" id="CategoriesBar">
             <ul id="ul-class">
                 <?php foreach($categories as $category) :
                     $category_id = $category['StockGroupID'] ?? '';
@@ -72,12 +72,21 @@ $categories = getCategories();
             </ul>
         </div>
         <ul id="ul-class-navigation">
+            <li class="custom-dropdown">
+                <a href="<?= get_url('account.php') ?>"
+                   class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'account') !== false ? 'active' : '' ?>">
+                    <i class="fas fa-user" style="color:#676EFF;"></i>
+                    Account
+                </a>
+            </li>
             <li>
                 <a href="<?= get_url('shoppingcart.php') ?>"
                    class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'shoppingcart') !== false ? 'active' : '' ?>">
                     <i class="fas fa-shopping-cart" style="color:#676EFF;"></i>
                     Winkelwagen <?php if ($cart->getCount() > 0) : ?> <b>- <?= $cart->getCount() ?></b><?php endif; ?>
                 </a>
+            </li>
+            <li>
                 <a href="<?= get_url('browse.php') ?>"
                    class="HrefDecoration  <?= strpos(get_current_url(), 'browse') !== false && strpos(get_current_url(), 'category_id') === false ? 'active' : '' ?>">
                     <i class="fas fa-search" style="color:#676EFF;"></i> Zoeken
