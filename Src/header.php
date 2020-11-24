@@ -7,6 +7,8 @@ require_once __DIR__ . '/../Src/Crud/crud.php';
 session_start();
 session_save('cart', new Cart());
 
+/** @var Cart $cart */
+$cart = session_get('cart');
 $categories = getCategories();
 ?>
 <!DOCTYPE html>
@@ -73,7 +75,8 @@ $categories = getCategories();
             <li>
                 <a href="<?= get_url('shoppingcart.php') ?>"
                    class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'shoppingcart') !== false ? 'active' : '' ?>">
-                    <i class="fas fa-shopping-cart" style="color:#676EFF;"></i> Winkelwagen
+                    <i class="fas fa-shopping-cart" style="color:#676EFF;"></i>
+                    Winkelwagen <?php if ($cart->getCount() > 0) : ?> <b>- <?= $cart->getCount() ?></b><?php endif; ?>
                 </a>
                 <a href="<?= get_url('browse.php') ?>"
                    class="HrefDecoration  <?= strpos(get_current_url(), 'browse') !== false && strpos(get_current_url(), 'category_id') === false ? 'active' : '' ?>">
