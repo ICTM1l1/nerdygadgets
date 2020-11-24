@@ -209,6 +209,23 @@ function redirect(string $url) {
 }
 
 /**
+ * Determines if the date is valid.
+ *
+ * @param string $date
+ *   The date.
+ * @param string $format
+ *   The format of the date.
+ *
+ * @return bool
+ *   Whether the date is valid or not.
+ */
+function isValidDate(string $date, string $format = 'Y-m-d') {
+    $d = DateTime::createFromFormat($format, $date);
+
+    return $d && $d->format($format) === $date;
+}
+
+/**
  * Formats a given date.
  *
  * @param string $date
@@ -218,6 +235,10 @@ function redirect(string $url) {
  *   The formatted date.
  */
 function dateFormatFull(string $date) {
+    if (!isValidDate($date)) {
+        return '';
+    }
+
     setlocale(LC_TIME, 'nl_NL');
 
     return strtolower(strftime('%d %B %Y', strtotime($date)));
@@ -233,6 +254,10 @@ function dateFormatFull(string $date) {
  *   The formatted date.
  */
 function dateFormatShort(string $date) {
+    if (!isValidDate($date)) {
+        return '';
+    }
+
     setlocale(LC_TIME, 'nl_NL');
 
     return strtolower(strftime('%d-%m-%Y', strtotime($date)));
