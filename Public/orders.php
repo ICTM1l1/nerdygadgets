@@ -12,7 +12,7 @@ $amountOrders = count($orders);
             <div class="order-overview mt-3 mb-5">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card shadow h-100">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-md-12 mr-2 mb-4">
@@ -41,7 +41,7 @@ $amountOrders = count($orders);
                                     <?php if ($amountOrders > 0) : ?>
                                         <div class="col-sm-3 pt-0 mt-0">
                                             <div class="form-label-group">
-                                                <label for="searchLog" class="d-none visually-hidden">
+                                                <label for="searchLog" class="d-none">
                                                     <b>Zoeken</b>
                                                 </label>
                                                 <input type="text" id="searchLog"
