@@ -76,14 +76,19 @@ $amountOrders = count($orders);
                                         <div class="col-sm-9">
                                             <div class="tab-content text-dark" id="nav-tabContent">
                                                 <?php $active = 'active';
-                                                foreach ($orders as $key => $order) : ?>
+                                                foreach ($orders as $key => $order) :
+                                                    $order_id = $order['OrderID'] ?? 0;
+                                                    $priceTotal = 0;
+
+                                                    $orderLines = getOrderLinesByOrder($order_id)
+                                                    ?>
                                                     <div class="tab-pane fade show <?= $active ?>"
                                                          id="list-<?= $key ?>" role="tabpanel"
                                                          aria-labelledby="list-<?= $key ?>">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <h3 class="mt-0 pt-0 float-left">
-                                                                    Bestelling #<?= $order['OrderID'] ?? 0 ?>
+                                                                    Bestelling #<?= $order_id ?>
                                                                 </h3>
 
                                                                 <h3 class="float-right mt-0 pt-0">
@@ -94,7 +99,49 @@ $amountOrders = count($orders);
 
                                                         <div class="row mt-2 pt-2 border-top border-dark">
                                                             <div class="col-md-12">
-                                                                bestelling details.
+                                                                <?php if (empty($orderLines)) : ?>
+                                                                    <p>Er zijn geen gegevens gevonden voor deze bestelling.</p>
+                                                                <?php else : ?>
+                                                                    <?php foreach ($orderLines as $orderLine) :
+                                                                        $pricePerPiece = (float) ($orderLine['SoldPrice'] ?? 0);
+                                                                        $productQuantity = (int) ($orderLine["Quantity"] ?? 0);
+                                                                        $productPriceTotal = $pricePerPiece * $productQuantity;
+                                                                        $priceTotal += $productPriceTotal;
+                                                                        ?>
+                                                                        <div class="row border-bottom border-dark pb-2">
+                                                                            <div class="col-sm-2">
+                                                                                <?php if (isset($orderLine['ImagePath'])) : ?>
+                                                                                    <div class="ImgFrame"
+                                                                                         style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
+                                                                                                 background-size: 75px; background-repeat: no-repeat; background-position: center;"></div>
+                                                                                <?php elseif (isset($orderLine['BackupImagePath'])) : ?>
+                                                                                    <div class="ImgFrame"
+                                                                                         style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
+                                                                                                 background-size: cover;"></div>
+                                                                                <?php endif; ?>
+                                                                            </div>
+                                                                            <div class="col-sm-10">
+                                                                                <div class="product-details" style="position: absolute; top: 35%; right: 0; left: 0;">
+                                                                                    <div class="row">
+                                                                                        <div class="col-sm-1">
+                                                                                            <p class="h4"><?= $productQuantity ?>x</p>
+                                                                                        </div>
+                                                                                        <div class="col-sm-8">
+                                                                                            <p class="h4"><?= $orderLine['Description'] ?? '' ?></p>
+                                                                                        </div>
+                                                                                        <div class="col-sm-3">
+                                                                                            <p class="h4">&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php endforeach; ?>
+                                                                <?php endif; ?>
+                                                            </div>
+
+                                                            <div class="col-md-12 mt-3">
+                                                                <p class="h4 pl-2">Totaal prijs: &euro; <?=number_format($priceTotal, 2, ",", ".") ?></p>
                                                             </div>
                                                         </div>
                                                     </div>

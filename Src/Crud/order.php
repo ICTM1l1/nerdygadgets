@@ -29,8 +29,10 @@ function getOrdersByCustomer(int $customer_id) {
  */
 function getOrderLinesByOrder(int $order_id) {
     return select('
-        SELECT OrderID, Description, Quantity, UnitPrice, TaxRate, UnitPrice * (1 + (TaxRate / 100)) AS SoldPrice
-        FROM orderlines
+        SELECT OrderID, Description, Quantity, UnitPrice, TaxRate, UnitPrice * (1 + (TaxRate / 100)) AS SoldPrice,
+        (SELECT ImagePath FROM stockitemimages WHERE StockItemID = OL.StockItemID LIMIT 1),
+        (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = OL.StockItemID LIMIT 1) as BackupImagePath
+        FROM orderlines OL
         WHERE OrderID = :orderID
     ', ['orderID' => $order_id]);
 }
