@@ -80,20 +80,23 @@ $amountOrders = count($orders);
                                                     $order_id = $order['OrderID'] ?? 0;
                                                     $priceTotal = 0;
 
-                                                    $orderLines = getOrderLinesByOrder($order_id)
+                                                    $orderLines = getOrderLinesByOrder($order_id);
                                                     ?>
                                                     <div class="tab-pane fade show <?= $active ?>"
                                                          id="list-<?= $key ?>" role="tabpanel"
                                                          aria-labelledby="list-<?= $key ?>">
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <h3 class="mt-0 pt-0 float-left">
+                                                                <h3 class="mt-0 pt-0">
                                                                     Bestelling #<?= $order_id ?>
                                                                 </h3>
 
-                                                                <h3 class="float-right mt-0 pt-0">
+                                                                <h5 class="mt-2 float-left">
                                                                     Geplaatst op <?= dateFullFormatted($order['OrderDate'] ?? '') ?>
-                                                                </h3>
+                                                                </h5>
+                                                                <h5 class="mt-2 float-right">
+                                                                    Bezorgd op <?= dateFullFormatted($order['ExpectedDeliveryDate'] ?? '') ?>
+                                                                </h5>
                                                             </div>
                                                         </div>
 
@@ -118,6 +121,8 @@ $amountOrders = count($orders);
                                                                                     <div class="ImgFrame"
                                                                                          style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
                                                                                                  background-size: cover;"></div>
+                                                                                <?php else : ?>
+                                                                                    <div class="ImgFrame" style="width: 100px; height: 100px;"></div>
                                                                                 <?php endif; ?>
                                                                             </div>
                                                                             <div class="col-sm-10">
