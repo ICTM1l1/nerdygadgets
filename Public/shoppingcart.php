@@ -111,7 +111,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
             </div>
         <?php endforeach;
         else :
-            echo 'Er staan geen producten in de winkelwagen';
+            echo 'Er staan geen producten in de winkelwagen.';
         endif;
         ?>
         </div>
