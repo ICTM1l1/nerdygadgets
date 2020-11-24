@@ -141,7 +141,7 @@ $amountOrders = count($orders);
                                                             </div>
 
                                                             <div class="col-md-12 mt-3">
-                                                                <p class="h4 pl-2">Totaal prijs: &euro; <?=number_format($priceTotal, 2, ",", ".") ?></p>
+                                                                <p class="h4 pl-2">Totaal kosten: &euro; <?=number_format($priceTotal, 2, ",", ".") ?></p>
                                                             </div>
                                                         </div>
                                                     </div>
