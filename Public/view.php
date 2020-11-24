@@ -1,20 +1,32 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+/** @var Cart $cart */
+$cart = session_get("cart");
+
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
 
+$quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
 $productCustomFields = $product['CustomFields'] ?? null;
 $customFields = [];
 if (!empty($productCustomFields)) {
     $customFields = json_decode($productCustomFields, true, 512, JSON_THROW_ON_ERROR);
 }
 
-if(get_form_data_post("Add_Cart", NULL) != NULL){
-    $id = get_form_data_post("Add_Cart", NULL);
-    $cart = session_get("cart");
+$productInCart = $cart->getItemCount($product_id) > 0;
+if ($id = get_form_data_post("Add_Cart", NULL)) {
     $cart->addItem($id, 1);
+
+    add_user_message('Item is toegevoegd aan de winkelwagen.');
+    redirect(get_current_url());
+}
+elseif ($id = get_form_data_post("Del_Cart", NULL)) {
+    $cart->removeItem($id);
+
+    add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
+    redirect(get_current_url());
 }
 ?>
     <div id="CenteredContent">
@@ -69,19 +81,37 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
                 <h2 class="StockItemNameViewSize StockItemName">
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
-                <div class="QuantityText"><?= $product['QuantityOnHand'] ?? 0 ?></div>
+                <?php if ($quantityOnHandRaw < 0) : ?>
+                    <div class="QuantityText text-danger">
+                        Dit product is niet op voorraad.
+                    </div>
+                <?php else: ?>
+                    <div class="QuantityText"><?= $product['QuantityOnHand'] ?? 0 ?></div>
+                <?php endif; ?>
                 <div id="StockItemHeaderLeft">
                     <div class="CenterPriceLeft">
                         <div class="CenterPriceCartButton">
-                            <form class="text-center" style="margin-top: 65px;" method="post" action="">
-                                <button type="submit" class="btn btn-outline-success" style="width: 100%;" name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
-                                    <i class="fas fa-shopping-cart h1"></i>
-                                </button>
+                            <form class="text-center" style="margin-top: 65px;" method="post"
+                                  action="<?= get_current_url() ?>">
+
+                                <?php if ($productInCart) : ?>
+                                    <button type="submit" class="btn btn-outline-danger w-100"
+                                            name="Del_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
+                                        <i class="fas fa-shopping-cart h1">-</i>
+                                        <i class="far fa-trash-alt h1"></i>
+                                    </button>
+                                <?php else : ?>
+                                    <button type="submit" class="btn btn-outline-success w-100"
+                                            name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>"
+                                            <?= $quantityOnHandRaw < 0 ? 'disabled' : '' ?>>
+                                        <i class="fas fa-cart-plus h1"></i>
+                                    </button>
+                                <?php endif; ?>
                             </form>
                             <p class="StockItemPriceText">
                                 <b>&euro; <?= number_format($product['SellPrice'] ?? 0, 2, ',', '.') ?></b>
                             </p>
-                            <h6> Inclusief BTW </h6>
+                            <h6>Inclusief BTW </h6>
                         </div>
                     </div>
                 </div>

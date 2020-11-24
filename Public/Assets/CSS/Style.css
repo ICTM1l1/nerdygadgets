@@ -74,6 +74,10 @@ ul#ul-class-navigation li {
     text-decoration: none;
     text-decoration-color: currentcolor;
 }
+ul#ul-class-navigation li .active,
+ul#ul-class li .active {
+    border-bottom: 1px solid #ffffff;
+}
 #Header {
     position: fixed;
     top:0;

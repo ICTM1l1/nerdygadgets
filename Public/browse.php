@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+/** @var Cart $cart */
+$cart = session_get("cart");
+
 $searchString = get_form_data_get('search_string');
 $categoryID = (int) get_form_data_get('category_id');
 $products = null;
@@ -76,10 +79,17 @@ if ($amountProducts !== 0) {
     $amountOfPages = ceil($amountProducts / $productsOnPage);
 }
 
-if(get_form_data_post("Add_Cart", NULL) != NULL){
-    $id = get_form_data_post("Add_Cart", NULL);
-    $cart = session_get("cart");
+if ($id = get_form_data_post("Add_Cart", NULL)) {
     $cart->addItem($id, 1);
+
+    add_user_message('Item is toegevoegd aan de winkelwagen.');
+    redirect(get_current_url());
+}
+elseif ($id = get_form_data_post("Del_Cart", NULL)) {
+    $cart->removeItem($id);
+
+    add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
+    redirect(get_current_url());
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
@@ -139,7 +149,10 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
 <div id="ResultsArea" class="Browse">
     <?php if (!empty($products)) : ?>
         <div class="products-view">
-            <?php foreach ($products as $product) : ?>
+            <?php foreach ($products as $product) :
+                $productInCart = $cart->getItemCount($product['StockItemID' ?? 0]) > 0;
+                $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
+                ?>
                 <a class="ListItem" href='<?= get_url('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
@@ -152,10 +165,20 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
 
                         <div id="StockItemFrameRight">
                             <div class="CenterPriceLeftChild">
-                                <form class="text-center" style="margin-top: 65px;" method="post" action="">
-                                    <button type="submit" class="btn btn-outline-success" style="width: 100%;" name="Add_Cart" value="<?=$product["StockItemID"];?>">
-                                        <i class="fas fa-shopping-cart h1"></i>
-                                    </button>
+                                <form class="text-center" style="margin-top: 65px;" method="post" action="<?= get_current_url() ?>">
+                                    <?php if ($productInCart) : ?>
+                                        <button type="submit" class="btn btn-outline-danger w-100"
+                                                name="Del_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
+                                            <i class="fas fa-shopping-cart h1">-</i>
+                                            <i class="far fa-trash-alt h1"></i>
+                                        </button>
+                                    <?php else : ?>
+                                        <button type="submit" class="btn btn-outline-success w-100"
+                                                name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>"
+                                            <?= $quantityOnHandRaw < 0 ? 'disabled' : '' ?>>
+                                            <i class="fas fa-cart-plus h1"></i>
+                                        </button>
+                                    <?php endif; ?>
                                 </form>
                                 <h1 class="StockItemPriceText">
                                     &euro; <?= number_format($product["SellPrice"] ?? 0, 2, ',', '.') ?>
@@ -166,7 +189,13 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
                         <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>
                         <p class="StockItemName"><?= $product["StockItemName"] ?? '' ?></p>
                         <p class="StockItemComments"><?= $product["MarketingComments"] ?? '' ?></p>
-                        <h4 class="ItemQuantity"><?= $product["QuantityOnHand"] ?? '' ?></h4>
+                        <?php if ($quantityOnHandRaw < 0) : ?>
+                            <h4 class="ItemQuantity text-danger">
+                                Dit product is niet op voorraad.
+                            </h4>
+                        <?php else: ?>
+                            <h4 class="ItemQuantity"><?= $product['QuantityOnHand'] ?? 0 ?></h4>
+                        <?php endif; ?>
                     </div>
                 </a>
             <?php endforeach; ?>
