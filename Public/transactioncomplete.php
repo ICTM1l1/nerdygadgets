@@ -20,14 +20,19 @@ if ($paymentPaid) {
     $cart = session_get("cart");
     $products = $cart->getItems();
     $customerId = session_get('customer_id');
-    $currentDate = date('Y-m-d');
+
+    $dateTime = new DateTime();
+    $currentDate = $dateTime->format('Y-m-d');
+
+    $dateTime->modify('+1 day');
+    $deliveryDate = $dateTime->format('Y-m-d');
 
     $orderId = insert("orders", [
         "CustomerId" => $customerId,
         "SalespersonPersonID" => "2",
         "ContactPersonID" => "3032",
-        "OrderDate" => date("Y-m-d"),
-        "ExpectedDeliveryDate" => $currentDate,
+        "OrderDate" => $currentDate,
+        "ExpectedDeliveryDate" => $deliveryDate,
         "IsUndersupplyBackordered" => 0,
         "LastEditedBy" => 7
     ]);
