@@ -217,7 +217,7 @@ function redirect(string $url) {
  * @return string
  *   The formatted date.
  */
-function dateFullFormatted(string $date) {
+function dateFormatFull(string $date) {
     setlocale(LC_TIME, 'nl_NL');
 
     return strtolower(strftime('%d %B %Y', strtotime($date)));
@@ -232,7 +232,7 @@ function dateFullFormatted(string $date) {
  * @return string
  *   The formatted date.
  */
-function dateShortFormatted(string $date) {
+function dateFormatShort(string $date) {
     setlocale(LC_TIME, 'nl_NL');
 
     return strtolower(strftime('%d-%m-%Y', strtotime($date)));

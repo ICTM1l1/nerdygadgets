@@ -64,7 +64,7 @@ $amountOrders = count($orders);
                                                                     #<?= $order['OrderID'] ?? 0 ?>
                                                                 </div>
                                                                 <div class="col-sm-6">
-                                                                    <?= dateShortFormatted($order['OrderDate'] ?? '') ?>
+                                                                    <?= dateFormatShort($order['OrderDate'] ?? '') ?>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -92,10 +92,10 @@ $amountOrders = count($orders);
                                                                 </h3>
 
                                                                 <h5 class="mt-2 float-left">
-                                                                    Geplaatst op <?= dateFullFormatted($order['OrderDate'] ?? '') ?>
+                                                                    Geplaatst op <?= dateFormatFull($order['OrderDate'] ?? '') ?>
                                                                 </h5>
                                                                 <h5 class="mt-2 float-right">
-                                                                    Bezorgd op <?= dateFullFormatted($order['ExpectedDeliveryDate'] ?? '') ?>
+                                                                    Bezorgd op <?= dateFormatFull($order['ExpectedDeliveryDate'] ?? '') ?>
                                                                 </h5>
                                                             </div>
                                                         </div>
