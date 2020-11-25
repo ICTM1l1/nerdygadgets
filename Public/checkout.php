@@ -18,14 +18,9 @@ $phoneNumber = get_form_data_post('phonenumber');
 
 if (isset($_POST['checkout'])) {
     $values_valid = true;
-    if (empty($name) || empty($postalCode) || empty($street) || empty($city) || empty($email) || empty($phoneNumber)) {
+    if (empty($name) || empty($postalCode) || empty($street) || empty($city) || empty($phoneNumber)) {
         $values_valid = false;
         add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $values_valid = false;
-        add_user_error('Ongeldige email opgegeven.');
     }
 
     if ($values_valid) {
