@@ -1,5 +1,5 @@
 <div class="account-navbar">
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark border border-white" style="border-radius: 5px">
+    <nav class="navbar navbar-expand-sm navbar-dark border-bottom border-white">
         <ul class="navbar-nav w-100">
             <li class="nav-item <?= strpos(get_current_url(), 'account') !== false ? 'active' : '' ?>">
                 <a class="nav-link" href="<?= get_url('account.php') ?>">Account</a>

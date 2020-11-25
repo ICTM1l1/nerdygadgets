@@ -12,7 +12,7 @@ $amountOrders = count($orders);
             <div class="order-overview mt-3 mb-5">
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="card shadow h-100">
+                        <div class="card bg-dark shadow h-100">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-md-12 mr-2 mb-4">
@@ -72,7 +72,7 @@ $amountOrders = count($orders);
                                             </div>
                                         </div>
                                         <div class="col-sm-9">
-                                            <div class="tab-content text-dark" id="nav-tabContent">
+                                            <div class="tab-content text-white" id="nav-tabContent">
                                                 <?php $active = 'active';
                                                 foreach ($orders as $key => $order) :
                                                     $order_id = $order['OrderID'] ?? 0;
@@ -98,7 +98,7 @@ $amountOrders = count($orders);
                                                             </div>
                                                         </div>
 
-                                                        <div class="row mt-2 pt-2 border-top border-dark">
+                                                        <div class="row mt-2 pt-2 border-top border-white">
                                                             <div class="col-md-12">
                                                                 <?php if (empty($orderLines)) : ?>
                                                                     <p>Er zijn geen gegevens gevonden voor deze bestelling.</p>
@@ -109,7 +109,7 @@ $amountOrders = count($orders);
                                                                         $productPriceTotal = $pricePerPiece * $productQuantity;
                                                                         $priceTotal += $productPriceTotal;
                                                                         ?>
-                                                                        <div class="row border-bottom border-dark pb-2">
+                                                                        <div class="row border-bottom border-white pb-2">
                                                                             <div class="col-sm-2">
                                                                                 <?php if (isset($orderLine['ImagePath'])) : ?>
                                                                                     <div class="ImgFrame"
