@@ -14,7 +14,6 @@ $name = get_form_data_post('name');
 $postalCode = get_form_data_post('postalcode');
 $street = get_form_data_post('streetname');
 $city = get_form_data_post('city');
-$email = get_form_data_post('email');
 $phoneNumber = get_form_data_post('phonenumber');
 
 if (isset($_POST['checkout'])) {
@@ -33,7 +32,7 @@ if (isset($_POST['checkout'])) {
         $customer = getCustomerByName($name);
         $customer_id = $customer['CustomerID'] ?? 0;
         if (empty($customer_id)) {
-            $customer_id = createCustomer($name, $phoneNumber, $street, $postalCode, $city, $email);
+            $customer_id = createCustomer($name, $phoneNumber, $street, $postalCode, $city);
         }
 
         if (!empty($customer_id)) {
@@ -75,12 +74,6 @@ if (isset($_POST['checkout'])) {
                             <label for="city" class="col-sm-3 text-left">Woonplaats <span class="text-danger">*</span></label>
                             <input type="text" id="city" name="city" class="form-control col-sm-9"
                                    placeholder="Woonplaats" value="<?= $city ?>">
-                        </div>
-
-                        <div class="form-group form-row">
-                            <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
-                            <input type="email" id="email" name="email" class="form-control col-sm-9"
-                                   placeholder="Email" value="<?= $email ?>">
                         </div>
 
                         <div class="form-group form-row">

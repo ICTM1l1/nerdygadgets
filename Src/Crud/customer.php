@@ -13,13 +13,11 @@
  *   The postal code.
  * @param string $city
  *   The city.
- * @param string $email
- *   The email.
  *
  * @return int
  *   The customer id.
  */
-function createCustomer(string $name, string $phoneNumber, string $street, string $postalCode, string $city, string $email) {
+function createCustomer(string $name, string $phoneNumber, string $street, string $postalCode, string $city) {
     $current_date = date('Y-m-d');
 
     $cityFromDb = getCity($city);
