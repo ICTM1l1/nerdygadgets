@@ -84,7 +84,7 @@ $countedCategories = count($categories);
                 <a href="<?= get_url('shoppingcart.php') ?>"
                    class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'shoppingcart') !== false ? 'active' : '' ?>">
                     <i class="fas fa-shopping-cart" style="color:#676EFF;"></i>
-                    Winkelwagen <?php if ($cart->getCount() > 0) : ?> <b>- <?= $cart->getCount() ?></b><?php endif; ?>
+                    Winkelwagen <?php if ($cart->getCount() > 0) : ?> <b>(<?= $cart->getCount() ?>)</b><?php endif; ?>
                 </a>
             </li>
             <li>
