@@ -69,7 +69,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                                              background-size: 190px; background-repeat: no-repeat; background-position: center;"></div>
                             <?php elseif (isset($productFromDb['BackupImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
+                                     style="width: 220px; height: 220px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
                                              background-size: cover;"></div>
                             <?php endif; ?>
                         </div>
