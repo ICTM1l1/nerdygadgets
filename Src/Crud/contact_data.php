@@ -52,7 +52,27 @@ function getContactRequestsByDate(DateTime $date){
     return select(
         "SELECT * FROM contact_requests 
                 WHERE ContactRequestDate LIKE :date",
-        ["date" => date_format($date, "Y-m-d") . " %"] //for some reason $date::format not allowed here
+        ["date" => $date->format("Y-m-d") . " %"]
+    );
+}
+
+/**
+ * Get all contact requests filed in the week in which the date specified by $date falls.
+ *
+ * @param DateTime $date
+ *   The date which falls in the week of which we wish to retrieve the contact requests.
+ *
+ * @return array
+ *   Array of all contact requests filed in the specified week.
+ * @throws Exception
+ */
+function getContactRequestsInWeekByDate(DateTime $date){
+    $week = get_week_boundaries_from_date($date);
+    return select(
+        "SELECT * FROM contact_requests
+                WHERE DATE(ContactRequestDate) >= :start
+                AND DATE(ContactRequestDate) <= :end",
+        $week
     );
 }
 /**
