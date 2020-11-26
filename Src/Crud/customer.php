@@ -67,3 +67,21 @@ function getCustomerByName(string $customer) {
         WHERE CustomerName = :customerName
     ", ['customerName' => $customer]);
 }
+
+/**
+ * Gets a specific customer.
+ *
+ * @param int $customer
+ *   The customer to search for.
+ *
+ * @return array
+ *   The found customer.
+ */
+function getCustomer(int $customer) {
+    return selectFirst("
+        SELECT CustomerID, CustomerName, CityName, DeliveryAddressLine1, DeliveryPostalCode, PhoneNumber
+        FROM customers
+        JOIN cities ON DeliveryCityID = CityID
+        WHERE CustomerID = :customerID
+    ", ['customerID' => $customer]);
+}
