@@ -177,7 +177,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <?php if (!empty($imagePath)) : ?>
                         <div class="ImgFrame"
                              style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
-                                     background-size: 175px; width: 159px; height: 159px; background-repeat: no-repeat; background-position: center;"></div>
+                                     background-size: 175px; width: 159px; height: 159px; background-repeat: no-repeat;  margin-bottom: 20%; background-position: center;"></div>
                     <?php elseif (!empty($backupImagePath)) : ?>
                         <div class="ImgFrame"
                              style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
