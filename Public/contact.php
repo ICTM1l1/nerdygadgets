@@ -4,9 +4,10 @@ require_once __DIR__ . "/../Src/header.php";
 if(isset($_POST["contact"])){
     $name = get_form_data_post("name");
     $email = get_form_data_post("email");
+    $subject = get_form_data_post("subject");
     $message = get_form_data_post("message");
 
-    if(empty($email) || empty($name) || empty($message)){
+    if(empty($email) || empty($name) || empty($subject) || empty($message)){
         add_user_error("Niet all verplichte velden met een * zijn ingevuld.");
     }
     elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -41,6 +42,12 @@ include __DIR__ . '/../Src/Html/alert.php';
                             <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
                             <input type="email" id="email" name="email" class="form-control col-sm-9"
                                    placeholder="Email" value="<?=get_form_data_post("email")?>">
+                        </div>
+
+                        <div class="form-group form-row">
+                            <label for="text" class="col-sm-3 text-left">Onderwerp <span class="text-danger">*</span></label>
+                            <input type="text" id="subject" name="subject" class="form-control col-sm-9"
+                                   placeholder="Onderwerp" value="<?=get_form_data_post("subject")?>">
                         </div>
 
                         <div class="form-group form-row">
