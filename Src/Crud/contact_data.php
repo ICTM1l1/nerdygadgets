@@ -39,7 +39,22 @@ function getContactRequestByID(int $id){
     );
 }
 
-
+/**
+ * Get all contact requests filed on a specific date.
+ *
+ * @param DateTime $date
+ *   A datetime object of the date of which the contact requests are to be retrieved.
+ *
+ * @return array
+ *   An array of the requests filed on the specified date.
+ */
+function getContactRequestsByDate(DateTime $date){
+    return select(
+        "SELECT * FROM contact_requests 
+                WHERE ContactRequestDate LIKE :date",
+        ["date" => date_format($date, "Y-m-d") . " %"] //for some reason $date::format not allowed here
+    );
+}
 /**
  * Remove contact request based on ID.
  *
