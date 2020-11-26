@@ -37,7 +37,7 @@ if (isset($_POST['checkout'])) {
         }
 
         if (!empty($customer_id)) {
-            session_save('customer_id', $customer_id);
+            session_save('customer_id', $customer_id, true);
             redirect('payment.php');
         }
     }
