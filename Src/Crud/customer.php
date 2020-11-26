@@ -13,13 +13,11 @@
  *   The postal code.
  * @param string $city
  *   The city.
- * @param string $email
- *   The email.
  *
  * @return int
  *   The customer id.
  */
-function createCustomer(string $name, string $phoneNumber, string $street, string $postalCode, string $city, string $email) {
+function createCustomer(string $name, string $phoneNumber, string $street, string $postalCode, string $city) {
     $current_date = date('Y-m-d');
 
     $cityFromDb = getCity($city);
@@ -68,4 +66,22 @@ function getCustomerByName(string $customer) {
         SELECT * FROM customers
         WHERE CustomerName = :customerName
     ", ['customerName' => $customer]);
+}
+
+/**
+ * Gets a specific customer.
+ *
+ * @param int $customer
+ *   The customer to search for.
+ *
+ * @return array
+ *   The found customer.
+ */
+function getCustomer(int $customer) {
+    return selectFirst("
+        SELECT CustomerID, CustomerName, CityName, DeliveryAddressLine1, DeliveryPostalCode, PhoneNumber
+        FROM customers
+        JOIN cities ON DeliveryCityID = CityID
+        WHERE CustomerID = :customerID
+    ", ['customerID' => $customer]);
 }

@@ -503,3 +503,15 @@ ul#ul-class-price li {
     background-color: #FF0000;
     color: #fff;
 }
+
+.scrollbox-vertical {
+    height: calc(100vh - 63px);
+    max-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+button:disabled, .disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+}

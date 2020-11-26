@@ -234,7 +234,7 @@ function getRandomProductForCategory(int $categoryID){
  * @return array
  *   The randomly found products.
  */
-function getRandomProducts(int $amountOfProducts = 10) {
+function getRandomProducts(int $amountOfProducts) {
     $productPlaceholders = "";
     $productIds = [];
     for ($category_id = 1; $category_id <= $amountOfProducts; $category_id++) {
@@ -257,4 +257,38 @@ function getRandomProducts(int $amountOfProducts = 10) {
         AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
         GROUP BY StockItemID", $productIds);
 
+}
+/**
+ * Gets category id of product.
+ *
+ * @param int $product_id
+ *   The id of the product
+ *
+ * @return array
+ *   The array of catogory ids the product is in
+ */
+function getCategoryIdForProduct(int $product_id){
+    return select("
+                SELECT StockGroupID 
+                FROM stockitemstockgroups 
+                WHERE StockItemID = :stockitemid", ['stockitemid' => $product_id]);
+}
+
+/**
+ * Gets the image for a product for the given id.
+ *
+ * @param int $product_id
+ *   The id to search for.
+ *
+ * @return array
+ *   The found product image.
+ */
+function getBackupProductImage(int $product_id) {
+    return selectFirst("
+                SELECT ImagePath as BackupImagePath
+                FROM stockgroups 
+                JOIN stockitemstockgroups USING(StockGroupID) 
+                WHERE StockItemID = :StockItemID 
+                LIMIT 1
+                ", ['StockItemID' => $product_id]);
 }
