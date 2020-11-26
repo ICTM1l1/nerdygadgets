@@ -13,10 +13,20 @@ if(isset($_POST["contact"])){
     elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         add_user_error("Ongeldige email opgegeven.");
     }
+    elseif(strlen($message) > 100){
+        add_user_error("Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)");
+    }
+    elseif(strlen($email) > 100){
+        add_user_error("Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)");
+    }
+    elseif(strlen($subject) > 100){
+        add_user_error("Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).");
+    }
     elseif(strlen($message) > 2000){
         add_user_error("Uw bericht is langer dan toegestaan.");
     }
     else {
+        createContactRequest($name, $email, $subject, $message);
         add_user_message("Uw bericht is verstuurd.");
         redirect(get_current_url());
     }
