@@ -288,6 +288,6 @@ function getBackupProductImage(int $product_id) {
                 FROM stockgroups 
                 JOIN stockitemstockgroups USING(StockGroupID) 
                 WHERE StockItemID = :StockItemID 
-                LIMIT 1 
+                LIMIT 1
                 ", ['StockItemID' => $product_id]);
 }

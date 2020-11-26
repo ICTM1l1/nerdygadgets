@@ -9,7 +9,7 @@ $categories = getCategoryIdForProduct($product_id);
 $relatedProductIds = [];
 $relatedProductImages = [];
 for($i = 0; $i < 6; $i++){
-    $relatedProductIds[$i] = getRandomProductForCategory($categories[random_int(0, count($categories) - 1)] ['StockGroupID']);
+    $relatedProductIds[$i] = getRandomProductForCategory($categories[random_int(0, count($categories) - 1)] ['StockGroupID'] ?? '');
 
     $image = getProductImages($relatedProductIds[$i] ?? 0);
     $fallbackImage = getBackupProductImage($relatedProductIds[$i] ?? 0);
@@ -139,9 +139,9 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
             <?php foreach($relatedProductIds as $key => $productId) : ?>
             <div class="col-sm-2">
                 <?php if (isset($relatedProductImages[$key])) : ?>
-                <?php $relatedImage = $relatedProductImages[$key];
-                $imagePath = $relatedImage['ImagePath'] ?? '';
-                $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
+                    <?php $relatedImage = $relatedProductImages[$key];
+                    $imagePath = $relatedImage['ImagePath'] ?? '';
+                    $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
                 ?>
                 <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
                     <?php if (!empty($imagePath)) : ?>
@@ -153,7 +153,7 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
                              style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
                                      background-size: cover; width: 159px; height: 159px; "></div>
                     <?php endif; ?>
-                    <?php endif; ?>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
