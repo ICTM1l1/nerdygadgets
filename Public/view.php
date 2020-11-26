@@ -4,6 +4,19 @@ require_once __DIR__ . "/../Src/header.php";
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
+$categories = getCategoryIdForProduct($product_id);
+
+$relatedProductIds = [];
+$relatedProductImages = [];
+for($i = 0; $i < 6; $i++){
+    $relatedProductIds[$i] = getRandomProductForCategory($categories[random_int(0, count($categories) - 1)] ['StockGroupID']);
+
+    $image = getProductImages($relatedProductIds[$i] ?? 0);
+    $fallbackImage = getBackupProductImage($relatedProductIds[$i] ?? 0);
+
+    $relatedProductImages[$i]['ImagePath'] = $image[0]['ImagePath'] ?? '';
+    $relatedProductImages[$i]['BackupImagePath'] = $fallbackImage['BackupImagePath'] ?? '';
+}
 
 $productCustomFields = $product['CustomFields'] ?? null;
 $customFields = [];
@@ -122,10 +135,34 @@ if(get_form_data_post("Add_Cart", NULL) != NULL){
                     <p><?= $product['CustomFields'] ?? '' ?>.</p>
                 <?php endif; ?>
             </div>
+        <div class="row" id="RelatedProducts">
+            <?php foreach($relatedProductIds as $key => $productId) : ?>
+            <div class="col-sm-2">
+                <?php if (isset($relatedProductImages[$key])) : ?>
+                <?php $relatedImage = $relatedProductImages[$key];
+                $imagePath = $relatedImage['ImagePath'] ?? '';
+                $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
+                ?>
+                <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
+                    <?php if (!empty($imagePath)) : ?>
+                        <div class="ImgFrame"
+                             style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
+                                     background-size: 175px; width: 159px; height: 159px; background-repeat: no-repeat; background-position: center;"></div>
+                    <?php elseif (!empty($backupImagePath)) : ?>
+                        <div class="ImgFrame"
+                             style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
+                                     background-size: cover; width: 159px; height: 159px; "></div>
+                    <?php endif; ?>
+                    <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+        </div>
         <?php else : ?>
             <h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2>
         <?php endif; ?>
     </div>
+
+
 
 <?php
 require_once __DIR__ . "/../Src/footer.php";

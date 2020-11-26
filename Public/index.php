@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-$products = getRandomProducts();
+$products = getRandomProducts(10);
 ?>
 <div class="IndexStyle">
     <div class="col-11">
