@@ -25,6 +25,21 @@ function createContactRequest(string $name, string $email, string $subject, stri
 }
 
 /**
+ * Retrieve contact requests.
+ *
+ * @return array
+ *   The retrieved contact requests.
+ */
+function getContactRequests(){
+    return select("
+        SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
+        DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
+        FROM contact_requests
+        ORDER BY ContactRequestID DESC
+    ");
+}
+
+/**
  * Retrieve contact request by ID.
  *
  * @param int $id
@@ -35,7 +50,8 @@ function createContactRequest(string $name, string $email, string $subject, stri
  */
 function getContactRequestByID(int $id){
     return selectFirst("
-        SELECT * 
+        SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
+        DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests 
         WHERE ContactRequestID = :id
     ", ["id" => $id]);
@@ -50,12 +66,13 @@ function getContactRequestByID(int $id){
  * @return array
  *   An array of the requests filed on the specified date.
  */
-function getContactRequestsByDate(DateTime $date){
+function getContactRequestsByDate(string $date){
     return select("
-        SELECT * 
+        SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
+        DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests 
         WHERE DATE(ContactRequestDate) = :date
-    ", ["date" => $date->format("Y-m-d")]);
+    ", ["date" => $date]);
 }
 
 /**
@@ -72,7 +89,8 @@ function getContactRequestsInWeekByDate(DateTime $date){
     $week = get_week_boundaries_from_date($date);
 
     return select("
-        SELECT * 
+        SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
+        DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests
         WHERE DATE(ContactRequestDate) >= :start
         AND DATE(ContactRequestDate) <= :end
