@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+// TODO: Show this page only for admins.
 $contactRequests = getContactRequests();
 if ($date = get_form_data_get('date')) {
     $contactRequests = getContactRequestsByDate($date);
