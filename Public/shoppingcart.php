@@ -5,6 +5,7 @@ require_once __DIR__ . "/../Src/header.php";
 $cart = session_get("cart");
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
+$firstCartItem = $cartItems[array_key_first($cartItems)] ?? 0;
 
 if(get_form_data_post("Add_Product", NULL) != NULL){
     $id = get_form_data_post("Add_Product");
@@ -39,7 +40,13 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
             </div>
             <div class="col-sm-6 text-right">
                 <h1 class="mb-5">
-                    <?= $amountCartItems . ($amountCartItems === 1 ? ' product' : ' producten') ?>
+                    <?php if ($amountCartItems === 1 && ($firstCartItem['amount'] ?? 0) === 1) : ?>
+                        <?= $amountCartItems ?> product
+                    <?php elseif ($amountCartItems === 1 && ($firstCartItem['amount'] ?? 0) > 1) : ?>
+                        <?= $firstCartItem['amount'] ?? 0 ?> producten
+                    <?php else : ?>
+                        <?= $amountCartItems ?> producten
+                    <?php endif; ?>
                 </h1>
             </div>
         </div>
