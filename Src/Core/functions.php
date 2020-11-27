@@ -278,3 +278,25 @@ function dd(...$variables) {
     var_dump($variables);
     die();
 }
+
+/**
+ * Retrieves dates of the first and last day of the week that the relevant date falls in.
+ *
+ * @param DateTime $date
+ *   The date which falls in the week we wish to retrieve the start and end off.
+ *
+ * @return array
+ *   Associative array containing the start date at index "start" and the end date at index "end".
+ * @throws Exception
+ */
+function get_week_boundaries_from_date(DateTime $date){
+    $w = array();
+    $year = (int)$date->format("Y");
+    $weekN = (int)$date->format("W");
+    $week = new DateTime();
+    $week->setISODate($year, $weekN);
+    $w["start"] = $week->format("Y-m-d");
+    $week->modify("+6 days");
+    $w["end"] = $week->format("Y-m-d");
+    return $w;
+}
