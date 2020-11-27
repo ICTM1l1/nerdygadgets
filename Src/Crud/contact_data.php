@@ -51,8 +51,8 @@ function getContactRequestByID(int $id){
 function getContactRequestsByDate(DateTime $date){
     return select(
         "SELECT * FROM contact_requests 
-                WHERE ContactRequestDate LIKE :date",
-        ["date" => $date->format("Y-m-d") . " %"]
+                WHERE DATE(ContactRequestDate) = :date",
+        ["date" => $date->format("Y-m-d")]
     );
 }
 
