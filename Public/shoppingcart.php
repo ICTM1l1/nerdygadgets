@@ -141,7 +141,12 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
         <div>
             <?php
             if($amountCartItems > 0) :
-                ?> <br><h3>Gerelateerde Producten<h3/>
+            ?>
+            <div>
+                <a class="col-sm-2" id="RelatedProductText" style="margin-top: 20%; position-center">
+                    <h3>Gerelateerde Producten</h3>
+                </a>
+            </div>
                 <?php
                 $product_id = $productId;
                 $categories = getCategoryIdForProduct($product_id);
@@ -169,11 +174,11 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                         <?php if (!empty($imagePath)) : ?>
                             <div class="ImgFrame"
                                 style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
-                                        background-size: 175px; width: 170px; height: 170px; background-repeat: no-repeat;  margin-bottom: 20%; margin-top: 20%; background-position: center;"></div>
+                                        background-size: 175px; width: 170px; height: 170px; background-repeat: no-repeat;  margin-bottom: 20%; margin-top: 10%; background-position: center;"></div>
                         <?php elseif (!empty($backupImagePath)) : ?>
                             <div class="ImgFrame"
                                 style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
-                                        background-size: cover; width: 170px; height: 170px; margin-top: 20%; "></div>
+                                        background-size: cover; width: 170px; height: 170px; margin-top: 10%; "></div>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
