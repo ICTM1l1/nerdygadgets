@@ -37,32 +37,52 @@ include __DIR__ . '/../Src/Html/alert.php';
 
     <div class="container-fluid">
         <div class="w-50 ml-auto mr-auto mt-5 mb-5">
-            <h1 class="mb-5">Contact opnemen.</h1>
+            <h1 class="mb-5">Contact opnemen</h1>
 
             <div class="row">
                 <div class="col-sm-12">
                     <form class="text-center w-100" action="" method="post">
                         <div class="form-group form-row">
-                            <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
-                            <input type="text" id="name" name="name" class="form-control col-sm-9"
+                            <label for="name" class="col-sm-3 text-left">
+                                Naam
+                                <span class="text-danger">*</span><br>
+                                <span id="name_char_count" class="text-danger"></span>
+                            </label>
+                            <input type="text" id="name" name="name" class="form-control col-sm-9" maxlength="100"
+                                   onkeyup="charCountUpdate('name_char_count', this.value, 100)" required
                                    placeholder="Naam" value="<?=get_form_data_post("name")?>">
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
-                            <input type="email" id="email" name="email" class="form-control col-sm-9"
+                            <label for="email" class="col-sm-3 text-left">
+                                Email
+                                <span class="text-danger">*</span><br>
+                                <span id="email_char_count" class="text-danger"></span>
+                            </label>
+                            <input type="email" id="email" name="email" class="form-control col-sm-9" maxlength="100"
+                                   onkeyup="charCountUpdate('email_char_count', this.value, 100)" required
                                    placeholder="Email" value="<?=get_form_data_post("email")?>">
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="text" class="col-sm-3 text-left">Onderwerp <span class="text-danger">*</span></label>
-                            <input type="text" id="subject" name="subject" class="form-control col-sm-9"
+                            <label for="subject" class="col-sm-3 text-left">
+                                Onderwerp
+                                <span class="text-danger">*</span><br>
+                                <span id="subject_char_count" class="text-danger"></span>
+                            </label>
+                            <input type="text" id="subject" name="subject" class="form-control col-sm-9" maxlength="100"
+                                   onkeyup="charCountUpdate('subject_char_count', this.value, 100)" autocomplete="off" required
                                    placeholder="Onderwerp" value="<?=get_form_data_post("subject")?>">
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="phonenumber" class="col-sm-3 text-left">Uw bericht <span class="text-danger">*</span></label>
-                            <textarea id="message" name="message" class="form-control col-sm-9" rows="10"
+                            <label for="message" class="col-sm-3 text-left">
+                                Uw bericht
+                                <span class="text-danger">*</span><br>
+                                <span id="message_char_count" class="text-danger"></span>
+                            </label>
+                            <textarea id="message" name="message" class="form-control col-sm-9" rows="10" maxlength="2000"
+                                      onkeyup="charCountUpdate('message_char_count', this.value, 2000)" autocomplete="off" required
                                       placeholder="Uw bericht (maximaal 2000 karakters)"><?=get_form_data_post("message")?></textarea>
                         </div>
 
