@@ -138,14 +138,12 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                 </a>
             </div>
         </div>
-        <div>
+        <div class="mt-5">
             <?php
             if($amountCartItems > 0) :
             ?>
-            <div>
-                <a class="col-sm-2" id="RelatedProductText" style="margin-top: 20%; position-center">
-                    <h3>Gerelateerde Producten</h3>
-                </a>
+            <div id="RelatedProductText" class="pt-5">
+                <h3>Gerelateerde Producten</h3>
             </div>
                 <?php
                 $product_id = $productId;
