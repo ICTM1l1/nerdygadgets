@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create a contact request.
  *
@@ -30,13 +31,14 @@ function createContactRequest(string $name, string $email, string $subject, stri
  *   The ID of the contact request that is to be retrieved.
  *
  * @return array
- *   The retrieved contact request.*/
+ *   The retrieved contact request.
+ */
 function getContactRequestByID(int $id){
-    return selectFirst(
-        "SELECT * FROM contact_requests
-                WHERE ContactRequestID = :id",
-        ["id" => $id]
-    );
+    return selectFirst("
+        SELECT * 
+        FROM contact_requests 
+        WHERE ContactRequestID = :id
+    ", ["id" => $id]);
 }
 
 /**
@@ -49,11 +51,11 @@ function getContactRequestByID(int $id){
  *   An array of the requests filed on the specified date.
  */
 function getContactRequestsByDate(DateTime $date){
-    return select(
-        "SELECT * FROM contact_requests 
-                WHERE DATE(ContactRequestDate) = :date",
-        ["date" => $date->format("Y-m-d")]
-    );
+    return select("
+        SELECT * 
+        FROM contact_requests 
+        WHERE DATE(ContactRequestDate) = :date
+    ", ["date" => $date->format("Y-m-d")]);
 }
 
 /**
@@ -68,12 +70,13 @@ function getContactRequestsByDate(DateTime $date){
  */
 function getContactRequestsInWeekByDate(DateTime $date){
     $week = get_week_boundaries_from_date($date);
-    return select(
-        "SELECT * FROM contact_requests
-                WHERE DATE(ContactRequestDate) >= :start
-                AND DATE(ContactRequestDate) <= :end",
-        $week
-    );
+
+    return select("
+        SELECT * 
+        FROM contact_requests
+        WHERE DATE(ContactRequestDate) >= :start
+        AND DATE(ContactRequestDate) <= :end
+    ", $week);
 }
 /**
  * Remove contact request based on ID.
@@ -82,7 +85,8 @@ function getContactRequestsInWeekByDate(DateTime $date){
  *   The ID of the contact request that is to be removed.
  *
  * @return int
- *   The result of the query.*/
+ *   The result of the query.
+ */
 function removeContactRequest(int $id){
     return delete("contact_requests", ["ContactRequestID" => $id]);
 }
