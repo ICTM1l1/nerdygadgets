@@ -20,7 +20,7 @@ $amountOrders = count($orders);
                                             Bestelhistorie
                                         </div>
                                         <div class="h3 font-weight-bold text-primary text-uppercase mb-1 float-right">
-                                            <?php if ($amountOrders < 2) : ?>
+                                            <?php if ($amountOrders === 1) : ?>
                                                 <?= $amountOrders ?> bestelling
                                             <?php else : ?>
                                                 <?= $amountOrders ?> bestellingen
