@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+// TODO: Get the customer id based on the logged in user.
 $orders = getOrdersByCustomer(1063);
 $amountOrders = count($orders);
 ?>

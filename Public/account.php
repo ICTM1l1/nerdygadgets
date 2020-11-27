@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
+
+// TODO: Show the customer details based on the logged in user.
 ?>
 
     <div class="container-fluid">
