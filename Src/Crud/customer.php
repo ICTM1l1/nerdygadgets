@@ -7,48 +7,33 @@
  *   The name.
  * @param string $phoneNumber
  *   The phone number.
- * @param string $street
- *   The street.
+ * @param string $address
+ *   The address.
  * @param string $postalCode
  *   The postal code.
  * @param string $city
  *   The city.
+ * @param int $personID
+ *   The person id.
  *
  * @return int
  *   The customer id.
  */
-function createCustomer(string $name, string $phoneNumber, string $street, string $postalCode, string $city) {
-    $current_date = date('Y-m-d');
-
+function createCustomer(string $name, string $phoneNumber, string $address, string $postalCode, string $city, int $personID = null) {
     $cityFromDb = getCity($city);
     $cityId = $cityFromDb['CityID'] ?? 0;
     if (empty($cityId)) {
         $cityId = createCity($city);
     }
 
-    return insert('customers', [
-        'CustomerName' => $name,
-        'BillToCustomerID' => 1,
-        'CustomerCategoryID' => 3,
-        'PrimaryContactPersonID' => 1,
-        'DeliveryMethodID' => 3,
-        'DeliveryCityID' => $cityId,
-        'PostalCityID' => $cityId,
-        'AccountOpenedDate' => $current_date,
-        'StandardDiscountPercentage' => 0,
-        'IsStatementSent' => 0,
-        'IsOnCreditHold' => 0,
-        'PaymentDays' => 7,
-        'PhoneNumber' => '(+31) ' . $phoneNumber,
-        'FaxNumber' => '(+31) ' . $phoneNumber,
-        'WebsiteURL' => get_base_url(),
-        'DeliveryAddressLine1' => $street,
-        'DeliveryPostalCode' => $postalCode,
-        'PostalAddressLine1' => $street,
-        'PostalPostalCode' => $postalCode,
-        'LastEditedBy' => 1,
-        'ValidFrom' => $current_date,
-        'ValidTo' => $current_date,
+    return insert('privatecustomer', [
+        "PrivateCustomerName" => $name,
+        "DeliveryMethodID" => 1,
+        "DeliveryCityID" => $cityId,
+        "PhoneNumber" => $phoneNumber,
+        "PeopleID" => $personID,
+        "DeliveryAddressLine1" => $address,
+        "DeliveryPostalCode" => $postalCode,
     ]);
 }
 
@@ -63,8 +48,9 @@ function createCustomer(string $name, string $phoneNumber, string $street, strin
  */
 function getCustomerByName(string $customer) {
     return selectFirst("
-        SELECT * FROM customers
-        WHERE CustomerName = :customerName
+        SELECT * 
+        FROM privatecustomer
+        WHERE PrivateCustomerName = :customerName
     ", ['customerName' => $customer]);
 }
 
@@ -79,9 +65,37 @@ function getCustomerByName(string $customer) {
  */
 function getCustomer(int $customer) {
     return selectFirst("
-        SELECT CustomerID, CustomerName, CityName, DeliveryAddressLine1, DeliveryPostalCode, PhoneNumber
-        FROM customers
+        SELECT *
+        FROM privatecustomer
         JOIN cities ON DeliveryCityID = CityID
-        WHERE CustomerID = :customerID
+        WHERE PrivateCustomerID = :customerID
     ", ['customerID' => $customer]);
+}
+
+function getCustomerByPeople(int $people) {
+    return selectFirst("
+        SELECT * 
+        FROM privatecustomer C
+        JOIN people P ON  C.PeopleID = P.PersonID
+        JOIN cities ON DeliveryCityID = CityID
+        WHERE PeopleID = :peopleID
+    ", ['peopleID' => $people]);
+}
+
+function updateCustomer(int $peopleID, string $name, string $address, string $postalCode, string $phoneNumber, string $city) {
+    $cityFromDb = getCity($city);
+    $cityId = $cityFromDb['CityID'] ?? 0;
+    if (empty($cityId)) {
+        $cityId = createCity($city);
+    }
+
+    update("privatecustomer", [
+        "PrivateCustomerName" => $name,
+        "DeliveryPostalCode" => $postalCode,
+        "PhoneNumber" => $phoneNumber,
+        "DeliveryAddressLine1" => $address,
+        "DeliveryCityID" => $cityId,
+    ], [
+        "PeopleID" => $peopleID
+    ]);
 }

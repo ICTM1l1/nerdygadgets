@@ -3,19 +3,20 @@
 /**
  * Gets orders for a given customer.
  *
- * @param int $customer_id
- *   The id of the customer.
+ * @param int $people
+ *   The id of the people.
  *
  * @return array
  *   The orders.
  */
-function getOrdersByCustomer(int $customer_id) {
+function getOrdersByCustomer(int $people) {
     return select('
         SELECT OrderID, OrderDate, ExpectedDeliveryDate  
         FROM orders
-        WHERE CustomerID = :customerID
+        JOIN PrivateCustomer ON PrivateCustomerID = CustomerID
+        WHERE PeopleID = :peopleID
         ORDER BY OrderDate DESC;
-    ', ['customerID' => $customer_id]);
+    ', ['peopleID' => $people]);
 }
 
 /**

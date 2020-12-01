@@ -1,7 +1,14 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-// TODO: Show this page only for admins.
+authorizeUser();
+$personID = session_get('personID', 0);
+$account = getCustomerByPeople($personID);
+$account_name = $account['PrivateCustomerName'] ?? '';
+if (strpos($account_name, 'admin') === false) {
+    redirect('Config');
+}
+
 $contactRequests = getContactRequests();
 if ($date = get_form_data_get('date')) {
     $contactRequests = getContactRequestsByDate($date);

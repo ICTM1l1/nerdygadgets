@@ -1,8 +1,12 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-// TODO: Get the customer id based on the logged in user.
-$orders = getOrdersByCustomer(1063);
+authorizeUser();
+
+$personID = session_get('personID', 0);
+$account = getCustomerByPeople($personID);
+
+$orders = getOrdersByCustomer($personID);
 $amountOrders = count($orders);
 ?>
 

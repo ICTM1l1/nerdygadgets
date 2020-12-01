@@ -1,7 +1,43 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-// TODO: Show the customer details based on the logged in user.
+authorizeUser();
+
+$personID = session_get('personID', 0);
+$account = getCustomerByPeople($personID);
+
+$name = get_form_data_post('name', $account['PrivateCustomerName'] ?? '');
+$password = get_form_data_post('password');
+$email = get_form_data_post('email', $account['LogonName'] ?? '');
+$postalCode = get_form_data_post('postalcode', $account['DeliveryPostalCode'] ?? '');
+$address = get_form_data_post('address', $account['DeliveryAddressLine1'] ?? '');
+$city = get_form_data_post('city', $account['CityName'] ?? '');
+$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'][1] ?? '');
+
+if (isset($_POST["update"])) {
+    if (empty($name) || empty($password) || empty($email) || empty($address) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
+        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        redirect(get_url("account.php"));
+    }
+
+    $account = getPeopleByEmail($email);
+    $account_password = $account["HashedPassword"] ?? '';
+    if (!password_verify($password, $account_password)) {
+        add_user_error('Wachtwoord incorrect.');
+        redirect(get_url("account.php"));
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        add_user_error('Ongeldig E-Mail address.');
+        redirect(get_url("account.php"));
+    }
+
+    updatePeople($account['PersonID'] ?? 0, $name, $phoneNumber);
+    updateCustomer($account['PersonID'] ?? 0, $name, $address, $postalCode, $phoneNumber, $city);
+
+    add_user_message('Account is succesvol bijgewerkt.');
+    redirect('account.php');
+}
 ?>
 
     <div class="container-fluid">
@@ -11,11 +47,65 @@ require_once __DIR__ . "/../Src/header.php";
             <div class="account-overview mt-3 mb-5">
                 <div class="row">
                     <div class="col-sm-10">
-                        <h1>Meneer X van Customer</h1>
+                        <h1><?= $name ?></h1>
 
-                        <p>
-                            Account gegevens.
-                        </p>
+                        <div class="container-fluid">
+                            <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form class="text-center w-100" action="<?= get_url('account.php') ?>" method="post">
+                                            <div class="form-group form-row">
+                                                <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
+                                                <input type="text" id="name" name="name" class="form-control col-sm-9"
+                                                       placeholder="Naam" value="<?= $name ?>">
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <label for="email" class="col-sm-3 text-left">E-Mail <span class="text-danger">*</span></label>
+                                                <input type="email" id="email" name="email" class="form-control col-sm-9"
+                                                       placeholder="E-Mail" value="<?= $email ?>" disabled="disabled">
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <label for="postalcode" class="col-sm-3 text-left">Postcode <span class="text-danger">*</span></label>
+                                                <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9"
+                                                       placeholder="Postcode" value="<?= $postalCode ?>">
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <label for="address" class="col-sm-3 text-left">Address <span class="text-danger">*</span></label>
+                                                <input type="text" id="address" name="address" class="form-control col-sm-9"
+                                                       placeholder="Address" value="<?= $address ?>">
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <label for="city" class="col-sm-3 text-left">Woonplaats <span class="text-danger">*</span></label>
+                                                <input type="text" id="city" name="city" class="form-control col-sm-9"
+                                                       placeholder="Woonplaats" value="<?= $city ?>">
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <label for="phonenumber" class="col-sm-3 text-left">Telefoonnummer <span class="text-danger">*</span></label>
+                                                <input type="tel" id="phonenumber" name="phonenumber" class="form-control col-sm-9"
+                                                       placeholder="Telefoonnummer" value="<?= $phoneNumber ?>">
+                                            </div>
+
+                                            <div class="form-group form-row">
+                                                <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
+                                                <input type="password" id="password" name="password" class="form-control col-sm-9"
+                                                       placeholder="Wachtwoord" required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button class="btn btn-success my-4" type="submit" name="update">
+                                                    Opslaan
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
