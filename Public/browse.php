@@ -139,7 +139,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     Reset
                 </button>
 
-                <button type="submit" class="button float-right">
+                <button type="submit" class="button float-right btn-success">
                     Filter
                 </button>
             </div>
