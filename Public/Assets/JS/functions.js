@@ -12,7 +12,21 @@ $(document).ready(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+
+    $("#password2").keyup(checkPasswordMatch);
 });
+
+function checkPasswordMatch() {
+    var password = $("#password").val();
+    var confirmPassword = $("#password2").val();
+
+    if (password !== confirmPassword) {
+        $("#divCheckPasswordMatch").html("Wachtwoorden zijn niet gelijk!").removeClass('text-success').addClass('text-danger');
+    }
+    else {
+        $("#divCheckPasswordMatch").html("Wachtwoorden zijn gelijk.").removeClass('text-danger').addClass('text-success');
+    }
+}
 
 /**
  * Counts the number of chars and updates it.
