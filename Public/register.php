@@ -54,49 +54,49 @@ if (isset($_POST['register'])) {
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
-                                   placeholder="Naam" value="<?= $name ?>">
+                                   placeholder="Naam" value="<?= $name ?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
                             <input type="password" id="password" name="password" class="form-control col-sm-9"
-                                   placeholder="Wachtwoord">
+                                   placeholder="Wachtwoord" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="password2" class="col-sm-3 text-left">Herhaal Wachtwoord <span class="text-danger">*</span></label>
                             <input type="password" id="password2" name="password2" class="form-control col-sm-9"
-                                   placeholder="Herhaal Wachtwoord">
+                                   placeholder="Herhaal Wachtwoord" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">E-Mail <span class="text-danger">*</span></label>
                             <input type="email" id="email" name="email" class="form-control col-sm-9"
-                                   placeholder="E-Mail" value="<?= $email ?>">
+                                   placeholder="E-Mail" value="<?= $email ?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="postalcode" class="col-sm-3 text-left">Postcode <span class="text-danger">*</span></label>
                             <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9"
-                                   placeholder="Postcode" value="<?= $postalCode ?>">
+                                   placeholder="Postcode" value="<?= $postalCode ?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="address" class="col-sm-3 text-left">Address <span class="text-danger">*</span></label>
                             <input type="text" id="address" name="address" class="form-control col-sm-9"
-                                   placeholder="Address" value="<?= $address ?>">
+                                   placeholder="Address" value="<?= $address ?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="city" class="col-sm-3 text-left">Woonplaats <span class="text-danger">*</span></label>
                             <input type="text" id="city" name="city" class="form-control col-sm-9"
-                                   placeholder="Woonplaats" value="<?= $city ?>">
+                                   placeholder="Woonplaats" value="<?= $city ?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="phonenumber" class="col-sm-3 text-left">Telefoonnummer <span class="text-danger">*</span></label>
                             <input type="tel" id="phonenumber" name="phonenumber" class="form-control col-sm-9"
-                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>">
+                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>" required>
                         </div>
 
                         <div class="form-group">
