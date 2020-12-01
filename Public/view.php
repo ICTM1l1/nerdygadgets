@@ -32,7 +32,19 @@ $productInCart = $cart->getItemCount($product_id) > 0;
 if ($id = get_form_data_post("Add_Cart", NULL)) {
     $cart->addItem($id, 1);
 
-    add_user_message('Item is toegevoegd aan de winkelwagen.');
+    add_user_message('Product is toegevoegd aan de winkelwagen.');
+    redirect(get_current_url());
+}
+elseif ($id = get_form_data_post("Min_Cart", NULL)) {
+    $cart->decreaseItemCount($id);
+
+    add_user_message('Product aantal is succesvol bijgewerkt.');
+    redirect(get_current_url());
+}
+elseif ($id = get_form_data_post("Increase_Cart", NULL)) {
+    $cart->increaseItemCount($id);
+
+    add_user_message('Product aantal is succesvol bijgewerkt.');
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Del_Cart", NULL)) {
@@ -104,23 +116,38 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 <div id="StockItemHeaderLeft">
                     <div class="CenterPriceLeft">
                         <div class="CenterPriceCartButton">
-                            <form class="text-center" style="margin-top: 65px;" method="post"
+                            <form class="form-inline float-right mt-5 pt-2 w-100" method="post"
                                   action="<?= get_current_url() ?>">
+                                <div class="edit-actions w-100 mb-2">
+                                    <?php if ($productInCart) : ?>
+                                        <button type="submit" class="btn btn-outline-danger mr-2"
+                                                name="Min_Cart" value="<?= $product_id ?>">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button type="submit" class="btn btn-outline-success mr-2"
+                                                name="Increase_Cart" value="<?= $product_id ?>">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
 
-                                <?php if ($productInCart) : ?>
-                                    <button type="submit" class="btn btn-outline-danger w-100"
-                                            name="Del_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
-                                        <i class="fas fa-shopping-cart h1">-</i>
-                                        <i class="far fa-trash-alt h1"></i>
-                                    </button>
-                                <?php else : ?>
-                                    <button type="submit" class="btn btn-outline-success w-100"
-                                            name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>"
+                                        <p class="h4 font-weight-bold float-right">
+                                            <?= $cart->getItemCount($product_id) ?>x
+                                        </p>
+
+                                        <button class="btn btn-outline-danger float-right w-75 mt-2"
+                                                type="submit" name="Del_Cart" value="<?= $product_id ?>"
+                                                onclick="return confirm('Weet u zeker dat u `<?= $product['StockItemName'] ?? "" ?>` wilt verwijderen?')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    <?php else : ?>
+                                        <button type="submit" class="btn btn-outline-success w-100"
+                                                name="Add_Cart" value="<?= $product_id ?>"
                                             <?= $quantityOnHandRaw < 0 ? 'disabled' : '' ?>>
-                                        <i class="fas fa-cart-plus h1"></i>
-                                    </button>
-                                <?php endif; ?>
+                                            <i class="fas fa-cart-plus h1"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
                             </form>
+
                             <p class="StockItemPriceText">
                                 <b>&euro; <?= number_format($product['SellPrice'] ?? 0, 2, ',', '.') ?></b>
                             </p>
@@ -177,7 +204,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <?php if (!empty($imagePath)) : ?>
                         <div class="ImgFrame"
                              style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
-                                     background-size: 175px; width: 159px; height: 159px; background-repeat: no-repeat; background-position: center;"></div>
+                                     background-size: 175px; width: 159px; height: 159px; background-repeat: no-repeat;  margin-bottom: 20%; background-position: center;"></div>
                     <?php elseif (!empty($backupImagePath)) : ?>
                         <div class="ImgFrame"
                              style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');

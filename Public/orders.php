@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+// TODO: Get the customer id based on the logged in user.
 $orders = getOrdersByCustomer(1063);
 $amountOrders = count($orders);
 ?>
@@ -20,7 +21,7 @@ $amountOrders = count($orders);
                                             Bestelhistorie
                                         </div>
                                         <div class="h3 font-weight-bold text-primary text-uppercase mb-1 float-right">
-                                            <?php if ($amountOrders < 2) : ?>
+                                            <?php if ($amountOrders === 1) : ?>
                                                 <?= $amountOrders ?> bestelling
                                             <?php else : ?>
                                                 <?= $amountOrders ?> bestellingen
