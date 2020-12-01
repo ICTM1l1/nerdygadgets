@@ -64,9 +64,9 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="password2" class="col-sm-3 text-left">Herhaal Wachtwoord <span class="text-danger">*</span></label>
+                            <label for="password2" class="col-sm-3 text-left">Bevestig wachtwoord <span class="text-danger">*</span></label>
                             <input type="password" id="password2" name="password2" class="form-control col-sm-9"
-                                   placeholder="Herhaal Wachtwoord" required>
+                                   placeholder="Bevestig wachtwoord" required>
 
                             <div class="col-sm-3"></div>
                             <div class="col-sm-9 text-left mt-2" id="divCheckPasswordMatch"></div>
