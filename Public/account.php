@@ -61,7 +61,7 @@ if (isset($_POST["update"])) {
                                             </div>
 
                                             <div class="form-group form-row">
-                                                <label for="email" class="col-sm-3 text-left">E-Mail <span class="text-danger">*</span></label>
+                                                <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
                                                 <input type="email" id="email" name="email" class="form-control col-sm-9"
                                                        placeholder="E-Mail" value="<?= $email ?>" disabled="disabled">
                                             </div>
@@ -73,7 +73,7 @@ if (isset($_POST["update"])) {
                                             </div>
 
                                             <div class="form-group form-row">
-                                                <label for="address" class="col-sm-3 text-left">Address <span class="text-danger">*</span></label>
+                                                <label for="address" class="col-sm-3 text-left">Adres <span class="text-danger">*</span></label>
                                                 <input type="text" id="address" name="address" class="form-control col-sm-9"
                                                        placeholder="Address" value="<?= $address ?>" required>
                                             </div>
