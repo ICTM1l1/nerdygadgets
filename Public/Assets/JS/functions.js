@@ -5,6 +5,13 @@ $(document).ready(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
+
+    $("#search_string").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $(".products-view .ListItem").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
 });
 
 /**
