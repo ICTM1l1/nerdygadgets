@@ -9,6 +9,8 @@ session_save('cart', new Cart());
 
 /** @var Cart $cart */
 $cart = session_get('cart');
+$loggedIn = session_get('LoggedIn');
+
 $categories = getCategories();
 $countedCategories = count($categories);
 ?>
@@ -73,12 +75,20 @@ $countedCategories = count($categories);
             </ul>
         </div>
         <ul id="ul-class-navigation">
-            <li class="custom-dropdown">
-                <a href="<?= get_url('account.php') ?>"
-                   class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'account') !== false ? 'active' : '' ?>">
-                    <i class="fas fa-user" style="color:#676EFF;"></i>
-                    Account
-                </a>
+            <li>
+                <?php if ($loggedIn) : ?>
+                    <a href="<?= get_url('account.php') ?>"
+                       class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'account') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-user" style="color:#676EFF;"></i>
+                        Account
+                    </a>
+                <?php else : ?>
+                    <a href="<?= get_url('login.php') ?>"
+                       class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'login') !== false ? 'active' : '' ?>">
+                        <i class="fas fa-user" style="color:#676EFF;"></i>
+                        Inloggen
+                    </a>
+                <?php endif; ?>
             </li>
             <li>
                 <a href="<?= get_url('shoppingcart.php') ?>"

@@ -1,7 +1,14 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-// TODO: Show this page only for admins.
+authorizeUser();
+$personID = session_get('personID', 0);
+$account = getCustomerByPeople($personID);
+$account_name = $account['PrivateCustomerName'] ?? '';
+if (stripos($account_name, 'admin') === false) {
+    redirect('Config');
+}
+
 $contactRequests = getContactRequests();
 if ($date = get_form_data_get('date')) {
     $contactRequests = getContactRequestsByDate($date);
@@ -60,7 +67,7 @@ if (isset($_POST['delete_contact_request'])) {
                                 <?php endif; ?>
 
                                 <?php if ($amountContactRequests > 0) : ?>
-                                    <div class="col-sm-3 pt-0 mt-0">
+                                    <div class="col-sm-4 pt-0 mt-0">
                                         <div class="form-label-group">
                                             <label for="searchListGroupItems" class="d-none">
                                                 <b>Zoeken</b>
@@ -92,7 +99,7 @@ if (isset($_POST['delete_contact_request'])) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-8">
                                         <div class="tab-content text-white" id="nav-tabContent">
                                             <?php $active = 'active';
                                             foreach ($contactRequests as $key => $contactRequest) :

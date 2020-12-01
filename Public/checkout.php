@@ -10,24 +10,30 @@ if (empty($price) || empty($cart->getItems())) {
     redirect(get_url('shoppingcart.php'));
 }
 
-$name = get_form_data_post('name');
-$postalCode = get_form_data_post('postalcode');
-$street = get_form_data_post('streetname');
-$city = get_form_data_post('city');
-$phoneNumber = get_form_data_post('phonenumber');
+$personID = session_get('personID', 0);
+$account = getCustomerByPeople($personID);
+
+$name = get_form_data_post('name', $account['PrivateCustomerName'] ?? '');
+$postalCode = get_form_data_post('postalcode', $account['DeliveryPostalCode'] ?? '');
+$address = get_form_data_post('address', $account['DeliveryAddressLine1'] ?? '');
+$city = get_form_data_post('city', $account['CityName'] ?? '');
+$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'][1] ?? '');
 
 if (isset($_POST['checkout'])) {
     $values_valid = true;
-    if (empty($name) || empty($postalCode) || empty($street) || empty($city) || empty($phoneNumber)) {
+    if (empty($name) || empty($postalCode) || empty($address) || empty($city) || empty($phoneNumber)) {
         $values_valid = false;
         add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
     }
 
     if ($values_valid) {
-        $customer = getCustomerByName($name);
-        $customer_id = $customer['CustomerID'] ?? 0;
+        $customer_id = $account['PrivateCustomerID'] ?? 0;
         if (empty($customer_id)) {
-            $customer_id = createCustomer($name, $phoneNumber, $street, $postalCode, $city);
+            $customer = getCustomerByName($name);
+            $customer_id = $customer['CustomerID'] ?? 0;
+            if (empty($customer_id)) {
+                $customer_id = createCustomer($name, $phoneNumber, $address, $postalCode, $city);
+            }
         }
 
         if (!empty($customer_id)) {
@@ -60,9 +66,9 @@ if (isset($_POST['checkout'])) {
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="streetname" class="col-sm-3 text-left">Straatnaam <span class="text-danger">*</span></label>
-                            <input type="text" id="streetname" name="streetname" class="form-control col-sm-9"
-                                   placeholder="Straatnaam" value="<?= $street ?>">
+                            <label for="address" class="col-sm-3 text-left">Adres <span class="text-danger">*</span></label>
+                            <input type="text" id="address" name="address" class="form-control col-sm-9"
+                                   placeholder="Adres" value="<?= $address ?>">
                         </div>
 
                         <div class="form-group form-row">
