@@ -18,7 +18,7 @@ if (isset($_POST['login'])) {
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
     if (empty($account) || !password_verify($password, $account_password)) {
-        add_user_error('E-Mail of wachtwoord fout.');
+        add_user_error('Email of wachtwoord fout.');
         redirect(get_url("login.php"));
     }
 
@@ -43,9 +43,9 @@ if (isset($_POST['login'])) {
                     <form class="text-center w-100" action="<?= get_url('login.php') ?>" method="post">
                         <h1 class="mb-lg-5">Inloggen</h1>
                         <div class="form-group form-row">
-                            <label for="email" class="col-sm-3 text-left">E-Mail <span class="text-danger">*</span></label>
+                            <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
                             <input type="email" id="email" name="email" class="form-control col-sm-9" required
-                                   placeholder="E-Mail" value="<?= $email ?>">
+                                   placeholder="Email" value="<?= $email ?>">
                         </div>
 
                         <div class="form-group form-row">

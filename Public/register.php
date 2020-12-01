@@ -27,13 +27,13 @@ if (isset($_POST['register'])) {
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldig E-Mail address.');
+        add_user_error('Ongeldig email address.');
         redirect(get_url("register.php"));
     }
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
-        add_user_error('E-Mail word al gebruikt.');
+        add_user_error('Email word al gebruikt.');
         redirect(get_url("register.php"));
     }
 
@@ -73,9 +73,9 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="email" class="col-sm-3 text-left">E-Mail <span class="text-danger">*</span></label>
+                            <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
                             <input type="email" id="email" name="email" class="form-control col-sm-9"
-                                   placeholder="E-Mail" value="<?= $email ?>" required>
+                                   placeholder="Email" value="<?= $email ?>" required>
                         </div>
 
                         <div class="form-group form-row">

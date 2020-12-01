@@ -28,7 +28,7 @@ if (isset($_POST["update"])) {
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldig E-Mail address.');
+        add_user_error('Ongeldig email address.');
         redirect(get_url("account.php"));
     }
 
@@ -63,7 +63,7 @@ if (isset($_POST["update"])) {
                                             <div class="form-group form-row">
                                                 <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
                                                 <input type="email" id="email" name="email" class="form-control col-sm-9"
-                                                       placeholder="E-Mail" value="<?= $email ?>" disabled="disabled">
+                                                       placeholder="Email" value="<?= $email ?>" disabled="disabled">
                                             </div>
 
                                             <div class="form-group form-row">
