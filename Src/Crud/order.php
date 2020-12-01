@@ -15,7 +15,8 @@ function getOrdersByCustomer(int $people) {
         FROM orders
         JOIN PrivateCustomer ON PrivateCustomerID = CustomerID
         WHERE PeopleID = :peopleID
-        ORDER BY OrderDate DESC;
+        AND YEAR(OrderDate) > 2019
+        ORDER BY OrderID DESC;
     ', ['peopleID' => $people]);
 }
 
