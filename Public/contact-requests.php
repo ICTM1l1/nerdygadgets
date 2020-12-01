@@ -5,7 +5,7 @@ authorizeUser();
 $personID = session_get('personID', 0);
 $account = getCustomerByPeople($personID);
 $account_name = $account['PrivateCustomerName'] ?? '';
-if (strpos($account_name, 'admin') === false) {
+if (stripos($account_name, 'admin') === false) {
     redirect('Config');
 }
 

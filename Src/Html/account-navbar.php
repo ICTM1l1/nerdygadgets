@@ -11,7 +11,7 @@
             $personID = session_get('personID', 0);
             $account = getCustomerByPeople($personID);
             $account_name = $account['PrivateCustomerName'] ?? '';
-            if (strpos($account_name, 'admin') !== false) : ?>
+            if (stripos($account_name, 'admin') !== false) : ?>
                 <li class="nav-item <?= strpos(get_current_url(), 'contact-requests') !== false ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= get_url('contact-requests.php') ?>">Contact aanvragen</a>
                 </li>
