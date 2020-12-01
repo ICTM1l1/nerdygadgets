@@ -51,7 +51,7 @@ if ($searchString !== '') {
     }
 
     if (!empty($searchString)) {
-        $queryBuildResult .= "SI.StockItemID = '$searchString'";
+        $queryBuildResult .= "SI.StockItemID = '$searchString'"; /*TODO: $searchString is direct user-input, sanitize for safety*/
     }
 }
 
