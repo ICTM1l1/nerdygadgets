@@ -22,7 +22,7 @@ $amountOrders = count($orders);
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-md-12 mr-2 mb-4">
                                         <div class="h2 font-weight-bold text-primary text-uppercase float-left">
-                                            Bestelhistorie
+                                            Bestelgeschiedenis
                                         </div>
                                         <div class="h3 font-weight-bold text-primary text-uppercase mb-1 float-right">
                                             <?php if ($amountOrders === 1) : ?>
