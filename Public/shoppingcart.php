@@ -55,7 +55,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                         $productFromDb = getProduct($productId);
                         $image = getProductImage($productId);
 
-                        $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
+                        $quantityOnHandRaw = (int) ($productFromDb['QuantityOnHandRaw'] ?? 0);
                         $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
                         $productQuantity = (int) ($cartItem["amount"] ?? 0);
                         $productPriceTotal = $pricePerPiece * $productQuantity;
@@ -95,7 +95,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
 
                                         <button class="btn btn-outline-danger float-right w-100"
                                                 type="submit" name="Del_Product"
-                                                onclick="return confirm('Weet u zeker dat u `<?= $product['StockItemName'] ?? "" ?>` wilt verwijderen?')"
+                                                onclick="return confirm('Weet u zeker dat u `<?= $productFromDb['StockItemName'] ?? "" ?>` wilt verwijderen?')"
                                                 value="<?= $productId ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>

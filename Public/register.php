@@ -33,7 +33,7 @@ if (isset($_POST['register'])) {
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
-        add_user_error('Email word al gebruikt.');
+        add_user_error('Email wordt al gebruikt.');
         redirect(get_url("register.php"));
     }
 

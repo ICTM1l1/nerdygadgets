@@ -5,7 +5,7 @@
                 <a class="nav-link" href="<?= get_url('account.php') ?>">Account</a>
             </li>
             <li class="nav-item <?= strpos(get_current_url(), 'orders') !== false ? 'active' : '' ?>">
-                <a class="nav-link" href="<?= get_url('orders.php') ?>">Bestelhistorie</a>
+                <a class="nav-link" href="<?= get_url('orders.php') ?>">Bestelgeschiedenis</a>
             </li>
             <?php
             $personID = session_get('personID', 0);

@@ -6,20 +6,23 @@ $cart = session_get('cart');
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen items in de winkelwagen gevonden om af te rekenen.');
+    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
     redirect(get_url('shoppingcart.php'));
 }
 
 $paymentPaid = checkPayment(session_get('paymentId'));
 
-// Always clear the payment id in order to be able to start a new payment.
+$customerId = session_get('customer_id');
+$customer = getCustomer($customerId);
+
+// Always clear the payment process in order to be able to start a new payment.
+session_key_unset('customer_id');
 session_key_unset('paymentId');
 
 if ($paymentPaid) {
     // Add order, order lines and decrease the quantity on hand value.
     $cart = session_get("cart");
     $products = $cart->getItems();
-    $customerId = session_get('customer_id');
 
     $dateTime = new DateTime();
     $currentDate = $dateTime->format('Y-m-d');
@@ -75,16 +78,47 @@ if ($paymentPaid) {
 
         <div class="row">
             <div class="col-sm-12">
-                <h1 style=<?= $paymentPaid ? "color:green" : "color:red" ?>>
-                    <?= $paymentPaid ? "Transactie compleet" : "Transactie mislukt" ?>
-                </h1>
+                <?php if ($paymentPaid) : ?>
+                    <h1 class="text-success">Bestelling is geplaatst</h1>
+                    <p>
+                        Uw bestelling is succesvol geplaatst en wordt morgen bezorgt.
+                    </p>
 
-                <div class="form-group">
-                    <button class="btn btn-success float-right my-4" type="button" name="back"
-                            onclick="window.location.href='<?= get_url('index.php') ?>'">
-                        3. Afronden
-                    </button>
-                </div>
+                    <h1>Bezorggegevens</h1>
+                    <ul class="list-group list-group-flush w-50">
+                        <li class="list-group-item bg-dark">
+                            Naam: <b class="float-right"><?= $customer['PrivateCustomerName'] ?? '' ?></b>
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            Adres: <b class="float-right"><?= $customer['DeliveryAddressLine1'] ?? '' ?></b>
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            Postcode: <b class="float-right"><?= $customer['DeliveryPostalCode'] ?? '' ?></b>
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            Woonplaats: <b class="float-right"><?= $customer['CityName'] ?? '' ?></b>
+                        </li>
+                        <li class="list-group-item bg-dark">
+                            Telefoonnummer: <b class="float-right"><?= $customer['PhoneNumber'] ?? '' ?></b>
+                        </li>
+                    </ul>
+
+                    <div class="form-group mt-5 text-center">
+                        <button class="btn btn-success my-4" type="button" name="back"
+                                onclick="window.location.href='<?= get_url('index.php') ?>'">
+                            3. Afronden
+                        </button>
+                    </div>
+                <?php else : ?>
+                    <h1 class="text-danger text-center">Producten afrekenen is mislukt</h1>
+
+                    <div class="form-group mt-5 text-center">
+                        <button class="btn btn-success my-4" type="button" name="back"
+                                onclick="window.location.href='<?= get_url('checkout.php') ?>'">
+                            Opnieuw afrekenen
+                        </button>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
