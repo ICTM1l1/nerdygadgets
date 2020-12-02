@@ -12,14 +12,17 @@ if (empty($price) || empty($cart->getItems())) {
 
 $paymentPaid = checkPayment(session_get('paymentId'));
 
-// Always clear the payment id in order to be able to start a new payment.
+$customerId = session_get('customer_id');
+$customer = getCustomer($customerId);
+
+// Always clear the payment process in order to be able to start a new payment.
+session_key_unset('customer_id');
 session_key_unset('paymentId');
 
 if ($paymentPaid) {
     // Add order, order lines and decrease the quantity on hand value.
     $cart = session_get("cart");
     $products = $cart->getItems();
-    $customerId = session_get('customer_id');
 
     $dateTime = new DateTime();
     $currentDate = $dateTime->format('Y-m-d');
@@ -84,10 +87,10 @@ if ($paymentPaid) {
                     <h1>Bezorggegevens</h1>
                     <ul class="list-group list-group-flush w-50">
                         <li class="list-group-item bg-dark">
-                            Naam: <b class="float-right"><?= $customer['CustomerName'] ?? '' ?></b>
+                            Naam: <b class="float-right"><?= $customer['PrivateCustomerName'] ?? '' ?></b>
                         </li>
                         <li class="list-group-item bg-dark">
-                            Straat: <b class="float-right"><?= $customer['DeliveryAddressLine1'] ?? '' ?></b>
+                            Adres: <b class="float-right"><?= $customer['DeliveryAddressLine1'] ?? '' ?></b>
                         </li>
                         <li class="list-group-item bg-dark">
                             Postcode: <b class="float-right"><?= $customer['DeliveryPostalCode'] ?? '' ?></b>
