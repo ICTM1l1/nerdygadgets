@@ -55,7 +55,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
                         $productFromDb = getProduct($productId);
                         $image = getProductImage($productId);
 
-                        $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
+                        $quantityOnHandRaw = (int) ($productFromDb['QuantityOnHandRaw'] ?? 0);
                         $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
                         $productQuantity = (int) ($cartItem["amount"] ?? 0);
                         $productPriceTotal = $pricePerPiece * $productQuantity;
