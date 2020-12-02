@@ -11,14 +11,19 @@ $categories = getCategoryIdForProduct($product_id);
 
 $relatedProductIds = [];
 $relatedProductImages = [];
-for($i = 0; $i < 6; $i++){
-    $relatedProductIds[$i] = getRandomProductForCategory($categories[random_int(0, count($categories) - 1)] ['StockGroupID'] ?? '');
 
-    $image = getProductImages($relatedProductIds[$i] ?? 0);
-    $fallbackImage = getBackupProductImage($relatedProductIds[$i] ?? 0);
+if (!empty($categories)) {
+    $countedCategories = count($categories);
+    for($i = 0; $i < 6; $i++) {
+        $randomCategories = random_int(0, $countedCategories - 1);
+        $relatedProductIds[$i] = getRandomProductForCategory($categories[$randomCategories] ['StockGroupID'] ?? '');
 
-    $relatedProductImages[$i]['ImagePath'] = $image[0]['ImagePath'] ?? '';
-    $relatedProductImages[$i]['BackupImagePath'] = $fallbackImage['BackupImagePath'] ?? '';
+        $image = getProductImages($relatedProductIds[$i] ?? 0);
+        $fallbackImage = getBackupProductImage($relatedProductIds[$i] ?? 0);
+
+        $relatedProductImages[$i]['ImagePath'] = $image[0]['ImagePath'] ?? '';
+        $relatedProductImages[$i]['BackupImagePath'] = $fallbackImage['BackupImagePath'] ?? '';
+    }
 }
 
 $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
