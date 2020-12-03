@@ -49,6 +49,7 @@ $(document).ready(function () {
         }
     });
 
+    $("#password").keyup(checkPasswordMatch);
     $("#password2").keyup(checkPasswordMatch);
 
     /**
