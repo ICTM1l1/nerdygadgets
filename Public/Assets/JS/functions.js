@@ -39,6 +39,9 @@ function checkPasswordMatch() {
  *   The length of allowed chars.
  */
 function charCountUpdate(selector, str, length) {
-    var lng = str.length;
-    document.getElementById(selector).innerHTML = lng + ' van de ' + length + ' maximale karakters';
+    const lng = str.length;
+    const remainingLengthInPercentage = lng / length * 100;
+    if (remainingLengthInPercentage > 80) {
+        document.getElementById(selector).innerHTML = lng + ' van de ' + length + ' maximale karakters';
+    }
 }
