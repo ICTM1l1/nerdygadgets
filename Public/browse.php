@@ -172,7 +172,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                     <?php else : ?>
                                         <button type="submit" class="btn btn-outline-success w-100"
                                                 name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>"
-                                            <?= $quantityOnHandRaw < 0 ? 'disabled' : '' ?>>
+                                            <?= $quantityOnHandRaw <= 0 ? 'disabled' : '' ?>>
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
                                     <?php endif; ?>
@@ -186,7 +186,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                         <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>
                         <p class="StockItemName"><?= $product["StockItemName"] ?? '' ?></p>
                         <p class="StockItemComments"><?= $product["MarketingComments"] ?? '' ?></p>
-                        <?php if ($quantityOnHandRaw < 0) : ?>
+                        <?php if ($quantityOnHandRaw <= 0) : ?>
                             <h4 class="ItemQuantity text-danger">
                                 Dit product is niet op voorraad.
                             </h4>
