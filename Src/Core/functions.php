@@ -300,3 +300,16 @@ function get_week_boundaries_from_date(DateTime $date){
     $w["end"] = $week->format("Y-m-d");
     return $w;
 }
+
+/**
+ * Replaces double quotes for white spaces.
+ *
+ * @param string $string
+ *   The string.
+ *
+ * @return string
+ *   The string without double quotes.
+ */
+function replaceDoubleQuotesForWhiteSpaces(string $string) {
+    return str_replace('"', "", $string);
+}

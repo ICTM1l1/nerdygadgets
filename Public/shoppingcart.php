@@ -95,7 +95,7 @@ elseif(get_form_data_post("Del_Product", NULL) != NULL){
 
                                         <button class="btn btn-outline-danger float-right w-100"
                                                 type="submit" name="Del_Product"
-                                                onclick="return confirm('Weet u zeker dat u `<?= $productFromDb['StockItemName'] ?? "" ?>` wilt verwijderen?')"
+                                                onclick="return confirm('Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? "") ?>` wilt verwijderen?')"
                                                 value="<?= $productId ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>
