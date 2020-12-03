@@ -11,40 +11,44 @@ $city = get_form_data_post('city');
 $phoneNumber = get_form_data_post('phonenumber');
 
 if (isset($_POST['register'])) {
+    $valuesValid = true;
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
         add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
     if (!($password === $password2)) {
         add_user_error('Wachtworden komen niet overeen.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
     if (!(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
         add_user_error('Wachtwoord niet sterk genoeg.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         add_user_error('Ongeldig email address.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
         add_user_error('Email wordt al gebruikt.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
-    createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
+    if ($valuesValid) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
+        createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
 
-    add_user_message('Account is succesvol aangemaakt.');
-    redirect(get_url("login.php"));
+        add_user_message('Account is succesvol aangemaakt.');
+        redirect(get_url("login.php"));
+    }
 }
 ?>
+<?php include __DIR__ . '/../Src/Html/alert.php'; ?>
 
     <div class="container-fluid">
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
