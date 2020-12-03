@@ -6,27 +6,16 @@ $cart = session_get("cart");
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
-if(get_form_data_post("Add_Product", NULL) != NULL){
-    $id = get_form_data_post("Add_Product");
-    $count = $cart->getItemCount($id);
-    $cart->setItemCount($id, $count+1);
-
-    add_user_message('Product aantal is succesvol verhoogd.');
+if($id = get_form_data_post("Add_Product", NULL)){
+    $cart->addItem($id);
     redirect(get_current_url());
 }
-elseif(get_form_data_post("Min_Product", NULL) != NULL){
-    $id = get_form_data_post("Min_Product");
-    $count = $cart->getItemCount($id);
-    $cart->setItemCount($id, $count-1 ?: $count);
-
-    add_user_message('Product aantal is succesvol verminderd.');
+elseif($id = get_form_data_post("Min_Product", NULL)){
+    $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif(get_form_data_post("Del_Product", NULL) != NULL){
-    $id = get_form_data_post("Del_Product");
+elseif($id = get_form_data_post("Del_Product", NULL)){
     $cart->removeItem($id);
-
-    add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
     redirect(get_current_url());
 }
 ?>

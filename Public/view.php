@@ -35,27 +35,19 @@ if (!empty($productCustomFields)) {
 
 $productInCart = $cart->getItemCount($product_id) > 0;
 if ($id = get_form_data_post("Add_Cart", NULL)) {
-    $cart->addItem($id, 1);
-
-    add_user_message('Product is toegevoegd aan de winkelwagen.');
+    $cart->addItem($id);
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Min_Cart", NULL)) {
     $cart->decreaseItemCount($id);
-
-    add_user_message('Product aantal is succesvol bijgewerkt.');
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Increase_Cart", NULL)) {
     $cart->increaseItemCount($id);
-
-    add_user_message('Product aantal is succesvol bijgewerkt.');
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Del_Cart", NULL)) {
     $cart->removeItem($id);
-
-    add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
     redirect(get_current_url());
 }
 ?>
