@@ -62,21 +62,6 @@ if (isset($_POST['register'])) {
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
-                            <input type="password" id="password" name="password" class="form-control col-sm-9"
-                                   placeholder="Wachtwoord" required>
-                        </div>
-
-                        <div class="form-group form-row">
-                            <label for="password2" class="col-sm-3 text-left">Bevestig wachtwoord <span class="text-danger">*</span></label>
-                            <input type="password" id="password2" name="password2" class="form-control col-sm-9"
-                                   placeholder="Bevestig wachtwoord" required>
-
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-9 text-left mt-2" id="divCheckPasswordMatch"></div>
-                        </div>
-
-                        <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
                             <input type="email" id="email" name="email" class="form-control col-sm-9"
                                    placeholder="Email" value="<?= $email ?>" required>
@@ -106,12 +91,27 @@ if (isset($_POST['register'])) {
                                    placeholder="Telefoonnummer" value="<?= $phoneNumber ?>" required>
                         </div>
 
+                        <div class="form-group form-row">
+                            <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
+                            <input type="password" id="password" name="password" class="form-control col-sm-9"
+                                   placeholder="Wachtwoord" required>
+                        </div>
+
+                        <div class="form-group form-row">
+                            <label for="password2" class="col-sm-3 text-left">Bevestig wachtwoord <span class="text-danger">*</span></label>
+                            <input type="password" id="password2" name="password2" class="form-control col-sm-9"
+                                   placeholder="Bevestig wachtwoord" required>
+
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 text-left mt-2" id="divCheckPasswordMatch"></div>
+                        </div>
+
                         <div class="form-group">
                             <a href="<?= get_url('login.php') ?>" class="btn btn-danger my-4 float-left">
-                                Inloggen
+                                Terug
                             </a>
 
-                            <button class="btn btn-success float-right my-4" type="submit" name="register">
+                            <button class="btn btn-success float-right my-4" id="registerSubmit" type="submit" name="register">
                                 Registreren
                             </button>
                         </div>
