@@ -44,7 +44,7 @@ if ($paymentPaid) {
         $productId = (int) ($product["id"] ?? 0);
         $productAmount = (int) ($product["amount"] ?? 0);
         $productFromDB = getProduct($productId);
-        $currentQuantity = (int) ($productfromDB["QuantityOnHand"] ?? 0);
+        $currentQuantity = (int) ($productFromDB["QuantityOnHandRaw"] ?? 0);
 
         insert("orderlines", [
             "OrderID" => $orderId,
