@@ -14,19 +14,23 @@ $(document).ready(function () {
     });
 
     $("#password2").keyup(checkPasswordMatch);
+
+    /**
+     * Checks if the passwords are equal.
+     */
+    function checkPasswordMatch() {
+        const password = $("#password").val();
+        const confirmPassword = $("#password2").val();
+        const feedback = $("#divCheckPasswordMatch");
+
+        if (password !== confirmPassword) {
+            feedback.html("Wachtwoorden zijn niet gelijk!").removeClass('text-success').addClass('text-danger');
+            return;
+        }
+
+        feedback.html("Wachtwoorden zijn gelijk.").removeClass('text-danger').addClass('text-success');
+    }
 });
-
-function checkPasswordMatch() {
-    var password = $("#password").val();
-    var confirmPassword = $("#password2").val();
-
-    if (password !== confirmPassword) {
-        $("#divCheckPasswordMatch").html("Wachtwoorden zijn niet gelijk!").removeClass('text-success').addClass('text-danger');
-    }
-    else {
-        $("#divCheckPasswordMatch").html("Wachtwoorden zijn gelijk.").removeClass('text-danger').addClass('text-success');
-    }
-}
 
 /**
  * Counts the number of chars and updates it.
