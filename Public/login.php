@@ -11,7 +11,7 @@ $email = get_form_data_post('email');
 
 if (isset($_POST['login'])) {
     if (empty($password) || empty($email)) {
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
         redirect(get_url("login.php"));
     }
 

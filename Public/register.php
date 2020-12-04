@@ -12,12 +12,12 @@ $phoneNumber = get_form_data_post('phonenumber');
 
 if (isset($_POST['register'])) {
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
         redirect(get_url("register.php"));
     }
 
     if (!($password === $password2)) {
-        add_user_error('Wachtworden komen niet overeen.');
+        add_user_error('Wachtwoorden komen niet overeen.');
         redirect(get_url("register.php"));
     }
 
@@ -33,7 +33,7 @@ if (isset($_POST['register'])) {
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
-        add_user_error('Email word al gebruikt.');
+        add_user_error('Email wordt al gebruikt.');
         redirect(get_url("register.php"));
     }
 
