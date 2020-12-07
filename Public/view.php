@@ -11,14 +11,19 @@ $categories = getCategoryIdForProduct($product_id);
 
 $relatedProductIds = [];
 $relatedProductImages = [];
-for($i = 0; $i < 6; $i++){
-    $relatedProductIds[$i] = getRandomProductForCategory($categories[random_int(0, count($categories) - 1)] ['StockGroupID'] ?? '');
 
-    $image = getProductImages($relatedProductIds[$i] ?? 0);
-    $fallbackImage = getBackupProductImage($relatedProductIds[$i] ?? 0);
+if (!empty($categories)) {
+    $countedCategories = count($categories);
+    for($i = 0; $i < 6; $i++) {
+        $randomCategories = random_int(0, $countedCategories - 1);
+        $relatedProductIds[$i] = getRandomProductForCategory($categories[$randomCategories] ['StockGroupID'] ?? '');
 
-    $relatedProductImages[$i]['ImagePath'] = $image[0]['ImagePath'] ?? '';
-    $relatedProductImages[$i]['BackupImagePath'] = $fallbackImage['BackupImagePath'] ?? '';
+        $image = getProductImages($relatedProductIds[$i] ?? 0);
+        $fallbackImage = getBackupProductImage($relatedProductIds[$i] ?? 0);
+
+        $relatedProductImages[$i]['ImagePath'] = $image[0]['ImagePath'] ?? '';
+        $relatedProductImages[$i]['BackupImagePath'] = $fallbackImage['BackupImagePath'] ?? '';
+    }
 }
 
 $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
@@ -30,27 +35,19 @@ if (!empty($productCustomFields)) {
 
 $productInCart = $cart->getItemCount($product_id) > 0;
 if ($id = get_form_data_post("Add_Cart", NULL)) {
-    $cart->addItem($id, 1);
-
-    add_user_message('Product is toegevoegd aan de winkelwagen.');
+    $cart->addItem($id);
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Min_Cart", NULL)) {
     $cart->decreaseItemCount($id);
-
-    add_user_message('Product aantal is succesvol bijgewerkt.');
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Increase_Cart", NULL)) {
     $cart->increaseItemCount($id);
-
-    add_user_message('Product aantal is succesvol bijgewerkt.');
     redirect(get_current_url());
 }
 elseif ($id = get_form_data_post("Del_Cart", NULL)) {
     $cart->removeItem($id);
-
-    add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
     redirect(get_current_url());
 }
 ?>
@@ -106,7 +103,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 <h2 class="StockItemNameViewSize StockItemName">
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
-                <?php if ($quantityOnHandRaw < 0) : ?>
+                <?php if ($quantityOnHandRaw <= 0) : ?>
                     <div class="QuantityText text-danger">
                         Dit product is niet op voorraad.
                     </div>
@@ -135,13 +132,13 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 
                                         <button class="btn btn-outline-danger float-right w-75 mt-2"
                                                 type="submit" name="Del_Cart" value="<?= $product_id ?>"
-                                                onclick="return confirm('Weet u zeker dat u `<?= $product['StockItemName'] ?? "" ?>` wilt verwijderen?')">
+                                                onclick="return confirm('Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?')">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php else : ?>
                                         <button type="submit" class="btn btn-outline-success w-100"
                                                 name="Add_Cart" value="<?= $product_id ?>"
-                                            <?= $quantityOnHandRaw < 0 ? 'disabled' : '' ?>>
+                                            <?= $quantityOnHandRaw <= 0 ? 'disabled' : '' ?>>
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
                                     <?php endif; ?>

@@ -6,7 +6,7 @@ $cart = session_get('cart');
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen items in de winkelwagen gevonden om af te rekenen.');
+    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
     redirect(get_url('shoppingcart.php'));
 }
 
@@ -29,11 +29,7 @@ if (isset($_POST['checkout'])) {
     if ($values_valid) {
         $customer_id = $account['PrivateCustomerID'] ?? 0;
         if (empty($customer_id)) {
-            $customer = getCustomerByName($name);
-            $customer_id = $customer['CustomerID'] ?? 0;
-            if (empty($customer_id)) {
-                $customer_id = createCustomer($name, $phoneNumber, $address, $postalCode, $city);
-            }
+            $customer_id = createCustomer($name, $phoneNumber, $address, $postalCode, $city);
         }
 
         if (!empty($customer_id)) {

@@ -10,31 +10,35 @@ $password = get_form_data_post('password');
 $email = get_form_data_post('email');
 
 if (isset($_POST['login'])) {
+    $valuesValid = true;
     if (empty($password) || empty($email)) {
-        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
-        redirect(get_url("login.php"));
+        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        $valuesValid = false;
     }
 
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
     if (empty($account) || !password_verify($password, $account_password)) {
         add_user_error('Email of wachtwoord fout.');
-        redirect(get_url("login.php"));
+        $valuesValid = false;
     }
 
     $accountIsPermittedToLogon = $account["IsPermittedToLogon"] ?? 0;
     if ($accountIsPermittedToLogon === 0) {
         add_user_error('Permission denied.');
-        redirect(get_url("login.php"));
+        $valuesValid = false;
     }
 
-    session_save('LoggedIn', true, true);
-    session_save('personID', $account['PersonID'] ?? 0, true);
+    if ($valuesValid) {
+        session_save('LoggedIn', true, true);
+        session_save('personID', $account['PersonID'] ?? 0, true);
 
-    add_user_message('Je bent succesvol ingelogd.');
-    redirect(get_url("account.php"));
+        add_user_message('Je bent succesvol ingelogd.');
+        redirect(get_url("account.php"));
+    }
 }
 ?>
+<?php include __DIR__ . '/../Src/Html/alert.php'; ?>
 
     <div class="container-fluid">
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
