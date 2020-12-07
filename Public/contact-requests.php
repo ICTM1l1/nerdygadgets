@@ -118,7 +118,7 @@ if (isset($_POST['delete_contact_request'])) {
                                                                        value="<?= $contactRequest['ContactRequestID'] ?? 0 ?>">
 
                                                                 <button class="btn btn-outline-danger"
-                                                                        onclick="return confirm('Weet u zeker dat u de contact aanvraag `<?= $contactRequest['ContactRequestSubject'] ?? "" ?>` wilt verwijderen?')"
+                                                                        onclick="return confirm('Weet u zeker dat u de contact aanvraag `<?= replaceDoubleQuotesForWhiteSpaces($contactRequest['ContactRequestSubject'] ?? "") ?>` wilt verwijderen?')"
                                                                         name="delete_contact_request">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>

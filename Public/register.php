@@ -11,40 +11,44 @@ $city = get_form_data_post('city');
 $phoneNumber = get_form_data_post('phonenumber');
 
 if (isset($_POST['register'])) {
+    $valuesValid = true;
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
         add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
     if (!($password === $password2)) {
-        add_user_error('Wachtworden komen niet overeen.');
-        redirect(get_url("register.php"));
-    }
-
-    if (!(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
-        add_user_error('Wachtwoord niet sterk genoeg.');
-        redirect(get_url("register.php"));
+        add_user_error('Wachtwoorden komen niet overeen.');
+        $valuesValid = false;
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         add_user_error('Ongeldig email address.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
         add_user_error('Email wordt al gebruikt.');
-        redirect(get_url("register.php"));
+        $valuesValid = false;
     }
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
-    createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
+    if (!(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
+        add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
+        $valuesValid = false;
+    }
 
-    add_user_message('Account is succesvol aangemaakt.');
-    redirect(get_url("login.php"));
+    if ($valuesValid) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
+        createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
+
+        add_user_message('Account is succesvol aangemaakt.');
+        redirect(get_url("login.php"));
+    }
 }
 ?>
+<?php include __DIR__ . '/../Src/Html/alert.php'; ?>
 
     <div class="container-fluid">
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
@@ -55,21 +59,6 @@ if (isset($_POST['register'])) {
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
                                    placeholder="Naam" value="<?= $name ?>" required>
-                        </div>
-
-                        <div class="form-group form-row">
-                            <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
-                            <input type="password" id="password" name="password" class="form-control col-sm-9"
-                                   placeholder="Wachtwoord" required>
-                        </div>
-
-                        <div class="form-group form-row">
-                            <label for="password2" class="col-sm-3 text-left">Bevestig wachtwoord <span class="text-danger">*</span></label>
-                            <input type="password" id="password2" name="password2" class="form-control col-sm-9"
-                                   placeholder="Bevestig wachtwoord" required>
-
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-9 text-left mt-2" id="divCheckPasswordMatch"></div>
                         </div>
 
                         <div class="form-group form-row">
@@ -102,12 +91,27 @@ if (isset($_POST['register'])) {
                                    placeholder="Telefoonnummer" value="<?= $phoneNumber ?>" required>
                         </div>
 
+                        <div class="form-group form-row">
+                            <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
+                            <input type="password" id="password" name="password" class="form-control col-sm-9"
+                                   placeholder="Wachtwoord" required>
+                        </div>
+
+                        <div class="form-group form-row">
+                            <label for="password2" class="col-sm-3 text-left">Bevestig wachtwoord <span class="text-danger">*</span></label>
+                            <input type="password" id="password2" name="password2" class="form-control col-sm-9"
+                                   placeholder="Bevestig wachtwoord" required>
+
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-9 text-left mt-2" id="divCheckPasswordMatch"></div>
+                        </div>
+
                         <div class="form-group">
                             <a href="<?= get_url('login.php') ?>" class="btn btn-danger my-4 float-left">
-                                Inloggen
+                                Terug
                             </a>
 
-                            <button class="btn btn-success float-right my-4" type="submit" name="register">
+                            <button class="btn btn-success float-right my-4" id="registerSubmit" type="submit" name="register">
                                 Registreren
                             </button>
                         </div>

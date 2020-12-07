@@ -69,9 +69,22 @@ class Cart {
      *   The id of the item.
      */
     public function increaseItemCount(int $id): void {
+        $product = getProduct($id);
+        $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
+        $count = $this->items[$id] ?? 1;
+        if (($current_quantity - $count - 1) < 0) {
+            add_user_error('Product ' . ($product['StockItemName'] ?? "") . ' is na verhoging van het aantal niet meer op voorraad');
+            $this->updated = false;
+            return;
+        }
+
         if(isset($this->items[$id])){
             $this->items[$id]++;
             $this->updated = true;
+        }
+
+        if ($this->isUpdated()) {
+            add_user_message('Product aantal is succesvol bijgewerkt.');
         }
     }
 
@@ -85,6 +98,10 @@ class Cart {
         if(isset($this->items[$id])){
             $this->items[$id]--;
             $this->updated = true;
+        }
+
+        if ($this->isUpdated()) {
+            add_user_message('Product aantal is succesvol bijgewerkt.');
         }
     }
 
@@ -121,10 +138,22 @@ class Cart {
      * @param int $count
      *   The amount of the item.
      */
-    public function addItem(int $id, int $count): void{
-        if(!isset($this->items[$id])){
+    public function addItem(int $id, int $count = 1): void {
+        $product = getProduct($id);
+        $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
+        if (($current_quantity - $count) < 0) {
+            add_user_error('Product ' . ($product['StockItemName'] ?? "") . ' is niet op voorraad');
+            $this->updated = false;
+            return;
+        }
+
+        if (!isset($this->items[$id])) {
             $this->items += array($id => $count);
             $this->updated = true;
+        }
+
+        if ($this->isUpdated()) {
+            add_user_message('Product ' . ($product['StockItemName'] ?? "") . ' is toegevoegd aan de winkelwagen.');
         }
     }
 
@@ -138,6 +167,10 @@ class Cart {
         if(isset($this->items[$id])) {
             unset($this->items[$id]);
             $this->updated = true;
+        }
+
+        if ($this->isUpdated()) {
+            add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
         }
     }
 
@@ -171,5 +204,15 @@ class Cart {
         $this->cost = $total;
 
         return $total;
+    }
+
+    /**
+     * Determines whether the cart is updated or not.
+     *
+     * @return bool
+     *   If the cart has been updated.
+     */
+    public function isUpdated(): bool {
+        return $this->updated;
     }
 }

@@ -22,7 +22,8 @@ $countedCategories = count($categories);
 
     <link rel="stylesheet" href="<?= get_asset_url('CSS/Style.css') ?>" type="text/css">
     <link rel="stylesheet" href="<?= get_asset_url('CSS/bootstrap.min.css') ?>" type="text/css">
-    <link rel="stylesheet" href="<?= get_asset_url('CSS/fonts.css') ?>">
+    <link rel="stylesheet" href="<?= get_asset_url('CSS/fonts.css') ?>" type="text/css">
+    <link rel="stylesheet" href="<?= get_asset_url('vendor/password-strength-meter/password.min.css') ?>" type="text/css">
 
     <link rel="apple-touch-icon" sizes="57x57" href="<?= get_asset_url('Favicon/apple-icon-57x57.png') ?>">
     <link rel="apple-touch-icon" sizes="60x60" href="<?= get_asset_url('Favicon/apple-icon-60x60.png') ?>">
