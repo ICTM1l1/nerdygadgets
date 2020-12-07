@@ -8,7 +8,7 @@ if(isset($_POST["contact"])){
     $message = get_form_data_post("message");
 
     if(empty($email) || empty($name) || empty($subject) || empty($message)){
-        add_user_error("Niet all verplichte velden met een * zijn ingevuld.");
+        add_user_error("Niet alle verplichte velden met een * zijn ingevuld.");
     }
     elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         add_user_error("Ongeldige email opgegeven.");

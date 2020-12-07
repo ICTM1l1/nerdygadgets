@@ -12,7 +12,7 @@ $email = get_form_data_post('email');
 if (isset($_POST['login'])) {
     $valuesValid = true;
     if (empty($password) || empty($email)) {
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
         $valuesValid = false;
     }
 

@@ -13,7 +13,7 @@ $phoneNumber = get_form_data_post('phonenumber');
 if (isset($_POST['register'])) {
     $valuesValid = true;
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
         $valuesValid = false;
     }
 
@@ -23,7 +23,7 @@ if (isset($_POST['register'])) {
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldig email address.');
+        add_user_error('Ongeldige email opgegeven.');
         $valuesValid = false;
     }
 
@@ -43,8 +43,13 @@ if (isset($_POST['register'])) {
         $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
         createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
 
-        add_user_message('Account is succesvol aangemaakt.');
-        redirect(get_url("login.php"));
+        $account = getPeopleByEmail($email);
+
+        session_save('LoggedIn', true, true);
+        session_save('personID', $account['PersonID'] ?? 0, true);
+
+        add_user_message('Je bent succesvol ingelogd.');
+        redirect(get_url("account.php"));
     }
 }
 ?>
