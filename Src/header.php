@@ -48,6 +48,13 @@ $countedCategories = count($categories);
             src: url("<?= get_asset_url('fonts/mmrtext.ttf') ?>");
         }
     </style>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("recaptcha-form").submit();
+        }
+    </script>
 </head>
 <body>
 <div class="Background">

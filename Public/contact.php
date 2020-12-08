@@ -1,31 +1,49 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-if(isset($_POST["contact"])){
-    $name = get_form_data_post("name");
-    $email = get_form_data_post("email");
-    $subject = get_form_data_post("subject");
-    $message = get_form_data_post("message");
+$name = get_form_data_post("name");
+$email = get_form_data_post("email");
+$subject = get_form_data_post("subject");
+$message = get_form_data_post("message");
+
+if (!empty($_POST)) {
+    $values_valid = true;
+    if (!validateRecaptcha()) {
+        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        $values_valid = false;
+    }
 
     if(empty($email) || empty($name) || empty($subject) || empty($message)){
         add_user_error("Niet alle verplichte velden met een * zijn ingevuld.");
+        $values_valid = false;
     }
-    elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         add_user_error("Ongeldige email opgegeven.");
+        $values_valid = false;
     }
-    elseif(strlen($message) > 100){
+
+    if(strlen($message) > 100){
         add_user_error("Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)");
+        $values_valid = false;
     }
-    elseif(strlen($email) > 100){
+
+    if(strlen($email) > 100){
         add_user_error("Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)");
+        $values_valid = false;
     }
-    elseif(strlen($subject) > 100){
+
+    if(strlen($subject) > 100){
         add_user_error("Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).");
+        $values_valid = false;
     }
-    elseif(strlen($message) > 2000){
+
+    if(strlen($message) > 2000){
         add_user_error("Uw bericht is langer dan toegestaan.");
+        $values_valid = false;
     }
-    else {
+
+    if ($values_valid) {
         createContactRequest($name, $email, $subject, $message);
         add_user_message("Uw bericht is verstuurd.");
         redirect(get_current_url());
@@ -41,7 +59,7 @@ include __DIR__ . '/../Src/Html/alert.php';
 
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" action="" method="post">
+                    <form class="text-center w-100" action="" id="recaptcha-form" method="post">
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">
                                 Naam
@@ -87,7 +105,8 @@ include __DIR__ . '/../Src/Html/alert.php';
                         </div>
 
                         <div class="form-group">
-                            <button class="btn btn-success float-right my-4" type="submit" name="contact">
+                            <button class="g-recaptcha btn btn-success float-right my-4" type="submit" name="contact"
+                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Indienen
                             </button>
                         </div>
