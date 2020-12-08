@@ -95,7 +95,7 @@ if (isset($_POST["update"])) {
                                 </div>
 
                                 <div class="form-group form-row">
-                                    <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
+                                    <label for="account_password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
                                     <input type="password" id="account_password" name="password" class="form-control col-sm-9"
                                            placeholder="Wachtwoord" required>
                                 </div>

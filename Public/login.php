@@ -18,13 +18,13 @@ if (!empty($_POST)) {
 
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
-    if (empty($account) || !password_verify($password, $account_password)) {
+    if ($valuesValid && (empty($account) || !password_verify($password, $account_password))) {
         add_user_error('Email of wachtwoord fout.');
         $valuesValid = false;
     }
 
     $accountIsPermittedToLogon = $account["IsPermittedToLogon"] ?? 0;
-    if ($accountIsPermittedToLogon === 0) {
+    if ($valuesValid && $accountIsPermittedToLogon === 0) {
         add_user_error('Je account is geblokkeerd.');
         $valuesValid = false;
     }
@@ -57,7 +57,7 @@ if (!empty($_POST)) {
                         </div>
 
                         <div class="form-group form-row">
-                            <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
+                            <label for="login_password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
                             <input type="password" id="login_password" name="password" class="form-control col-sm-9"
                                    placeholder="Wachtwoord" required>
                         </div>
