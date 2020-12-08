@@ -38,15 +38,14 @@ if (!empty($_POST)) {
         $values_valid = false;
     }
 
-    if (!validateRecaptcha()) {
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
-        $values_valid = false;
-    }
-
     if ($values_valid) {
-        createContactRequest($name, $email, $subject, $message);
-        add_user_message("Uw bericht is verstuurd.");
-        redirect(get_current_url());
+        if (validateRecaptcha()) {
+            createContactRequest($name, $email, $subject, $message);
+            add_user_message("Uw bericht is verstuurd.");
+            redirect(get_current_url());
+        }
+
+        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 
