@@ -178,7 +178,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                     <?php endif; ?>
                                 </form>
                                 <h1 class="StockItemPriceText">
-                                    &euro; <?= number_format($product["SellPrice"] ?? 0, 2, ',', '.') ?>
+                                    &euro; <?= price_format($product["SellPrice"] ?? 0) ?>
                                 </h1>
                                 <h6>Inclusief BTW </h6>
                             </div>

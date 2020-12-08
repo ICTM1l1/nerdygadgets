@@ -313,3 +313,16 @@ function get_week_boundaries_from_date(DateTime $date){
 function replaceDoubleQuotesForWhiteSpaces(string $string) {
     return str_replace('"', "", $string);
 }
+
+/**
+ * Formats a price.
+ *
+ * @param float $price
+ *   The price.
+ *
+ * @return string
+ *   The formatted price.
+ */
+function price_format(float $price) {
+    return number_format($price, 2, ",", ".");
+}

@@ -53,7 +53,7 @@ if (empty($price) || empty($cart->getItems())) {
                                         <p class="h4"><?= $productFromDb['StockItemName'] ?? '' ?></p>
                                     </div>
                                     <div class="col-sm-3">
-                                        <p class="h4">&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></p>
+                                        <p class="h4">&euro; <?= price_format($productPriceTotal) ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -65,7 +65,7 @@ if (empty($price) || empty($cart->getItems())) {
 
         <div class="row mt-3">
             <div class="col-sm-12">
-                <p class="h4">Totaal prijs: &euro; <?=number_format($priceTotal, 2, ",", ".")?></p>
+                <p class="h4">Totaal prijs: &euro; <?= price_format($priceTotal) ?></p>
             </div>
         </div>
 
