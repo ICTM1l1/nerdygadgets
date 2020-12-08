@@ -60,6 +60,8 @@ class Cart {
             $this->items[$id] = $count;
             $this->updated = true;
         }
+
+        save_cart($this);
     }
 
     /**
@@ -86,6 +88,8 @@ class Cart {
         if ($this->isUpdated()) {
             add_user_message('Product aantal is succesvol bijgewerkt.');
         }
+
+        save_cart($this);
     }
 
     /**
@@ -103,6 +107,8 @@ class Cart {
         if ($this->isUpdated()) {
             add_user_message('Product aantal is succesvol bijgewerkt.');
         }
+
+        save_cart($this);
     }
 
     /**
@@ -155,6 +161,8 @@ class Cart {
         if ($this->isUpdated()) {
             add_user_message('Product ' . ($product['StockItemName'] ?? "") . ' is toegevoegd aan de winkelwagen.');
         }
+
+        save_cart($this);
     }
 
     /**
@@ -172,6 +180,8 @@ class Cart {
         if ($this->isUpdated()) {
             add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
         }
+
+        save_cart($this);
     }
 
     /**
@@ -180,6 +190,8 @@ class Cart {
     public function cleanCart(): void{
         $this->items = array();
         $this->updated = true;
+
+        save_cart($this);
     }
 
     /**
@@ -202,6 +214,7 @@ class Cart {
 
         $this->updated = false;
         $this->cost = $total;
+        save_cart($this);
 
         return $total;
     }
@@ -215,4 +228,36 @@ class Cart {
     public function isUpdated(): bool {
         return $this->updated;
     }
+}
+
+/**
+ * Saves the cart into the session.
+ *
+ * @param Cart $cart
+ *   The cart.
+ */
+function save_cart(Cart $cart) {
+    session_save('cart', serialize($cart), true);
+}
+
+/**
+ * Resets and saves the cart into the session.
+ */
+function reset_cart() {
+    session_save('cart', serialize(new Cart()), true);
+}
+
+/**
+ * Gets the cart.
+ *
+ * @return Cart
+ *   The cart.
+ */
+function get_cart() {
+    $cart = $_SESSION['cart'] ?? null;
+    if (!$cart) {
+        save_cart(new Cart());
+    }
+
+    return unserialize($cart, [Cart::class]);
 }

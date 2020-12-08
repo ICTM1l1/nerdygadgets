@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-/** @var Cart $cart */
-$cart = session_get("cart");
+$cart = get_cart();
 
 $searchString = get_form_data_get('search_string');
 $categoryID = (int) get_form_data_get('category_id');

@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-/** @var Cart $cart */
-$cart = session_get('cart');
+$cart = get_cart();
 $products = $cart->getItems();
 $price = $cart->getTotalPrice();
 
