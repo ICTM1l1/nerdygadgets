@@ -33,3 +33,11 @@ function validateRecaptcha() {
 
     return (bool) ($responseKeys["success"] ?? false);
 }
+
+/**
+ * Restarts the session.
+ */
+function restartSession() {
+    session_destroy();
+    session_start();
+}
