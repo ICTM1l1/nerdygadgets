@@ -40,7 +40,7 @@ if (!empty($_POST)) {
 
     if (!validateRecaptcha()) {
         add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
     if ($valuesValid) {
