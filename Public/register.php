@@ -17,12 +17,12 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if (!($password === $password2)) {
+    if ($valuesValid && !($password === $password2)) {
         add_user_error('Wachtwoorden komen niet overeen.');
         $valuesValid = false;
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($valuesValid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         add_user_error('Ongeldige email opgegeven.');
         $valuesValid = false;
     }
@@ -33,7 +33,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if (!(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
+    if ($valuesValid && !(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
         add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
