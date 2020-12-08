@@ -10,7 +10,7 @@ $address = get_form_data_post('address');
 $city = get_form_data_post('city');
 $phoneNumber = get_form_data_post('phonenumber');
 
-if (isset($_POST['register'])) {
+if (!empty($_POST)) {
     $valuesValid = true;
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
         add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
@@ -64,7 +64,7 @@ if (isset($_POST['register'])) {
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" action="<?= get_url('register.php') ?>" method="post">
+                    <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('register.php') ?>" method="post">
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
