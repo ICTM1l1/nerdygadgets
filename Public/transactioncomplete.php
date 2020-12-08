@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-/** @var Cart $cart */
-$cart = session_get('cart');
+$cart = get_cart();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
@@ -20,7 +19,6 @@ session_key_unset('customer_id');
 session_key_unset('paymentId');
 
 if ($paymentPaid) {
-    $cart = session_get("cart");
     $products = $cart->getItems();
 
     $dateTime = new DateTime();
@@ -39,9 +37,7 @@ if ($paymentPaid) {
         createOrderLine($orderId, $productFromDB, $productAmount, $currentDate);
     }
 
-    // Clear the cart and payment process.
-    $cart = new Cart();
-    session_save('cart', $cart, true);
+    reset_cart();
 }
 ?>
 

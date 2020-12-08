@@ -38,23 +38,22 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if (!validateRecaptcha()) {
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
-        $values_valid = false;
-    }
-
     if ($valuesValid) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
-        createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
+        if (validateRecaptcha()) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
+            createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
 
-        $account = getPeopleByEmail($email);
+            $account = getPeopleByEmail($email);
 
-        session_save('LoggedIn', true, true);
-        session_save('personID', $account['PersonID'] ?? 0, true);
+            session_save('LoggedIn', true, true);
+            session_save('personID', $account['PersonID'] ?? 0, true);
 
-        add_user_message('Je bent succesvol ingelogd.');
-        redirect(get_url("account.php"));
+            add_user_message('Je bent succesvol ingelogd.');
+            redirect(get_url("account.php"));
+        }
+
+        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 ?>

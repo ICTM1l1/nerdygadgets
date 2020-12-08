@@ -5,10 +5,8 @@ require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
 
 session_start();
-session_save('cart', new Cart());
 
-/** @var Cart $cart */
-$cart = session_get('cart');
+$cart = get_cart();
 $loggedIn = session_get('LoggedIn');
 
 $categories = getCategories();
