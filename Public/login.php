@@ -9,7 +9,7 @@ if ($loggedIn) {
 $password = get_form_data_post('password');
 $email = get_form_data_post('email');
 
-if (isset($_POST['login'])) {
+if (!empty($_POST)) {
     $valuesValid = true;
     if (empty($password) || empty($email)) {
         add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
@@ -30,11 +30,15 @@ if (isset($_POST['login'])) {
     }
 
     if ($valuesValid) {
-        session_save('LoggedIn', true, true);
-        session_save('personID', $account['PersonID'] ?? 0, true);
+        if (validateRecaptcha()) {
+            session_save('LoggedIn', true, true);
+            session_save('personID', $account['PersonID'] ?? 0, true);
 
-        add_user_message('Je bent succesvol ingelogd.');
-        redirect(get_url("account.php"));
+            add_user_message('Je bent succesvol ingelogd.');
+            redirect(get_url("account.php"));
+        }
+
+        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 ?>
@@ -44,7 +48,7 @@ if (isset($_POST['login'])) {
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" action="<?= get_url('login.php') ?>" method="post">
+                    <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('login.php') ?>" method="post">
                         <h1 class="mb-lg-5">Inloggen</h1>
                         <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
@@ -63,7 +67,8 @@ if (isset($_POST['login'])) {
                             <a href="<?= get_url('register.php') ?>">Maak een account</a>
                         </div>
                         <div class="form-group">
-                            <button class="btn btn-success my-4" type="submit" name="login">
+                            <button class="g-recaptcha btn btn-success my-4" type="submit" name="login"
+                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Inloggen
                             </button>
                         </div>

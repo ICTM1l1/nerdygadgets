@@ -7,14 +7,14 @@ $config = require __DIR__ . '/../../Config/config.php';
  *
  * @param string $key
  *   The key to search for.
- * @param string $default
+ * @param mixed $default
  *   The default value if the key does not exist.
  *
  * @return mixed|string
  *   The data from the submitted form data.
  */
 function get_form_data_get(string $key, $default = '') {
-    return $_GET[$key] ?? $default;
+    return request_from_super_globals($_GET, $key, $default);
 }
 
 /**
@@ -22,14 +22,14 @@ function get_form_data_get(string $key, $default = '') {
  *
  * @param string $key
  *   The key to search for.
- * @param string $default
+ * @param mixed $default
  *   The default value if the key does not exist.
  *
  * @return mixed|string
  *   The data from the submitted form data.
  */
 function get_form_data_post(string $key, $default = '') {
-    return $_POST[$key] ?? $default;
+    return request_from_super_globals($_POST, $key, $default);
 }
 
 /**
@@ -37,14 +37,36 @@ function get_form_data_post(string $key, $default = '') {
  *
  * @param string $key
  *   The key to search for.
- * @param string $default
+ * @param mixed $default
  *   The default value if the key does not exist.
  *
  * @return mixed|string
  *   The data from the submitted form data.
  */
 function session_get(string $key, $default = '') {
-    return $_SESSION[$key] ?? $default;
+    return request_from_super_globals($_SESSION, $key, $default);
+}
+
+/**
+ * Requests a value from a super global.
+ *
+ * @param array $global
+ *   The super global, such as GET or POST.
+ * @param string $key
+ *   The key to search for.
+ * @param mixed $default
+ *   The default value.
+ *
+ * @return string
+ *   The sanitized string.
+ */
+function request_from_super_globals(array $global, string $key, $default = '') {
+    $value = $global[$key] ?? $default;
+    if (is_string($value)) {
+        return preventXSS($value);
+    }
+
+    return $value;
 }
 
 /**
@@ -84,7 +106,7 @@ function add_user_error(string $value) {
  *   The found user errors.
  */
 function get_user_errors() {
-    $errors = $_SESSION['errors'] ?? [];
+    $errors = session_get('errors', []);
     session_key_unset('errors');
 
     return $errors;
@@ -107,7 +129,7 @@ function add_user_message(string $message) {
  *   The found user message.
  */
 function get_user_messages() {
-    $messages = $_SESSION['messages'] ?? [];
+    $messages = session_get('messages', []);
     session_key_unset('messages');
 
     return $messages;
@@ -312,4 +334,30 @@ function get_week_boundaries_from_date(DateTime $date){
  */
 function replaceDoubleQuotesForWhiteSpaces(string $string) {
     return str_replace('"', "", $string);
+}
+
+/**
+ * Replaces quotes for white spaces.
+ *
+ * @param string $string
+ *   The string.
+ *
+ * @return string
+ *   The string without quotes.
+ */
+function replaceQuotesForWhiteSpaces(string $string) {
+    return replaceDoubleQuotesForWhiteSpaces(str_replace("'", "", $string));
+}
+
+/**
+ * Formats a price.
+ *
+ * @param float $price
+ *   The price.
+ *
+ * @return string
+ *   The formatted price.
+ */
+function price_format(float $price) {
+    return number_format($price, 2, ",", ".");
 }

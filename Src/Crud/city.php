@@ -17,6 +17,12 @@ function getCity(string $city) {
                 ", ['cityName' => $city,]);
 }
 
+/**
+ * Gets the last city id.
+ *
+ * @return int
+ *   The last city id.
+ */
 function getLastCityId() {
     return selectFirst("
                 SELECT CityID, CityName

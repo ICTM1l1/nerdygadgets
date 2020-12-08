@@ -138,7 +138,7 @@ $amountOrders = count($orders);
                                                                                             <p class="h4"><?= $orderLine['Description'] ?? '' ?></p>
                                                                                         </div>
                                                                                         <div class="col-sm-3">
-                                                                                            <p class="h4">&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></p>
+                                                                                            <p class="h4">&euro; <?= price_format($productPriceTotal) ?></p>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -149,7 +149,7 @@ $amountOrders = count($orders);
                                                             </div>
 
                                                             <div class="col-md-12 mt-3">
-                                                                <p class="h4 pl-2">Totaal kosten: &euro; <?=number_format($priceTotal, 2, ",", ".") ?></p>
+                                                                <p class="h4 pl-2">Totaal kosten: &euro; <?= price_format($priceTotal) ?></p>
                                                             </div>
                                                         </div>
                                                     </div>

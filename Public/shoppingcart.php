@@ -1,8 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-/** @var Cart $cart */
-$cart = session_get("cart");
+$cart = get_cart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
@@ -102,7 +101,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-sm-3 mt-2 text-right">
-                                    <h4>&euro; <?=number_format($productPriceTotal, 2, ",", ".")?></h4>
+                                    <h4>&euro; <?= price_format($productPriceTotal) ?></h4>
                                     <h6>Inclusief BTW</h6>
                                 </div>
                             </div>
@@ -119,7 +118,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
         <div class="row mt-5">
             <div class="col-sm-12">
                 <p class="h4 pt-1 float-left">
-                    Totale kosten: &euro; <?=number_format($priceTotal, 2, ",", ".")?>
+                    Totale kosten: &euro; <?= price_format($priceTotal) ?>
                 </p>
 
                 <a class="btn btn-success float-right" href="<?= get_url('products-overview.php') ?>">
@@ -135,7 +134,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                 <h3>Gerelateerde Producten</h3>
             </div>
                 <?php
-                $product_id = $productId;
+                $product_id = $cartItems[array_key_first($cartItems)]['id'] ?? 0;
                 $categories = getCategoryIdForProduct($product_id);
 
                 $relatedProductIds = [];
