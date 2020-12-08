@@ -7,11 +7,7 @@
             <li class="nav-item <?= strpos(get_current_url(), 'orders') !== false ? 'active' : '' ?>">
                 <a class="nav-link" href="<?= get_url('orders.php') ?>">Bestelgeschiedenis</a>
             </li>
-            <?php
-            $personID = session_get('personID', 0);
-            $account = getCustomerByPeople($personID);
-            $account_name = $account['PrivateCustomerName'] ?? '';
-            if (stripos($account_name, 'admin') !== false) : ?>
+            <?php if (authorizeAdmin()) : ?>
                 <li class="nav-item <?= strpos(get_current_url(), 'contact-requests') !== false ? 'active' : '' ?>">
                     <a class="nav-link" href="<?= get_url('contact-requests.php') ?>">Contact aanvragen</a>
                 </li>

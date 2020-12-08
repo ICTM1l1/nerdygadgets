@@ -20,7 +20,6 @@ session_key_unset('customer_id');
 session_key_unset('paymentId');
 
 if ($paymentPaid) {
-    // Add order, order lines and decrease the quantity on hand value.
     $cart = session_get("cart");
     $products = $cart->getItems();
 
@@ -30,40 +29,14 @@ if ($paymentPaid) {
     $dateTime->modify('+1 day');
     $deliveryDate = $dateTime->format('Y-m-d');
 
-    $orderId = insert("orders", [
-        "CustomerId" => $customerId,
-        "SalespersonPersonID" => "2",
-        "ContactPersonID" => "3032",
-        "OrderDate" => $currentDate,
-        "ExpectedDeliveryDate" => $deliveryDate,
-        "IsUndersupplyBackordered" => 0,
-        "LastEditedBy" => 7
-    ]);
+    $orderId = createOrder($customerId, $currentDate, $deliveryDate);
 
     foreach ($products as $product) {
         $productId = (int) ($product["id"] ?? 0);
         $productAmount = (int) ($product["amount"] ?? 0);
         $productFromDB = getProduct($productId);
-        $currentQuantity = (int) ($productFromDB["QuantityOnHandRaw"] ?? 0);
 
-        insert("orderlines", [
-            "OrderID" => $orderId,
-            "StockItemID" => $productId,
-            "Description" => $productFromDB["StockItemName"] ?? '',
-            "PackageTypeID" => '7',
-            "Quantity" => $productAmount,
-            "UnitPrice" => $productFromDB["SellPrice"] ?? 0,
-            "TaxRate" => '15',
-            "PickedQuantity" => $productAmount,
-            "PickingCompletedWhen" => $currentDate,
-            "LastEditedBy" => "4"
-        ]);
-
-        update("stockitemholdings", [
-            "QuantityOnHand" => $currentQuantity - $productAmount,
-        ], [
-            "StockItemId" => $productId,
-        ]);
+        createOrderLine($orderId, $productFromDB, $productAmount, $currentDate);
     }
 
     // Clear the cart and payment process.

@@ -13,7 +13,7 @@
  *   The postal code.
  * @param string $city
  *   The city.
- * @param int $personID
+ * @param int|null $personID
  *   The person id.
  *
  * @return int
@@ -72,6 +72,15 @@ function getCustomer(int $customer) {
     ", ['customerID' => $customer]);
 }
 
+/**
+ * Gets the customer for a people.
+ *
+ * @param int $people
+ *   The people.
+ *
+ * @return array
+ *   The the found customer for the people.
+ */
 function getCustomerByPeople(int $people) {
     return selectFirst("
         SELECT * 
@@ -82,6 +91,22 @@ function getCustomerByPeople(int $people) {
     ", ['peopleID' => $people]);
 }
 
+/**
+ * Updates a customer.
+ *
+ * @param int $peopleID
+ *   The people id.
+ * @param string $name
+ *   The name.
+ * @param string $address
+ *   The address.
+ * @param string $postalCode
+ *   The postal code.
+ * @param string $phoneNumber
+ *   The phone number.
+ * @param string $city
+ *   The city.
+ */
 function updateCustomer(int $peopleID, string $name, string $address, string $postalCode, string $phoneNumber, string $city) {
     $cityFromDb = getCity($city);
     $cityId = $cityFromDb['CityID'] ?? 0;
