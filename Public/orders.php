@@ -7,6 +7,10 @@ $personID = session_get('personID', 0);
 $account = getCustomerByPeople($personID);
 
 $orders = getOrdersByCustomer($personID);
+if ($date = get_form_data_get('date')) {
+    $orders = getOrdersByCustomerByDate($personID, $date);
+}
+
 $amountOrders = count($orders);
 ?>
 
@@ -21,16 +25,20 @@ $amountOrders = count($orders);
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-md-12 mr-2 mb-4">
-                                        <div class="h2 font-weight-bold text-primary text-uppercase float-left">
-                                            Bestelgeschiedenis
-                                        </div>
-                                        <div class="h3 font-weight-bold text-primary text-uppercase mb-1 float-right">
+                                        <div class="h3 font-weight-bold text-primary text-uppercase mb-1 float-left">
                                             <?php if ($amountOrders === 1) : ?>
-                                                <?= $amountOrders ?> bestelling
+                                                <?= $amountOrders ?> geplaatste bestelling
                                             <?php else : ?>
-                                                <?= $amountOrders ?> bestellingen
+                                                <?= $amountOrders ?> geplaatste bestellingen
                                             <?php endif; ?>
                                         </div>
+                                        <form class="form-inline float-right" method="get" action="<?= get_url('orders.php') ?>">
+                                            <div class="form-group">
+                                                <label for="date" class="d-none">Datum</label>
+                                                <input type="date" id="date" class="form-control" name="date"
+                                                       value="<?= get_form_data_get('date') ?>" onchange="this.form.submit()">
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
 
