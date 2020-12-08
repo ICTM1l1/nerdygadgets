@@ -95,9 +95,11 @@ class Cart {
      *   The id of the item.
      */
     public function decreaseItemCount(int $id): void {
-        if(isset($this->items[$id])){
+        if(isset($this->items[$id]) && $this->getItemCount($id) > 1){
             $this->items[$id]--;
             $this->updated = true;
+        }else{
+            $this->updated = false;
         }
 
         if ($this->isUpdated()) {

@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
 
     $accountIsPermittedToLogon = $account["IsPermittedToLogon"] ?? 0;
     if ($accountIsPermittedToLogon === 0) {
-        add_user_error('Permission denied.');
+        add_user_error('Je account is geblokkeerd.');
         $valuesValid = false;
     }
 
@@ -54,7 +54,7 @@ if (isset($_POST['login'])) {
 
                         <div class="form-group form-row">
                             <label for="password" class="col-sm-3 text-left">Wachtwoord <span class="text-danger">*</span></label>
-                            <input type="password" id="password" name="password" class="form-control col-sm-9"
+                            <input type="password" id="register_password" name="password" class="form-control col-sm-9"
                                    placeholder="Wachtwoord" required>
                         </div>
 

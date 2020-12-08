@@ -7,7 +7,7 @@ $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
 if($id = get_form_data_post("Add_Product", NULL)){
-    $cart->addItem($id);
+    $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
 elseif($id = get_form_data_post("Min_Product", NULL)){
