@@ -8,11 +8,6 @@ $message = get_form_data_post("message");
 
 if (!empty($_POST)) {
     $values_valid = true;
-    if (!validateRecaptcha()) {
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
-        $values_valid = false;
-    }
-
     if(empty($email) || empty($name) || empty($subject) || empty($message)){
         add_user_error("Niet alle verplichte velden met een * zijn ingevuld.");
         $values_valid = false;
@@ -40,6 +35,11 @@ if (!empty($_POST)) {
 
     if(strlen($message) > 2000){
         add_user_error("Uw bericht is langer dan toegestaan.");
+        $values_valid = false;
+    }
+
+    if (!validateRecaptcha()) {
+        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
         $values_valid = false;
     }
 

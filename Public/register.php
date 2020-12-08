@@ -38,6 +38,11 @@ if (isset($_POST['register'])) {
         $valuesValid = false;
     }
 
+    if (!validateRecaptcha()) {
+        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        $values_valid = false;
+    }
+
     if ($valuesValid) {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
@@ -116,7 +121,8 @@ if (isset($_POST['register'])) {
                                 Terug
                             </a>
 
-                            <button class="btn btn-success float-right my-4" id="registerSubmit" type="submit" name="register">
+                            <button class="g-recaptcha btn btn-success float-right my-4" id="registerSubmit" type="submit" name="register"
+                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Registreren
                             </button>
                         </div>
