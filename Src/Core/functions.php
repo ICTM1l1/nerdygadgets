@@ -63,11 +63,7 @@ function session_get(string $key, $default = '') {
 function request_from_super_globals(array $global, string $key, $default = '') {
     $value = $global[$key] ?? $default;
     if (is_string($value)) {
-        return replaceQuotesForWhiteSpaces(
-            str_replace(';', '',
-                htmlspecialchars($value, ENT_NOQUOTES)
-            )
-        );
+        return preventXSS($value);
     }
 
     return $value;
