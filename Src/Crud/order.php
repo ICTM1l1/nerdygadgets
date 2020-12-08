@@ -21,6 +21,29 @@ function getOrdersByCustomer(int $people) {
 }
 
 /**
+ * Gets orders for a given customer.
+ *
+ * @param int $people
+ *   The id of the people.
+ * @param string $date
+ *   The date.
+ *
+ * @return array
+ *   The orders.
+ */
+function getOrdersByCustomerByDate(int $people, string $date) {
+    return select('
+        SELECT OrderID, OrderDate, ExpectedDeliveryDate  
+        FROM orders
+        JOIN PrivateCustomer ON PrivateCustomerID = CustomerID
+        WHERE PeopleID = :peopleID
+        AND YEAR(OrderDate) > 2019
+        AND DATE(OrderDate) = :date
+        ORDER BY OrderID DESC;
+    ', ['peopleID' => $people, 'date' => $date]);
+}
+
+/**
  * Gets order lines for a given order.
  *
  * @param int $order_id

@@ -43,7 +43,7 @@ if (isset($_POST['delete_contact_request'])) {
                                             <?= $amountContactRequests ?> contact aanvragen
                                         <?php endif; ?>
                                     </div>
-                                    <form class="form-inline float-right" method="get">
+                                    <form class="form-inline float-right" method="get" action="<?= get_url('contact-requests.php') ?>">
                                         <div class="form-group">
                                             <label for="date" class="d-none">Datum</label>
                                             <input type="date" id="date" class="form-control" name="date"
