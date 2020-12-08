@@ -119,7 +119,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
         <div class="row mt-5">
             <div class="col-sm-12">
                 <p class="h4 pt-1 float-left">
-                    Totale kosten: &euro; <?=number_format($priceTotal, 2, ",", ".")?>
+                    Totale kosten: &euro; <?= number_format($priceTotal, 2, ",", ".") ?>
                 </p>
 
                 <a class="btn btn-success float-right" href="<?= get_url('products-overview.php') ?>">
@@ -135,7 +135,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                 <h3>Gerelateerde Producten</h3>
             </div>
                 <?php
-                $product_id = $productId;
+                $product_id = $cartItems[array_key_first($cartItems)]['id'] ?? 0;
                 $categories = getCategoryIdForProduct($product_id);
 
                 $relatedProductIds = [];

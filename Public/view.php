@@ -71,14 +71,14 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                 <ul class="carousel-indicators">
                                     <?php foreach ($images as $key => $image) : $key++; ?>
                                         <li data-target="#ImageCarousel"
-                                            data-slide-to="<?= $key ?>" <?= (($key === 1) ? 'class="active"' : ''); ?>></li>
+                                            data-slide-to="<?= $key ?>" <?= (($key === 1) ? 'class="active"' : '') ?>></li>
                                     <?php endforeach; ?>
                                 </ul>
 
                                 <!-- The slideshow -->
                                 <div class="carousel-inner">
                                     <?php foreach ($images as $key => $image) : $key++; ?>
-                                        <div class="carousel-item <?= ($key === 1) ? 'active' : ''; ?>">
+                                        <div class="carousel-item <?= ($key === 1) ? 'active' : '' ?>">
                                             <img alt="Product foto" src="<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>">
                                         </div>
                                     <?php endforeach; ?>
