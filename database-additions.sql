@@ -24,3 +24,19 @@ CREATE TABLE `nerdygadgets`.`contact_requests` (
    PRIMARY KEY (`ContactRequestID`),
    UNIQUE INDEX `idcontact_requests_UNIQUE` (`ContactRequestID` ASC)
 );
+
+/** Password for this user is 'nimda' */
+INSERT INTO people (
+    FullName, PreferredName, SearchName,
+    IsPermittedToLogon, LogonName,
+    IsExternalLogonProvider, HashedPassword,
+    IsSystemUser, IsEmployee, IsSalesperson,
+    PhoneNumber, EmailAddress, ValidFrom,
+    ValidTo, LastEditedBy
+) VALUES (
+    'Admin', 'Admin', 'Admin',
+    1, 'admin@admin.nl', 0,
+    '$2y$10$.D3CZ9FSjEYCOoZwlr.WjekQaijWBo4KTW0I3rpgm4Ou60cknIIXi', 0, 1,
+    0, '+310612345678', 'admin@admin.nl',
+    '2020-12-8 23:59:59', '9999-12-31 23:59:59', 1
+);
