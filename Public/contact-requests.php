@@ -1,11 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-authorizeUser();
-$personID = session_get('personID', 0);
-$account = getCustomerByPeople($personID);
-$account_name = $account['PrivateCustomerName'] ?? '';
-if (stripos($account_name, 'admin') === false) {
+if (!authorizeAdmin()) {
     redirect('Config');
 }
 

@@ -18,6 +18,23 @@ function getPeopleByEmail(string $email) {
 }
 
 /**
+ * Gets a people by id.
+ *
+ * @param int $people
+ *   The people id.
+ *
+ * @return array
+ *   The found people.
+ */
+function getPeople(int $people) {
+    return selectFirst("
+        SELECT * 
+        FROM people 
+        WHERE PersonID = :personID
+    ", ['personID' => $people]);
+}
+
+/**
  * Creates a people.
  *
  * @param string $name
