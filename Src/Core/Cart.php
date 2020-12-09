@@ -260,6 +260,7 @@ function get_cart() {
     if (!$cart) {
         $cart = new Cart();
         save_cart($cart);
+        $cart = serialize($cart);
     }
 
     return unserialize($cart, [Cart::class]);
