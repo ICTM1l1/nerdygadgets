@@ -86,3 +86,13 @@ function charCountUpdate(selector, str, length) {
         document.getElementById(selector).innerHTML = lng + ' van de ' + length + ' maximale karakters';
     }
 }
+
+/**
+ * Submits a form.
+ *
+ * @param token
+ *   The token.
+ */
+function onSubmit(token) {
+    document.getElementById("recaptcha-form").submit();
+}
