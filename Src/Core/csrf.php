@@ -7,6 +7,13 @@ function csrf_token(){
     if(session_status() != PHP_SESSION_ACTIVE){
         return false;
     }
-    session_save("ptoken", csrf_token_private());
+    $px = $_SESSION["pexpiry"] ?? '';
+    $pt = $_SESSION["ptoken"] ?? '';
+    $overwrite = false;
+    if($px != '' && time() >= $px){
+        $overwrite = true;
+    }
+    session_save("ptoken", csrf_token_private(), $overwrite);
+    session_save("pexpiry", time() + 5, true);
     return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["ptoken"]);
 }
