@@ -28,7 +28,7 @@ $countedCategories = count($categories);
         style-src 'self' 'unsafe-inline' https://p.typekit.net https://kit-free.fontawesome.com;
         base-uri 'self';
         manifest-src 'self';
-        form-action 'self';
+        form-action 'self' https://www.mollie.com/;
         frame-src 'self' https://www.google.com;
     ">
     <title>NerdyGadgets</title>
