@@ -27,8 +27,8 @@ $countedCategories = count($categories);
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'none';
         connect-src 'self';
-        script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
-        script-src-elem 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
+        script-src 'self' https://www.google.com https://www.gstatic.com;
+        script-src-elem 'self' https://www.google.com https://www.gstatic.com;
         font-src 'self' https://use.typekit.net https://kit-free.fontawesome.com;
         img-src 'self' http://www.w3.org;
         style-src 'self' 'unsafe-inline' https://p.typekit.net https://kit-free.fontawesome.com;

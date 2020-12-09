@@ -103,7 +103,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 <label for="products_on_page" class="h4 FilterTopMargin">
                     <i class="fas fa-list-ol"></i> Aantal producten op pagina
                 </label>
-                <select name="products_on_page" id="products_on_page" onchange="this.form.submit()">>
+                <select class="submit-form-on-change" name="products_on_page" id="products_on_page">
                     <option value="25" <?= $productsOnPage === 25 ? 'selected' : '' ?>>25</option>
                     <option value="50" <?= $productsOnPage === 50 ? 'selected' : '' ?>>50</option>
                     <option value="75" <?= $productsOnPage === 75 ? 'selected' : '' ?>>75</option>
@@ -112,7 +112,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 
             <div class="form-group">
                 <label for="sort" class="h4 FilterTopMargin"><i class="fas fa-sort"></i> Sorteren</label>
-                <select name="sort" id="sort" onchange="this.form.submit()">>
+                <select class="submit-form-on-change" name="sort" id="sort">
                     <option value="price_low_high" <?= $sortName === "price_low_high" ? 'selected' : '' ?>>
                         Prijs oplopend
                     </option>
