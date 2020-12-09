@@ -1,6 +1,19 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+/*if($_SERVER["REQUEST_METHOD"] === "POST"){
+    $t = csrf_token();
+    $x = get_form_data_post("token");
+    if(!hash_equals($t, $x)){
+        dd("bad token");
+    }
+    //dd("token:{$t}\npost:{$x}");
+}*/
+
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    csrf_validate($_POST["token"], get_current_url());
+}
+
 $cart = get_cart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
@@ -80,6 +93,8 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                                             </button>
                                             <p class="h4 font-weight-bold float-right"><?= $cartItem["amount"] ?? 0 ?>x</p>
                                         </div>
+
+                                        <input type="hidden" name="token" value="<?=csrf_token()?>"/>
 
                                         <button class="btn btn-outline-danger float-right w-100"
                                                 type="submit" name="Del_Product"

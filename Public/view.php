@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    csrf_validate($_POST["token"], get_current_url());
+}
+
 $cart = get_cart();
 
 $product_id = (int) get_form_data_get('id');
@@ -114,6 +118,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                         <div class="CenterPriceCartButton">
                             <form class="form-inline float-right mt-5 pt-2 w-100" method="post"
                                   action="<?= get_current_url() ?>">
+                                <input type="hidden" name="token" value="<?=csrf_token()?>"/>
                                 <div class="edit-actions w-100 mb-2">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger mr-2"

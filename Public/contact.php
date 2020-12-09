@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    csrf_validate($_POST["token"], get_current_url());
+}
+
 $name = get_form_data_post("name");
 $email = get_form_data_post("email");
 $subject = get_form_data_post("subject");
@@ -59,6 +63,7 @@ include __DIR__ . '/../Src/Html/alert.php';
             <div class="row">
                 <div class="col-sm-12">
                     <form class="text-center w-100" action="<?= get_url('contact.php') ?>" id="recaptcha-form" method="post">
+                        <input type="hidden" name="token" value="<?=csrf_token()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">
                                 Naam

@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    csrf_validate($_POST["token"], get_current_url());
+}
+
 $cart = get_cart();
 
 $searchString = get_form_data_get('search_string');
@@ -89,6 +93,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
     <form method="get" action="<?= get_current_url() ?>">
+        <input type="hidden" name="token" value="<?=csrf_token()?>"/>
         <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
@@ -175,6 +180,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
                                     <?php endif; ?>
+                                    <input type="hidden" name="token" value="<?=csrf_token()?>"/>
                                 </form>
                                 <h1 class="StockItemPriceText">
                                     &euro; <?= price_format($product["SellPrice"] ?? 0) ?>

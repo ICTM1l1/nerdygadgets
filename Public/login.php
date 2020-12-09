@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+if($_SERVER["REQUEST_METHOD"] === "POST"){
+    csrf_validate($_POST["token"], get_current_url());
+}
+
 $loggedIn = (bool) session_get('LoggedIn', false);
 if ($loggedIn) {
     redirect(get_url("index.php"));
@@ -49,6 +53,7 @@ if (!empty($_POST)) {
             <div class="row">
                 <div class="col-sm-12">
                     <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('login.php') ?>" method="post">
+                        <input type="hidden" name="token" value="<?=csrf_token()?>"/>
                         <h1 class="mb-lg-5">Inloggen</h1>
                         <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
