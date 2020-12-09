@@ -520,3 +520,12 @@ button:disabled, .disabled {
     padding-left: 238px;
     margin-top: 10px;
 }
+
+.grecaptcha-badge {
+   bottom: 100px !important;
+}
+
+@font-face {
+    font-family: MmrText;
+    src: url('../fonts/mmrtext.ttf');
+}

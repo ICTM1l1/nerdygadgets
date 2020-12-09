@@ -37,6 +37,11 @@ $countedCategories = count($categories);
         form-action 'self' https://www.mollie.com/;
         frame-src 'self' https://www.google.com https://www.youtube.com/;
     ">
+    <link rel="manifest" href="<?= get_asset_url('/Favicon/manifest.json') ?>">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="<?= get_asset_url('Favicon/ms-icon-144x144.png') ?>">
+    <meta name="theme-color" content="#ffffff">
+
     <title>NerdyGadgets</title>
 
     <link rel="stylesheet" href="<?= get_asset_url('CSS/Style.css') ?>" type="text/css">
@@ -57,16 +62,6 @@ $countedCategories = count($categories);
     <link rel="icon" type="image/png" sizes="32x32" href="<?= get_asset_url('Favicon/favicon-32x32.png') ?>">
     <link rel="icon" type="image/png" sizes="96x96" href="<?= get_asset_url('Favicon/favicon-96x96.png') ?>">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= get_asset_url('Favicon/favicon-16x16.png') ?>">
-    <link rel="manifest" href="<?= get_asset_url('/Favicon/manifest.json') ?>">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="<?= get_asset_url('Favicon/ms-icon-144x144.png') ?>">
-    <meta name="theme-color" content="#ffffff">
-    <style>
-        @font-face {
-            font-family: MmrText;
-            src: url("<?= get_asset_url('fonts/mmrtext.ttf') ?>");
-        }
-    </style>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
