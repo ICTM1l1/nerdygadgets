@@ -11,7 +11,8 @@ if (empty($price) || empty($cart->getItems())) {
 
 $paymentPaid = checkPayment(session_get('paymentId'));
 
-$customerId = session_get('customer_id');
+$customerId = (int) session_get('customer_id', 0);
+$loggedIn = (bool) session_get('LoggedIn', false);
 $customer = getCustomer($customerId);
 
 // Always clear the payment process in order to be able to start a new payment.
@@ -38,6 +39,8 @@ if ($paymentPaid) {
     }
 
     reset_cart();
+} elseif (!empty($customerId) && !$loggedIn) {
+    deleteCustomer($customerId);
 }
 ?>
 

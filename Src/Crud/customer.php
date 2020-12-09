@@ -124,3 +124,13 @@ function updateCustomer(int $peopleID, string $name, string $address, string $po
         "PeopleID" => $peopleID
     ]);
 }
+
+/**
+ * Deletes a customer.
+ *
+ * @param int $customer
+ *   The id of the customer.
+ */
+function deleteCustomer(int $customer) {
+    delete('privatecustomer', ['PrivateCustomerID' => $customer]);
+}
