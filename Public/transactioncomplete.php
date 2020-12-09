@@ -46,7 +46,7 @@ if ($orderSuccessful) {
         commitTransaction($connection);
 
         add_user_message('De bestelling is succesvol geplaatst.');
-    } catch (Exception $exception) {
+    } finally {
         $orderSuccessful = false;
         add_user_error('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
         rollbackTransaction($connection);
