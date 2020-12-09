@@ -14,6 +14,17 @@ function csrf_token(){
         $overwrite = true;
     }
     session_save("ptoken", csrf_token_private(), $overwrite);
-    session_save("pexpiry", time() + 5, true);
+    session_save("pexpiry", time() + 3600, true);
     return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["ptoken"]);
+}
+
+function csrf_validate($token, $destination){
+    if(hash_equals(csrf_token(), $token)){
+        return true;
+    }
+    add_user_error("Er is iets fout gegaan. Probeer het opnieuw.");
+    if($destination != ''){
+        redirect($destination);
+    }
+    return false;
 }
