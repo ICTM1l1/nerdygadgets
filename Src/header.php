@@ -4,7 +4,15 @@ ob_start();
 require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
 
+// Server should keep session data for AT LEAST 1 hour.
+ini_set('session.gc_maxlifetime', 3600);
+
+// Each client should remember their session id for EXACTLY 1 hour.
+session_set_cookie_params(3600);
+
+securityHeaders();
 session_start();
+secureSession();
 
 $cart = get_cart();
 $loggedIn = session_get('LoggedIn');
@@ -16,6 +24,19 @@ $countedCategories = count($categories);
 <html lang="en" style="background-color: rgb(35, 35, 47);">
 <head>
     <meta charset="ISO-8859-1">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'none';
+        connect-src 'self';
+        script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
+        script-src-elem 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
+        font-src 'self' https://use.typekit.net https://kit-free.fontawesome.com;
+        img-src 'self' http://www.w3.org;
+        style-src 'self' 'unsafe-inline' https://p.typekit.net https://kit-free.fontawesome.com;
+        base-uri 'self';
+        manifest-src 'self';
+        form-action 'self' https://www.mollie.com/;
+        frame-src 'self' https://www.google.com https://www.youtube.com/;
+    ">
     <title>NerdyGadgets</title>
 
     <link rel="stylesheet" href="<?= get_asset_url('CSS/Style.css') ?>" type="text/css">

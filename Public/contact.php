@@ -13,7 +13,7 @@ if (!empty($_POST)) {
         $values_valid = false;
     }
 
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    if ($values_valid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         add_user_error("Ongeldige email opgegeven.");
         $values_valid = false;
     }

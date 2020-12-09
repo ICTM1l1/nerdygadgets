@@ -258,7 +258,9 @@ function reset_cart() {
 function get_cart() {
     $cart = $_SESSION['cart'] ?? null;
     if (!$cart) {
-        save_cart(new Cart());
+        $cart = new Cart();
+        save_cart($cart);
+        $cart = serialize($cart);
     }
 
     return unserialize($cart, [Cart::class]);

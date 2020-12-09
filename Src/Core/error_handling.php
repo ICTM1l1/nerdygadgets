@@ -2,9 +2,9 @@
 
 $debug = (bool) config_get('debug', false);
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', (int) $debug);
+ini_set('display_startup_errors', (int) $debug);
+error_reporting($debug ? E_ALL : 0);
 
 // Enables custom error handling.
 set_exception_handler('errorException');

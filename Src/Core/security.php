@@ -33,3 +33,58 @@ function validateRecaptcha() {
 
     return (bool) ($responseKeys["success"] ?? false);
 }
+
+/**
+ * Restarts the session.
+ */
+function restartSession() {
+    session_unset();
+    session_destroy();
+    session_start();
+}
+
+/**
+ * Sends the security headers.
+ */
+function securityHeaders() {
+    header('X-XSS-Protection: 1; mode=block');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-Content-Type-Options: nosniff');
+    header("Feature-Policy: autoplay 'none'; camera 'none'");
+    header("Strict-Transport-Security 'max-age=31536000; includeSubDomains; preload';");
+}
+
+/**
+ * Secures the session.
+ */
+function secureSession() {
+    $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
+    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+    if (!isset($_SESSION['canary'])) {
+        session_regenerate_id(true);
+
+        $_SESSION['canary'] = [
+            'birth' => time(),
+            'IP' => $remoteAddr,
+            'UA' => $userAgent,
+        ];
+    }
+
+    if ($_SESSION['canary']['IP'] !== $remoteAddr || $_SESSION['canary']['UA'] !== $userAgent) {
+        session_regenerate_id(true);
+        restartSession();
+
+        $_SESSION['canary'] = [
+            'birth' => time(),
+            'IP' => $remoteAddr,
+            'UA' => $userAgent,
+        ];
+    }
+
+    // Regenerate session ID every five minutes:
+    if ($_SESSION['canary']['birth'] < time() - 300) {
+        session_regenerate_id(true);
+        $_SESSION['canary']['birth'] = time();
+    }
+}
