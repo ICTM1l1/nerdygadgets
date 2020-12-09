@@ -69,7 +69,7 @@ $countedCategories = count($categories);
     </style>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script nonce="345662">
+    <script>
         function onSubmit(token) {
             document.getElementById("recaptcha-form").submit();
         }
