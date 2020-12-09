@@ -30,12 +30,12 @@ $countedCategories = count($categories);
         script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
         script-src-elem 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
         font-src 'self' https://use.typekit.net https://kit-free.fontawesome.com;
-        img-src 'self';
+        img-src 'self' http://www.w3.org;
         style-src 'self' 'unsafe-inline' https://p.typekit.net https://kit-free.fontawesome.com;
         base-uri 'self';
         manifest-src 'self';
         form-action 'self' https://www.mollie.com/;
-        frame-src 'self' https://www.google.com;
+        frame-src 'self' https://www.google.com https://www.youtube.com/;
     ">
     <title>NerdyGadgets</title>
 
