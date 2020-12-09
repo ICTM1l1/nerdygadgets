@@ -4,7 +4,9 @@ ob_start();
 require_once __DIR__ . '/../Src/Core/core.php';
 require_once __DIR__ . '/../Src/Crud/crud.php';
 
+securityHeaders();
 session_start();
+secureSession();
 
 $cart = get_cart();
 $loggedIn = session_get('LoggedIn');
@@ -16,6 +18,19 @@ $countedCategories = count($categories);
 <html lang="en" style="background-color: rgb(35, 35, 47);">
 <head>
     <meta charset="ISO-8859-1">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'none';
+        connect-src 'self';
+        script-src 'self' 'unsafe-inline' https://www.google.com;
+        script-src-elem 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com;
+        font-src 'self' https://use.typekit.net https://kit-free.fontawesome.com;
+        img-src 'self';
+        style-src 'self' 'unsafe-inline' https://p.typekit.net https://kit-free.fontawesome.com;
+        base-uri 'self';
+        manifest-src 'self';
+        form-action 'self';
+        frame-src 'self' https://www.google.com;
+    ">
     <title>NerdyGadgets</title>
 
     <link rel="stylesheet" href="<?= get_asset_url('CSS/Style.css') ?>" type="text/css">
@@ -48,7 +63,7 @@ $countedCategories = count($categories);
     </style>
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script>
+    <script nonce="345662">
         function onSubmit(token) {
             document.getElementById("recaptcha-form").submit();
         }
