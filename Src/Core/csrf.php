@@ -14,7 +14,7 @@ function csrf_token(){
         $overwrite = true;
     }
     session_save("ptoken", csrf_token_private(), $overwrite);
-    session_save("pexpiry", time() + 3600, true);
+    session_save("pexpiry", time() + 3600, $overwrite);
     return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["ptoken"]);
 }
 
