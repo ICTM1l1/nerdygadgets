@@ -58,7 +58,9 @@ function securityHeaders() {
  * Secures the session.
  */
 function secureSession() {
+    // Gets the IP address of the user.
     $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
+    // Gets the user agent, browser e.g. Chrome, from the user.
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
     if (!isset($_SESSION['canary'])) {
