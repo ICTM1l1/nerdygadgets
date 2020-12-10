@@ -3,6 +3,9 @@
 $config = [];
 
 $config['base_url'] = 'http://localhost/nerdygadgets';
+if ($_SERVER['HTTPS'] === 'on') {
+    $config['base_url'] = 'https://localhost/nerdygadgets';
+}
 
 $config['database_server'] = 'mysql:host=localhost';
 $config['database_name'] = 'nerdygadgets';
