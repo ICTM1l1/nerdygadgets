@@ -35,8 +35,8 @@ $amountOrders = count($orders);
                                         <form class="form-inline float-right" method="get" action="<?= get_url('orders.php') ?>">
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
-                                                <input type="date" id="date" class="form-control" name="date"
-                                                       value="<?= get_form_data_get('date') ?>" onchange="this.form.submit()">
+                                                <input type="date" id="date" class="form-control submit-form-on-change" name="date"
+                                                       value="<?= get_form_data_get('date') ?>">
                                             </div>
                                         </form>
                                     </div>

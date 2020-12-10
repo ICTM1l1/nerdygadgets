@@ -17,7 +17,7 @@ if (!empty($_POST)) {
         $values_valid = false;
     }
 
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    if ($values_valid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         add_user_error("Ongeldige email opgegeven.");
         $values_valid = false;
     }
@@ -68,31 +68,29 @@ include __DIR__ . '/../Src/Html/alert.php';
                             <label for="name" class="col-sm-3 text-left">
                                 Naam
                                 <span class="text-danger">*</span><br>
-                                <span id="name_char_count" class="text-danger"></span>
+                                <span id="char-count" class="text-danger"></span>
                             </label>
-                            <input type="text" id="name" name="name" class="form-control col-sm-9" maxlength="100"
-                                   onkeyup="charCountUpdate('name_char_count', this.value, 100)" required
-                                   placeholder="Naam" value="<?=get_form_data_post("name")?>">
+                            <input type="text" id="name" name="name" class="form-control col-sm-9 count-characters-100" maxlength="100"
+                                   placeholder="Naam" value="<?=get_form_data_post("name")?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">
                                 Email
                                 <span class="text-danger">*</span><br>
-                                <span id="email_char_count" class="text-danger"></span>
+                                <span id="char-count" class="text-danger"></span>
                             </label>
-                            <input type="email" id="email" name="email" class="form-control col-sm-9" maxlength="100"
-                                   onkeyup="charCountUpdate('email_char_count', this.value, 100)" required
-                                   placeholder="Email" value="<?=get_form_data_post("email")?>">
+                            <input type="email" id="email" name="email" class="form-control col-sm-9 count-characters-100" maxlength="100"
+                                   placeholder="Email" value="<?=get_form_data_post("email")?>" required>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="subject" class="col-sm-3 text-left">
                                 Onderwerp
                                 <span class="text-danger">*</span><br>
-                                <span id="subject_char_count" class="text-danger"></span>
+                                <span id="char-count" class="text-danger"></span>
                             </label>
-                            <input type="text" id="subject" name="subject" class="form-control col-sm-9" maxlength="100"
+                            <input type="text" id="subject" name="subject" class="form-control col-sm-9 count-characters-100" maxlength="100"
                                    onkeyup="charCountUpdate('subject_char_count', this.value, 100)" autocomplete="off" required
                                    placeholder="Onderwerp" value="<?=get_form_data_post("subject")?>">
                         </div>
@@ -101,10 +99,10 @@ include __DIR__ . '/../Src/Html/alert.php';
                             <label for="message" class="col-sm-3 text-left">
                                 Uw bericht
                                 <span class="text-danger">*</span><br>
-                                <span id="message_char_count" class="text-danger"></span>
+                                <span id="char-count" class="text-danger"></span>
                             </label>
-                            <textarea id="message" name="message" class="form-control col-sm-9" rows="10" maxlength="2000"
-                                      onkeyup="charCountUpdate('message_char_count', this.value, 2000)" autocomplete="off" required
+                            <textarea id="message" name="message" class="form-control col-sm-9 count-characters-2000"
+                                      rows="10" maxlength="2000" autocomplete="off" required
                                       placeholder="Uw bericht (maximaal 2000 karakters)"><?=get_form_data_post("message")?></textarea>
                         </div>
 
