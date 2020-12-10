@@ -29,17 +29,16 @@ function csrf_get_token(){
         return "";
     }
 
-    $current_url = $_SERVER['SCRIPT_NAME'];
-    $px = $_SESSION["{$current_url}_pexpiry"] ?? '';
+    $px = $_SESSION["pexpiry"] ?? '';
     $overwrite = false;
     if($px != '' && time() >= $px){
         $overwrite = true;
     }
 
-    session_save("{$current_url}_ptoken", csrf_get_token_private(), $overwrite);
-    session_save("{$current_url}_pexpiry", time() + 3600, $overwrite);
+    session_save("ptoken", csrf_get_token_private(), $overwrite);
+    session_save("pexpiry", time() + 3600, $overwrite);
 
-    return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["{$current_url}_ptoken"]) ?? "";
+    return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["ptoken"]) ?? "";
 }
 
 /**
@@ -57,9 +56,8 @@ function csrf_get_token(){
  */
 function csrf_validate($destination = ''){
     $csrf_token = csrf_get_token();
-    $current_url = $_SERVER['SCRIPT_NAME'];
-    session_key_unset("{$current_url}_ptoken");
-    session_key_unset("{$current_url}_pexpiry");
+    session_key_unset("ptoken");
+    session_key_unset("pexpiry");
 
     if($_SERVER["REQUEST_METHOD"] === "POST"){
         if(hash_equals($csrf_token, $_POST["token"] ?? "")){
