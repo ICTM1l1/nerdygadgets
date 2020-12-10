@@ -3,7 +3,7 @@
 $config = [];
 
 $config['base_url'] = 'http://localhost/nerdygadgets';
-if ($_SERVER['HTTPS'] === 'on') {
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
     $config['base_url'] = 'https://localhost/nerdygadgets';
 }
 
