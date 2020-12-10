@@ -511,7 +511,7 @@ ul#ul-class-price li {
     overflow-y: auto;
 }
 
-button:disabled, .disabled {
+button:disabled, input:disabled, .disabled {
     cursor: not-allowed;
     pointer-events: all !important;
 }
