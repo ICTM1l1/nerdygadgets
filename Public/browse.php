@@ -177,7 +177,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
                                     <?php endif; ?>
-                                    <input type="hidden" name="token" value="<?=csrf_token()?>"/>
+                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
                                 </form>
                                 <h1 class="StockItemPriceText">
                                     &euro; <?= price_format($product["SellPrice"] ?? 0) ?>
