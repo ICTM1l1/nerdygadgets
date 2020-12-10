@@ -247,7 +247,7 @@ function delete(string $table, array $conditions = []) {
     }
 
     $query = "DELETE FROM {$table} WHERE {$query_conditions}";
-    $statement = executeQuery($query, $conditions, config_get('database_user_delete'), config_get('database_password_delete'));
+    $statement = executeQuery($query, $conditions, null, config_get('database_user_delete'), config_get('database_password_delete'));
 
     return empty($statement->errorInfo());
 }
