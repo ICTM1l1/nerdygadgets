@@ -26,10 +26,9 @@ function csrf_token_private(int $size=32){
  */
 function csrf_token(){
     if(session_status() != PHP_SESSION_ACTIVE){
-        return false;
+        return "";
     }
     $px = $_SESSION["pexpiry"] ?? '';
-    $pt = $_SESSION["ptoken"] ?? '';
     $overwrite = false;
     if($px != '' && time() >= $px){
         $overwrite = true;
