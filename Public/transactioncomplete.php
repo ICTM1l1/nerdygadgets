@@ -9,37 +9,53 @@ if (empty($price) || empty($cart->getItems())) {
     redirect(get_url('shoppingcart.php'));
 }
 
-$paymentPaid = checkPayment(session_get('paymentId'));
+$orderSuccessful = checkPayment(session_get('paymentId'));
 
-$customerId = session_get('customer_id');
+$customerId = (int) session_get('customer_id', 0);
+$loggedIn = (bool) session_get('LoggedIn', false);
 $customer = getCustomer($customerId);
 
 // Always clear the payment process in order to be able to start a new payment.
 session_key_unset('customer_id');
 session_key_unset('paymentId');
 
-if ($paymentPaid) {
-    $products = $cart->getItems();
+if ($orderSuccessful) {
+    $connection = getDatabaseConnection();
+    beginTransaction($connection);
 
-    $dateTime = new DateTime();
-    $currentDate = $dateTime->format('Y-m-d');
+    try {
+        $products = $cart->getItems();
 
-    $dateTime->modify('+1 day');
-    $deliveryDate = $dateTime->format('Y-m-d');
+        $dateTime = new DateTime();
+        $currentDate = $dateTime->format('Y-m-d');
 
-    $orderId = createOrder($customerId, $currentDate, $deliveryDate);
+        $dateTime->modify('+1 day');
+        $deliveryDate = $dateTime->format('Y-m-d');
 
-    foreach ($products as $product) {
-        $productId = (int) ($product["id"] ?? 0);
-        $productAmount = (int) ($product["amount"] ?? 0);
-        $productFromDB = getProduct($productId);
+        $orderId = createOrder($customerId, $currentDate, $deliveryDate, $connection);
 
-        createOrderLine($orderId, $productFromDB, $productAmount, $currentDate);
+        foreach ($products as $product) {
+            $productId = (int) ($product["id"] ?? 0);
+            $productAmount = (int) ($product["amount"] ?? 0);
+            $productFromDB = getProduct($productId);
+
+            createOrderLine($orderId, $productFromDB, $productAmount, $currentDate);
+        }
+
+        reset_cart();
+        commitTransaction($connection);
+
+        add_user_message('De bestelling is succesvol geplaatst.');
+    } finally {
+        $orderSuccessful = false;
+        add_user_error('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
+        rollbackTransaction($connection);
     }
-
-    reset_cart();
+} elseif (!empty($customerId) && !$loggedIn) {
+    deleteCustomer($customerId);
 }
-?>
+
+include __DIR__ . '/../Src/Html/alert.php'; ?>
 
 <div class="container-fluid">
     <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
@@ -47,7 +63,7 @@ if ($paymentPaid) {
 
         <div class="row">
             <div class="col-sm-12">
-                <?php if ($paymentPaid) : ?>
+                <?php if ($orderSuccessful) : ?>
                     <h1 class="text-success">Bestelling is geplaatst</h1>
                     <p>
                         Uw bestelling is succesvol geplaatst en wordt morgen bezorgt.

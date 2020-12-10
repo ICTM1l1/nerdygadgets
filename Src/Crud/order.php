@@ -71,11 +71,13 @@ function getOrderLinesByOrder(int $order_id) {
  *   The current date.
  * @param string $deliveryDate
  *   The delivery date.
+ * @param PDO|null $connection
+ *   The database connection.
  *
  * @return int
  *   The id of the order.
  */
-function createOrder(int $customerId, string $currentDate, string $deliveryDate) {
+function createOrder(int $customerId, string $currentDate, string $deliveryDate, PDO $connection = null) {
     return insert("orders", [
         "CustomerId" => $customerId,
         "SalespersonPersonID" => "2",
@@ -84,7 +86,7 @@ function createOrder(int $customerId, string $currentDate, string $deliveryDate)
         "ExpectedDeliveryDate" => $deliveryDate,
         "IsUndersupplyBackordered" => 0,
         "LastEditedBy" => 7
-    ]);
+    ], $connection);
 }
 
 /**
@@ -98,8 +100,10 @@ function createOrder(int $customerId, string $currentDate, string $deliveryDate)
  *   The product amount.
  * @param string $currentDate
  *   The current date.
+ * @param PDO|null $connection
+ *   The connection.
  */
-function createOrderLine(int $orderId, array $product, int $productAmount, string $currentDate) {
+function createOrderLine(int $orderId, array $product, int $productAmount, string $currentDate, PDO $connection = null) {
     $currentQuantity = (int) ($product["QuantityOnHandRaw"] ?? 0);
 
     insert("orderlines", [
@@ -113,11 +117,11 @@ function createOrderLine(int $orderId, array $product, int $productAmount, strin
         "PickedQuantity" => $productAmount,
         "PickingCompletedWhen" => $currentDate,
         "LastEditedBy" => "4"
-    ]);
+    ], $connection);
 
     update("stockitemholdings", [
         "QuantityOnHand" => $currentQuantity - $productAmount,
     ], [
         "StockItemId" => $product['StockItemID'] ?? null,
-    ]);
+    ], $connection);
 }

@@ -43,18 +43,52 @@ function getDatabaseConnection(){
 }
 
 /**
+ * Begins the transaction.
+ *
+ * @param PDO $connection
+ *   The database connection.
+ */
+function beginTransaction(PDO $connection) {
+    $connection->beginTransaction();
+}
+
+/**
+ * Commits the transaction.
+ *
+ * @param PDO $connection
+ *   The database connection.
+ */
+function commitTransaction(PDO $connection) {
+    $connection->commit();
+}
+
+/**
+ * Rolls the transaction back.
+ *
+ * @param PDO $connection
+ *   The database connection.
+ */
+function rollbackTransaction(PDO $connection) {
+    $connection->rollBack();
+}
+
+/**
  * Executes a query.
  *
  * @param string $query
  *   The query.
  * @param array $parameters
  *   The parameters of the query.
+ * @param PDO|null $connection
+ *   The database connection.
  *
  * @return bool|PDOStatement
  *   The PDOStatement object on success or a boolean.
  */
-function executeQuery(string $query, array $parameters = []) {
-    $connection = getDatabaseConnection();
+function executeQuery(string $query, array $parameters = [], PDO $connection = null) {
+    if (!$connection) {
+        $connection = getDatabaseConnection();
+    }
 
     $statement = $connection->prepare($query);
 
@@ -109,11 +143,13 @@ function selectFirst(string $query, array $parameters = []) {
  *   The table to insert data in.
  * @param array $parameters
  *   The parameters of the query.
+ * @param PDO|null $connection
+ *   The PDO connection.
  *
  * @return int
  *   The result of executing the query.
  */
-function insert(string $table, array $parameters = []) {
+function insert(string $table, array $parameters = [], PDO $connection = null) {
     $columns = '';
     $values = '';
 
@@ -125,7 +161,10 @@ function insert(string $table, array $parameters = []) {
 
     $query = "INSERT INTO {$table} ({$columns}) VALUES ({$values})";
 
-    $connection = getDatabaseConnection();
+    if (!$connection) {
+        $connection = getDatabaseConnection();
+    }
+
     $statement = $connection->prepare($query);
     foreach ($parameters as $column => $value) {
         $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
@@ -147,11 +186,13 @@ function insert(string $table, array $parameters = []) {
  * @param array $conditions
  *   The conditions of the query.
  *   [column_id => column_id_value]
+ * @param PDO|null $connection
+ *   The PDO connection.
  *
  * @return int
  *   The result of executing the query.
  */
-function update(string $table, array $parameters = [], array $conditions = []) {
+function update(string $table, array $parameters = [], array $conditions = [], PDO $connection = null) {
     $query_values = '';
     $last_param_column = array_key_last($parameters);
     foreach ($parameters as $param_column => $value) {
@@ -167,7 +208,7 @@ function update(string $table, array $parameters = [], array $conditions = []) {
     $query = "UPDATE {$table} SET {$query_values} WHERE {$query_conditions}";
 
     $query_values = array_merge($parameters, $conditions);
-    $statement = executeQuery($query, $query_values);
+    $statement = executeQuery($query, $query_values, $connection);
 
     // Checks if the query has been executed successfully.
     return empty($statement->errorInfo());

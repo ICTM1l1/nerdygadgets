@@ -13,6 +13,45 @@ $(document).ready(function () {
         });
     });
 
+    $('.count-characters-100').on('keyup', function () {
+        const input_field = $(this);
+        const char_count = input_field.closest('.form-group').find('#char-count');
+
+        charCount(char_count, input_field.val(), 100)
+    });
+
+    $('.count-characters-2000').on('keyup', function () {
+        const input_field = $(this);
+        const char_count = input_field.closest('.form-group').find('#char-count');
+
+        charCount(char_count, input_field.val(), 2000)
+    })
+
+    /**
+     * Counts the length of the chars.
+     *
+     * @param char_count
+     *   The char count display div selector.
+     * @param value
+     *   The value.
+     * @param max_length
+     *   The max length.
+     */
+    function charCount(char_count, value, max_length) {
+        const lng = value.length;
+        const remainingLengthInPercentage = lng / max_length * 100;
+
+        char_count.hide();
+        if (remainingLengthInPercentage > 80) {
+            char_count.show();
+            char_count.html(lng + ' van de 100 maximale karakters')
+        }
+    }
+
+    $('.submit-form-on-change').on('change', function () {
+        $(this).closest('form').submit();
+    })
+
     $('#password').password({
         enterPass: '',
         shortPass: 'Wachtwoord is te kort',
@@ -70,19 +109,11 @@ $(document).ready(function () {
 });
 
 /**
- * Counts the number of chars and updates it.
+ * Submits a form.
  *
- * @param selector
- *   Displays the counted chars.
- * @param str
- *   The string to be counted.
- * @param length
- *   The length of allowed chars.
+ * @param token
+ *   The token.
  */
-function charCountUpdate(selector, str, length) {
-    const lng = str.length;
-    const remainingLengthInPercentage = lng / length * 100;
-    if (remainingLengthInPercentage > 80) {
-        document.getElementById(selector).innerHTML = lng + ' van de ' + length + ' maximale karakters';
-    }
+function onSubmit(token) {
+    document.getElementById("recaptcha-form").submit();
 }
