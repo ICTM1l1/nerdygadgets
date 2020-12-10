@@ -3,17 +3,19 @@
 /**
  * Gets the database connection.
  *
+ * @param string|null $username
+ *   The name of the user.
+ * @param string|null $password
+ *   The password of the user.
+ *
  * @return PDO
  *   The database connection.
  */
-function getDatabaseConnection(){
+function getDatabaseConnection(string $username, string $password) {
     $dsn = config_get('database_server') . ';';
     $dsn .= 'dbname=' . config_get('database_name') . ';';
     $dsn .= 'charset=' .  config_get('database_charset') . ';';
     $dsn .= 'port=' . config_get('database_port') . ';';
-
-    $username = config_get('database_user');
-    $password = config_get('database_password');
 
     /**
      * With PDO_MYSQL you need to remember about the PDO::ATTR_EMULATE_PREPARES option.
@@ -81,24 +83,32 @@ function rollbackTransaction(PDO $connection) {
  *   The parameters of the query.
  * @param PDO|null $connection
  *   The database connection.
+ * @param string|null $username
+ *   The name of the user.
+ * @param string|null $password
+ *   The password of the user.
  *
  * @return bool|PDOStatement
  *   The PDOStatement object on success or a boolean.
  */
-function executeQuery(string $query, array $parameters = [], PDO $connection = null) {
-    if (!$connection) {
-        $connection = getDatabaseConnection();
+function executeQuery(string $query, array $parameters = [], PDO $connection = null, string $username = null, string $password = null) {
+    try {
+        if (!$connection) {
+            $connection = getDatabaseConnection($username, $password);
+        }
+
+        $statement = $connection->prepare($query);
+
+        foreach ($parameters as $column => $value) {
+            $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
+        }
+
+        $statement->execute();
+
+        return $statement;
+    } catch (Exception $exception) {
+        throw new RuntimeException('Executing query failed.');
     }
-
-    $statement = $connection->prepare($query);
-
-    foreach ($parameters as $column => $value) {
-        $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
-    }
-
-    $statement->execute();
-
-    return $statement;
 }
 
 /**
@@ -113,7 +123,7 @@ function executeQuery(string $query, array $parameters = [], PDO $connection = n
  *   The selected data.
  */
 function select(string $query, array $parameters = []) {
-    $statement = executeQuery($query, $parameters);
+    $statement = executeQuery($query, $parameters, null, config_get('database_user_read'), config_get('database_password_read'));
 
     return $statement->fetchAll(PDO::FETCH_NAMED);
 }
@@ -130,7 +140,7 @@ function select(string $query, array $parameters = []) {
  *   The selected data.
  */
 function selectFirst(string $query, array $parameters = []) {
-    $statement = executeQuery($query, $parameters);
+    $statement = executeQuery($query, $parameters, null, config_get('database_user_read'), config_get('database_password_read'));
 
     $values = $statement->fetch(PDO::FETCH_NAMED);
     return !empty($values) ? $values : [];
@@ -161,18 +171,22 @@ function insert(string $table, array $parameters = [], PDO $connection = null) {
 
     $query = "INSERT INTO {$table} ({$columns}) VALUES ({$values})";
 
-    if (!$connection) {
-        $connection = getDatabaseConnection();
+    try {
+        if (!$connection) {
+            $connection = getDatabaseConnection(config_get('database_user_create'), config_get('database_password_create'));
+        }
+
+        $statement = $connection->prepare($query);
+        foreach ($parameters as $column => $value) {
+            $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
+        }
+
+        $statement->execute();
+
+        return $connection->lastInsertId();
+    } catch (Exception $exception) {
+        throw new RuntimeException('Executing query failed.');
     }
-
-    $statement = $connection->prepare($query);
-    foreach ($parameters as $column => $value) {
-        $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
-    }
-
-    $statement->execute();
-
-    return $connection->lastInsertId();
 }
 
 /**
@@ -208,7 +222,7 @@ function update(string $table, array $parameters = [], array $conditions = [], P
     $query = "UPDATE {$table} SET {$query_values} WHERE {$query_conditions}";
 
     $query_values = array_merge($parameters, $conditions);
-    $statement = executeQuery($query, $query_values, $connection);
+    $statement = executeQuery($query, $query_values, $connection, config_get('database_user_update'), config_get('database_password_update'));
 
     // Checks if the query has been executed successfully.
     return empty($statement->errorInfo());
@@ -233,7 +247,7 @@ function delete(string $table, array $conditions = []) {
     }
 
     $query = "DELETE FROM {$table} WHERE {$query_conditions}";
-    $statement = executeQuery($query, $conditions);
+    $statement = executeQuery($query, $conditions, null, config_get('database_user_delete'), config_get('database_password_delete'));
 
     return empty($statement->errorInfo());
 }

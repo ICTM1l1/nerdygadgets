@@ -9,6 +9,7 @@ if (empty($price) || empty($cart->getItems())) {
     redirect(get_url('shoppingcart.php'));
 }
 
+$loggedIn = (bool) session_get('LoggedIn', false);
 $personID = session_get('personID', 0);
 $account = getCustomerByPeople($personID);
 
@@ -51,38 +52,37 @@ if (isset($_POST['checkout'])) {
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
-                                   placeholder="Naam" value="<?= $name ?>">
+                                   placeholder="Naam" value="<?= $name ?>" <?= $loggedIn ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="postalcode" class="col-sm-3 text-left">Postcode <span class="text-danger">*</span></label>
                             <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9"
-                                   placeholder="Postcode" value="<?= $postalCode ?>">
+                                   placeholder="Postcode" value="<?= $postalCode ?>" <?= $loggedIn ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="address" class="col-sm-3 text-left">Adres <span class="text-danger">*</span></label>
                             <input type="text" id="address" name="address" class="form-control col-sm-9"
-                                   placeholder="Adres" value="<?= $address ?>">
+                                   placeholder="Adres" value="<?= $address ?>" <?= $loggedIn ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="city" class="col-sm-3 text-left">Woonplaats <span class="text-danger">*</span></label>
                             <input type="text" id="city" name="city" class="form-control col-sm-9"
-                                   placeholder="Woonplaats" value="<?= $city ?>">
+                                   placeholder="Woonplaats" value="<?= $city ?>" <?= $loggedIn ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="phonenumber" class="col-sm-3 text-left">Telefoonnummer <span class="text-danger">*</span></label>
                             <input type="tel" id="phonenumber" name="phonenumber" class="form-control col-sm-9"
-                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>">
+                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>" <?= $loggedIn ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group">
-                            <button class="btn btn-danger float-left my-4" type="button" name="back"
-                                    onclick="window.location.href='<?= get_url('products-overview.php') ?>'">
+                            <a href="<?= get_url('products-overview.php') ?>" class="btn btn-danger float-left my-4" type="button">
                                 Terug naar overzicht
-                            </button>
+                            </a>
                             <button class="btn btn-success float-right my-4" type="submit" name="checkout">
                                 2. Afrekenen
                             </button>

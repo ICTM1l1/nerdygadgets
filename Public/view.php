@@ -131,7 +131,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 
                                         <button class="btn btn-outline-danger float-right w-75 mt-2"
                                                 type="submit" name="Del_Cart" value="<?= $product_id ?>"
-                                                onclick="return confirm('Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?')">
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php else : ?>
