@@ -20,7 +20,7 @@ session_key_unset('customer_id');
 session_key_unset('paymentId');
 
 if ($orderSuccessful) {
-    $connection = getDatabaseConnection();
+    $connection = getDatabaseConnection(config_get('database_user_create_or_update'), config_get('database_password_create_or_update'));
     beginTransaction($connection);
 
     try {
@@ -39,14 +39,14 @@ if ($orderSuccessful) {
             $productAmount = (int) ($product["amount"] ?? 0);
             $productFromDB = getProduct($productId);
 
-            createOrderLine($orderId, $productFromDB, $productAmount, $currentDate);
+            createOrderLine($orderId, $productFromDB, $productAmount, $currentDate, $connection);
         }
 
-        reset_cart();
         commitTransaction($connection);
 
+        reset_cart();
         add_user_message('De bestelling is succesvol geplaatst.');
-    } finally {
+    } catch (Exception $exception) {
         $orderSuccessful = false;
         add_user_error('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
         rollbackTransaction($connection);
@@ -89,19 +89,17 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     </ul>
 
                     <div class="form-group mt-5 text-center">
-                        <button class="btn btn-success my-4" type="button" name="back"
-                                onclick="window.location.href='<?= get_url('index.php') ?>'">
+                        <a class="btn btn-success my-4" href="<?= get_url('index.php') ?>">
                             3. Afronden
-                        </button>
+                        </a>
                     </div>
                 <?php else : ?>
                     <h1 class="text-danger text-center">Producten afrekenen is mislukt</h1>
 
                     <div class="form-group mt-5 text-center">
-                        <button class="btn btn-success my-4" type="button" name="back"
-                                onclick="window.location.href='<?= get_url('checkout.php') ?>'">
+                        <a href="<?= get_url('checkout.php') ?>" class="btn btn-success my-4">
                             Opnieuw afrekenen
-                        </button>
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>
