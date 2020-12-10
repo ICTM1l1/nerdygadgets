@@ -10,7 +10,7 @@
  * @throws Exception
  *   Exception is thrown when no randomness source can be found.
  */
-function csrf_token_private(int $size=32){
+function csrf_get_token_private(int $size=32){
     return bin2hex(random_bytes($size));
 }
 
@@ -33,7 +33,7 @@ function csrf_token(){
     if($px != '' && time() >= $px){
         $overwrite = true;
     }
-    session_save("ptoken", csrf_token_private(), $overwrite);
+    session_save("ptoken", csrf_get_token_private(), $overwrite);
     session_save("pexpiry", time() + 3600, $overwrite);
     return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["ptoken"]) ?? "";
 }
@@ -53,7 +53,7 @@ function csrf_token(){
  */
 function csrf_validate($destination = ''){
     if($_SERVER["REQUEST_METHOD"] === "POST"){
-        if(hash_equals(csrf_token(), $_POST["token"])){
+        if(hash_equals(csrf_token(), $_POST["token"] ?? "")){
             return true;
         }
         add_user_error("Er is iets fout gegaan. Probeer het opnieuw.");
