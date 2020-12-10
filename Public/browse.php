@@ -129,10 +129,9 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
             </div>
 
             <div class="form-group mt-4">
-                <button type="button" class="button button-danger float-left"
-                        onclick="document.location.href='<?= get_url('browse.php?category_id=' . $categoryID) ?>'">
+                <a type="button" href="<?= get_url('browse.php?category_id=' . $categoryID) ?>" class="button button-danger float-left">
                     Reset
-                </button>
+                </a>
 
                 <button type="submit" class="button float-right btn-success">
                     Filter

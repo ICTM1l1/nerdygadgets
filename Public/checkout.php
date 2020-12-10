@@ -79,10 +79,9 @@ if (isset($_POST['checkout'])) {
                         </div>
 
                         <div class="form-group">
-                            <button class="btn btn-danger float-left my-4" type="button" name="back"
-                                    onclick="window.location.href='<?= get_url('products-overview.php') ?>'">
+                            <a href="<?= get_url('products-overview.php') ?>" class="btn btn-danger float-left my-4" type="button">
                                 Terug naar overzicht
-                            </button>
+                            </a>
                             <button class="btn btn-success float-right my-4" type="submit" name="checkout">
                                 2. Afrekenen
                             </button>

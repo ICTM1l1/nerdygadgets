@@ -66,7 +66,7 @@ include __DIR__ . '/../Src/Html/alert.php';
                                 <span id="char-count" class="text-danger"></span>
                             </label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9 count-characters-100" maxlength="100"
-                                   placeholder="Naam" value="<?=get_form_data_post("name")?>" required>
+                                   placeholder="Naam" value="<?= $name ?>" required>
                         </div>
 
                         <div class="form-group form-row">
@@ -75,8 +75,8 @@ include __DIR__ . '/../Src/Html/alert.php';
                                 <span class="text-danger">*</span><br>
                                 <span id="char-count" class="text-danger"></span>
                             </label>
-                            <input type="email" id="email" name="email" class="form-control col-sm-9 count-characters-100" maxlength="100"
-                                   placeholder="Email" value="<?=get_form_data_post("email")?>" required>
+                            <input type="email" id="email" name="email" class="form-control col-sm-9 count-characters-100"
+                                   maxlength="100" placeholder="Email" value="<?= $email ?>" required>
                         </div>
 
                         <div class="form-group form-row">
@@ -85,9 +85,9 @@ include __DIR__ . '/../Src/Html/alert.php';
                                 <span class="text-danger">*</span><br>
                                 <span id="char-count" class="text-danger"></span>
                             </label>
-                            <input type="text" id="subject" name="subject" class="form-control col-sm-9 count-characters-100" maxlength="100"
-                                   onkeyup="charCountUpdate('subject_char_count', this.value, 100)" autocomplete="off" required
-                                   placeholder="Onderwerp" value="<?=get_form_data_post("subject")?>">
+                            <input type="text" id="subject" name="subject" class="form-control col-sm-9 count-characters-100"
+                                   maxlength="100" autocomplete="off" required placeholder="Onderwerp"
+                                   value="<?= $subject ?>">
                         </div>
 
                         <div class="form-group form-row">
@@ -98,7 +98,7 @@ include __DIR__ . '/../Src/Html/alert.php';
                             </label>
                             <textarea id="message" name="message" class="form-control col-sm-9 count-characters-2000"
                                       rows="10" maxlength="2000" autocomplete="off" required
-                                      placeholder="Uw bericht (maximaal 2000 karakters)"><?=get_form_data_post("message")?></textarea>
+                                      placeholder="Uw bericht (maximaal 2000 karakters)"><?= $message ?></textarea>
                         </div>
 
                         <div class="form-group">
