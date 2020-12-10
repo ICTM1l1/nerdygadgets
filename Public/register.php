@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+csrf_validate(get_current_url());
+
 $name = get_form_data_post('name');
 $password = get_form_data_post('password');
 $password2 = get_form_data_post('password2');
@@ -33,7 +35,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if ($valuesValid && !(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
+    if(score_password($password, 8) < 75){
         add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
@@ -64,6 +66,7 @@ if (!empty($_POST)) {
             <div class="row">
                 <div class="col-sm-12">
                     <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('register.php') ?>" method="post">
+                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"

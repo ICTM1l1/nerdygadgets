@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+csrf_validate(get_current_url());
+
 $cart = get_cart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
@@ -80,6 +82,8 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                                             </button>
                                             <p class="h4 font-weight-bold float-right"><?= $cartItem["amount"] ?? 0 ?>x</p>
                                         </div>
+
+                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
 
                                         <button class="btn btn-outline-danger float-right w-100"
                                                 data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? "") ?>` wilt verwijderen?"

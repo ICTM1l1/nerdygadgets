@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
+csrf_validate(get_current_url());
+
 $cart = get_cart();
 $price = $cart->getTotalPrice();
 
@@ -49,6 +51,7 @@ if (isset($_POST['checkout'])) {
             <div class="row">
                 <div class="col-sm-12">
                     <form class="text-center w-100" action="<?= get_url('checkout.php') ?>" method="post">
+                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
