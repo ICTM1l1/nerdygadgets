@@ -28,14 +28,18 @@ function csrf_get_token(){
     if(session_status() != PHP_SESSION_ACTIVE){
         return "";
     }
-    $px = $_SESSION["pexpiry"] ?? '';
+
+    $current_url = $_SERVER['SCRIPT_NAME'];
+    $px = $_SESSION["{$current_url}_pexpiry"] ?? '';
     $overwrite = false;
     if($px != '' && time() >= $px){
         $overwrite = true;
     }
-    session_save("ptoken", csrf_get_token_private(), $overwrite);
-    session_save("pexpiry", time() + 3600, $overwrite);
-    return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["ptoken"]) ?? "";
+
+    session_save("{$current_url}_ptoken", csrf_get_token_private(), $overwrite);
+    session_save("{$current_url}_pexpiry", time() + 3600, $overwrite);
+
+    return hash_hmac("sha256", $_SERVER["SCRIPT_NAME"], $_SESSION["{$current_url}_ptoken"]) ?? "";
 }
 
 /**
@@ -52,8 +56,13 @@ function csrf_get_token(){
  *   Thrown when there is no adequate randomness source for private key.
  */
 function csrf_validate($destination = ''){
+    $csrf_token = csrf_get_token();
+    $current_url = $_SERVER['SCRIPT_NAME'];
+    session_key_unset("{$current_url}_ptoken");
+    session_key_unset("{$current_url}_pexpiry");
+
     if($_SERVER["REQUEST_METHOD"] === "POST"){
-        if(hash_equals(csrf_get_token(), $_POST["token"] ?? "")){
+        if(hash_equals($csrf_token, $_POST["token"] ?? "")){
             return true;
         }
         add_user_error("Er is iets fout gegaan. Probeer het opnieuw.");
