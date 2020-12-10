@@ -1,15 +1,6 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-/*if($_SERVER["REQUEST_METHOD"] === "POST"){
-    $t = csrf_token();
-    $x = get_form_data_post("token");
-    if(!hash_equals($t, $x)){
-        dd("bad token");
-    }
-    //dd("token:{$t}\npost:{$x}");
-}*/
-
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     csrf_validate($_POST["token"], get_current_url());
 }
