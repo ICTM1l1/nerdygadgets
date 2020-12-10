@@ -112,7 +112,7 @@ if (isset($_POST['delete_contact_request'])) {
                                                         </div>
                                                         <div class="col-sm-1">
                                                             <form class="text-right" method="post">
-                                                                <input type="hidden" name="token" value="<?=csrf_token()?>"/>
+                                                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
                                                                 <input type="hidden" name="contact_request_id"
                                                                        value="<?= $contactRequest['ContactRequestID'] ?? 0 ?>">
 

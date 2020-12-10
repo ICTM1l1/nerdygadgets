@@ -1,9 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
-    csrf_validate($_POST["token"], get_current_url());
-}
+csrf_validate(get_current_url());
 
 authorizeUser();
 
@@ -62,7 +60,7 @@ if (isset($_POST["update"])) {
                     <div class="row">
                         <div class="col-sm-12">
                             <form class="text-center" action="<?= get_url('account.php') ?>" method="post">
-                                <input type="hidden" name="token" value="<?=csrf_token()?>"/>
+                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
                                 <div class="form-group form-row">
                                     <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                                     <input type="text" id="name" name="name" class="form-control col-sm-9"

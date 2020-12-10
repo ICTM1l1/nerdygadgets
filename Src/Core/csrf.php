@@ -24,7 +24,7 @@ function csrf_get_token_private(int $size=32){
  *   Thrown when there is no adequate randomness source for the
  *   pseudo-random token.
  */
-function csrf_token(){
+function csrf_get_token(){
     if(session_status() != PHP_SESSION_ACTIVE){
         return "";
     }
@@ -53,7 +53,7 @@ function csrf_token(){
  */
 function csrf_validate($destination = ''){
     if($_SERVER["REQUEST_METHOD"] === "POST"){
-        if(hash_equals(csrf_token(), $_POST["token"] ?? "")){
+        if(hash_equals(csrf_get_token(), $_POST["token"] ?? "")){
             return true;
         }
         add_user_error("Er is iets fout gegaan. Probeer het opnieuw.");
