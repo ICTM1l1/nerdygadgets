@@ -37,7 +37,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if ($valuesValid && !(preg_match('@[A-Z]@', $password) && preg_match('@[a-z]@', $password) && preg_match('@[0-9]@', $password) && strlen($password) > 8)) {
+    if(score_password($password, 8) < 75){
         add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
