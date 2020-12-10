@@ -162,7 +162,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                 <form class="text-center" style="margin-top: 65px;" method="post" action="<?= get_current_url() ?>">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger w-100"
-                                                onclick="return confirm('Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?')"
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?"
                                                 name="Del_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
                                             <i class="fas fa-shopping-cart h1">-</i>
                                             <i class="far fa-trash-alt h1"></i>

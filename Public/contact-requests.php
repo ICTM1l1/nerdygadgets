@@ -6,8 +6,9 @@ if (!authorizeAdmin()) {
 }
 
 $contactRequests = getContactRequests();
-if ($date = get_form_data_get('date')) {
-    $contactRequests = getContactRequestsByDate($date);
+$input_date = get_form_data_get('date');
+if (!empty($input_date)) {
+    $contactRequests = getContactRequestsByDate($input_date);
 }
 
 $amountContactRequests = count($contactRequests);
@@ -47,7 +48,7 @@ if (isset($_POST['delete_contact_request'])) {
                                         <div class="form-group">
                                             <label for="date" class="d-none">Datum</label>
                                             <input type="date" id="date" class="form-control submit-form-on-change" name="date"
-                                                   value="<?= get_form_data_get('date') ?>">
+                                                   value="<?= $input_date ?>">
                                         </div>
                                     </form>
                                 </div>
@@ -114,7 +115,7 @@ if (isset($_POST['delete_contact_request'])) {
                                                                        value="<?= $contactRequest['ContactRequestID'] ?? 0 ?>">
 
                                                                 <button class="btn btn-outline-danger"
-                                                                        onclick="return confirm('Weet u zeker dat u de contact aanvraag `<?= replaceDoubleQuotesForWhiteSpaces($contactRequest['ContactRequestSubject'] ?? "") ?>` wilt verwijderen?')"
+                                                                        data-confirm="Weet u zeker dat u de contact aanvraag `<?= replaceDoubleQuotesForWhiteSpaces($contactRequest['ContactRequestSubject'] ?? "") ?>` wilt verwijderen?"
                                                                         name="delete_contact_request">
                                                                     <i class="fas fa-trash"></i>
                                                                 </button>

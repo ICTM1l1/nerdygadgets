@@ -27,6 +27,13 @@ $(document).ready(function () {
         charCount(char_count, input_field.val(), 2000)
     })
 
+    $('button[data-confirm]').on('click', function () {
+        const button = $(this);
+        const confirm_text = button.data('confirm');
+
+        return confirm(confirm_text);
+    })
+
     /**
      * Counts the length of the chars.
      *
