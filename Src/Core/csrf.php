@@ -42,24 +42,24 @@ function csrf_token(){
  * Check if the sent token matches the presently valid one.
  * Redirects and adds user error if token not valid.
  *
- * @param string $token
- *   String representation of the received token that is to be checked.
  * @param string $destination
  *   Page to redirect to if tokens do not match. Does not redirect on
  *   empty string.
  * @return bool
  *   Returns true of tokens match. Only returns false when there is
- *   no redirect (empty redirect string).
+ *   no redirect (empty redirect string) or if the request was not POST.
  * @throws Exception
  *   Thrown when there is no adequate randomness source for private key.
  */
-function csrf_validate($token, $destination = ''){
-    if(hash_equals(csrf_token(), $token)){
-        return true;
-    }
-    add_user_error("Er is iets fout gegaan. Probeer het opnieuw.");
-    if($destination != ''){
-        redirect($destination);
+function csrf_validate($destination = ''){
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
+        if(hash_equals(csrf_token(), $_POST["token"])){
+            return true;
+        }
+        add_user_error("Er is iets fout gegaan. Probeer het opnieuw.");
+        if($destination != ''){
+            redirect($destination);
+        }
     }
     return false;
 }

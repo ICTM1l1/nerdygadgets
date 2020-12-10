@@ -1,9 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-if($_SERVER["REQUEST_METHOD"] === "POST"){
-    csrf_validate($_POST["token"], get_current_url());
-}
+csrf_validate(get_current_url());
 
 $loggedIn = (bool) session_get('LoggedIn', false);
 if ($loggedIn) {
