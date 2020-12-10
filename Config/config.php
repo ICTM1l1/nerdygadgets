@@ -3,7 +3,7 @@
 $config = [];
 
 $config['base_url'] = 'http://localhost/nerdygadgets';
-if ($_SERVER['HTTPS'] === 'on') {
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
     $config['base_url'] = 'https://localhost/nerdygadgets';
 }
 
@@ -33,5 +33,8 @@ $config['recaptcha_private_key'] = '6Le8D_4ZAAAAANaYShMzWw3K7t_h4zP3CbfXm13O';
 
 // If we are on the production site, turn this off.
 $config['debug'] = true;
+
+$config['session_lifetime'] = 3600;
+$config['csrf_token_lifetime'] = 3600;
 
 return $config;
