@@ -159,7 +159,6 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 <?php
                 $averageScore = round(getReviewAverageByID($product["StockItemID"]));
                 if($averageScore > 0) : ?>
-                    <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
                     <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
                     <h3 class="text-white mt-3">Geen reviews</h3>
@@ -280,7 +279,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <?php if ((bool) session_get( "LoggedIn", false)) : ?>
                         <div class="row">
                             <div class="col-sm-6">
-                                <h2 class="text-white float-left">Laat een review achter</h2>
+                                <h2 class="text-white float-left">Schrijf een review</h2>
                             </div>
                             <div class="col-sm-6">
                                 <a href="<?= get_url("reviews.php?id=" . $product_id)?>"
