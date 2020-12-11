@@ -88,7 +88,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <a class="text-white" href="<?= get_url("view.php?id=" . $product["StockItemID"])?>"><?= $product['StockItemName'] ?? '' ?></a>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product["StockItemID"]));
+                $averageScore = round(getReviewAverageByID($product["StockItemID"] ?? 0));
                 if($averageScore > 0) : ?>
                     <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
                     <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
@@ -162,10 +162,10 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                         <div class="col-sm-12">
                             <div class="row d-flex justify-content-center">
                                 <?php foreach($reviews as $review):?>
-                                    <div class="col-sm-3 border border-white mr-4 mt-4">
+                                    <div class="col-sm-4 border border-white mr-4 mt-4">
                                         <div class="row">
                                             <div class="col-sm-6 text-left">
-                                                <h3 class="mt-2 ml-2"><?= getCustomerByPeople($review["PrivateCustomerID"])["FullName"]?></h3>
+                                                <h3 class="mt-2 ml-2"><?= getCustomerByPeople($review["PrivateCustomerID"])["FullName"] ?? '' ?></h3>
                                             </div>
                                             <div class="col-sm-6 text-right">
                                                 <?= dateTimeFormatShort($review["ReviewDate"])?>
