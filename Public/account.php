@@ -18,7 +18,7 @@ $email = get_form_data_post('email', $account['LogonName'] ?? '');
 $postalCode = get_form_data_post('postalcode', $account['DeliveryPostalCode'] ?? '');
 $address = get_form_data_post('address', $account['DeliveryAddressLine1'] ?? '');
 $city = get_form_data_post('city', $account['CityName'] ?? '');
-$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'][1] ?? '');
+$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'] ?? '');
 
 if (isset($_POST["update"])) {
     if (empty($name) || empty($password) || empty($email) || empty($address) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
