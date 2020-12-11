@@ -60,6 +60,7 @@ GRANT SELECT, DELETE ON * . * TO 'nerdygadgets_delete'@'localhost';
   Storage engines changes.
  */
 
+ALTER TABLE coldroomtemperatures ENGINE = Memory;
 
 /**
   Transactions.
