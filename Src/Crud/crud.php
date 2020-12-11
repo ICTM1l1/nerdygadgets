@@ -7,3 +7,4 @@ require_once __DIR__ . '/city.php';
 require_once __DIR__ . '/contact_data.php';
 require_once __DIR__ . '/order.php';
 require_once __DIR__ . '/people.php';
+require_once __DIR__ . '/review.php';
