@@ -116,6 +116,20 @@ CREATE TRIGGER correcte_email
 //
 DELIMITER ;
 
+#Trigger on customer insert, check if postalcode is valid
+
+DELIMITER //
+CREATE TRIGGER correcte_postcode
+    BEFORE INSERT ON customers
+    FOR EACH ROW
+       BEGIN
+         IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]' THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
+         END IF;
+       END;
+//
+DELIMITER ;
+
 #Trigger on orderline insert, call procedure "UpdateProductVoorraad"
 
 DELIMITER //
