@@ -42,7 +42,7 @@ function updateAverageByID(int $id){
     $reviews = getAllReviewsForItem($id);
     $sum = 0;
     foreach($reviews as $review){
-        $sum += (int) $review["Score"] ?? 0;
+        $sum += (int) ($review["Score"] ?? 0);
     }
     $avg = $sum / (1+count($reviews));
     delete("average_score", ["StockItemID" => $id]);

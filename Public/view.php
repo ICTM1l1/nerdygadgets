@@ -10,16 +10,16 @@ if(isset($_POST["review"])){
         $valid = false;
     }
     $text = get_form_data_post("review-text");
-    $score = intval(get_form_data_post("score-value", "0"));
-    $id = intval(get_form_data_post("itemid", "0"));
-    $pid = intval(session_get("personID", 0));
+    $score = (int)get_form_data_post("score-value", "0");
+    $id = (int)get_form_data_post("itemid", "0");
+    $pid = (int)session_get("personID", 0);
     $orders = getOrdersByCustomer($pid);
     //dd($orders);
     $ordered = false;
     foreach($orders as $order){
         $lines = getOrderLinesByOrder($order["OrderID"]);
         foreach($lines as $line){
-            if(intval($line["StockItemID"] ?? "0") == $id){
+            if((int)($line["StockItemID"] ?? "0") == $id){
                 $ordered = true;
                 break;
             }
@@ -153,7 +153,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
                     <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
-                    <h3 class="text-white mt-3">Geen reviews.</h3>
+                    <h3 class="text-white mt-3">Geen reviews</h3>
                 <?php endif; ?>
                 <?php if ($quantityOnHandRaw <= 0) : ?>
                     <div class="QuantityText text-danger">
@@ -277,54 +277,62 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <div class="container-fluid">
                         <?php if((bool)session_get( "LoggedIn")) :?>
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-sm-6">
                                     <h2 class="text-white float-left text-left">Laat een review achter!</h2>
                                 </div>
-                                <div class="col-sm">
-                                    <a href="<?= get_url("reviews.php?id=" . $product_id)?>">
-                                        <h2 class="text-white float-right text-left">Zie alle reviews.</h2>
+                                <div class="col-sm-6">
+                                    <a href="<?= get_url("reviews.php?id=" . $product_id)?>"
+                                       class="text-white float-right text-left h2">
+                                        Bekijk reviews
                                     </a>
                                 </div>
                             </div>
                             <div class="row mt-4">
-                                <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
-                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
-                                    <input type="hidden" name="score-value" id="score-value" class="score-value" value="0"/>
-                                    <input type="hidden" name="itemid" value="<?=$product_id?>"
-                                    <div class="form-group form-row">
-                                        <label for="score-input" class="col-sm-3 text-left"><h2>Score</h2></label>
-                                        <div class="score-container col-sm-9" id="score-container" style="color: goldenrod;">
-                                            <h2>
-                                                <i class="far fa-star" onclick="handleStars(1)"></i>
-                                                <i class="far fa-star" onclick="handleStars(2)"></i>
-                                                <i class="far fa-star" onclick="handleStars(3)"></i>
-                                                <i class="far fa-star" onclick="handleStars(4)"></i>
-                                                <i class="far fa-star" onclick="handleStars(5)"></i>
-                                            </h2>
+                                <div class="col-sm-6">
+                                    <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
+                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="itemid" value="<?=$product_id?>"
+                                        <div class="form-group form-row">
+                                            <label for="score-input" class="col-sm-3 text-left h2">Score</label>
+                                            <div class="score-container col-sm-9" id="score-container" style="color: goldenrod;">
+                                                <div class="rate">
+                                                    <input type="radio" id="star5" name="score-value" value="5" />
+                                                    <label for="star5" title="text">5 stars</label>
+                                                    <input type="radio" id="star4" name="score-value" value="4" />
+                                                    <label for="star4" title="text">4 stars</label>
+                                                    <input type="radio" id="star3" name="score-value" value="3" />
+                                                    <label for="star3" title="text">3 stars</label>
+                                                    <input type="radio" id="star2" name="score-value" value="2" />
+                                                    <label for="star2" title="text">2 stars</label>
+                                                    <input type="radio" id="star1" name="score-value" value="1" />
+                                                    <label for="star1" title="text">1 star</label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!--<input type="text" id="score-input" name="score-input" class="form-control col-sm-9">-->
-                                    </div>
-                                    <div class="form-group form-row">
-                                        <label for="review-text" class="col-sm-3 text-left"><h2>Review</h2></label>
-                                        <textarea id="review-text" name="review-text" autocomplete="off"
-                                                  class="form-control col-sm-9 count-characters-250"
-                                                  rows="5" maxlength="250" required></textarea>
-                                    </div>
-                                    <div class="form-group form-row">
-                                        <button type="submit" id="submit-review" disabled
-                                                class="btn btn-success float-right my-4"name="review">Indienen</button>
-                                    </div>
-                                </form>
+                                        <div class="form-group form-row">
+                                            <label for="review-text" class="col-sm-3 text-left h2">Review</label>
+                                            <textarea id="review-text" name="review-text" autocomplete="off"
+                                                      class="form-control col-sm-9 count-characters-250"
+                                                      rows="5" maxlength="250" required></textarea>
+                                        </div>
+                                        <div class="form-group form-row">
+                                            <button type="submit" id="submit-review"
+                                                    class="btn btn-success float-right my-4" name="review">Indienen</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar.</h2>
+                                </div>
                             </div>
                         <?php else :?>
                             <div class="row">
-                                <h2 class="text-white">Log in of registreer om een review achter te laten.</h2>
+                                <div class="col-sm-12">
+                                    <h2 class="text-white">Log in of registreer om een review achter te laten.</h2>
+                                </div>
                             </div>
                         <?php endif;?>
                     </div>
-                </div>
-                <div class="col-sm">
-                    <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar.</h2>
                 </div>
             </div>
         </div>
