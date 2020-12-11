@@ -72,6 +72,7 @@ $(document).ready(function () {
         const label = $(this);
         const star = label.attr('for');
 
+        $('input[name="star"]').removeAttr('checked');
         $('#' + star).attr('checked', true);
     })
 

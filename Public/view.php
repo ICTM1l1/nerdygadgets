@@ -275,7 +275,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
             <div class="row mt-4 mb-4">
                 <div class="col-sm text-left">
                     <div class="container-fluid">
-                        <?php if((bool)session_get( "LoggedIn")) :?>
+                        <?php if ((bool) session_get( "LoggedIn", false)) : ?>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <h2 class="text-white float-left text-left">Laat een review achter!</h2>
@@ -291,9 +291,10 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                 <div class="col-sm-6">
                                     <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
                                         <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
-                                        <input type="hidden" name="itemid" value="<?=$product_id?>"
+                                        <input type="hidden" name="itemid" value="<?=$product_id?>">
+
                                         <div class="form-group form-row">
-                                            <label for="score-input" class="col-sm-3 text-left h2">Score</label>
+                                            <label for="score-input" class="col-sm-3">Score</label>
                                             <div class="score-container col-sm-9" id="score-container" style="color: goldenrod;">
                                                 <div class="rate">
                                                     <input type="radio" id="star5" name="score-value" value="5" />
@@ -310,12 +311,12 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                             </div>
                                         </div>
                                         <div class="form-group form-row">
-                                            <label for="review-text" class="col-sm-3 text-left h2">Review</label>
+                                            <label for="review-text" class="col-sm-3">Review</label>
                                             <textarea id="review-text" name="review-text" autocomplete="off"
-                                                      class="form-control col-sm-9 count-characters-250"
+                                                      class="form-control count-characters-250 col-sm-9"
                                                       rows="5" maxlength="250" required></textarea>
                                         </div>
-                                        <div class="form-group form-row">
+                                        <div class="form-group">
                                             <button type="submit" id="submit-review"
                                                     class="btn btn-success float-right my-4" name="review">Indienen</button>
                                         </div>
