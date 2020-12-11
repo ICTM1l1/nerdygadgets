@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `nerdygadgets`.`review`
     `StockItemID` INT(11) NOT NULL ,
     `Review` VARCHAR(250) NOT NULL,
     `PrivateCustomerID` INT(11) NOT NULL,
+    `ReviewDate` DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     FOREIGN KEY(`stockitemid`) REFERENCES `nerdygadgets`.`stockitems`(`stockitemid`),
     FOREIGN KEY(`privatecustomerid`) REFERENCES `nerdygadgets`.`privatecustomer`(`privatecustomerid`)
 );
