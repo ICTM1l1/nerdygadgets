@@ -20,6 +20,13 @@ $(document).ready(function () {
         charCount(char_count, input_field.val(), 100)
     });
 
+    $('.count-characters-250').on('keyup', function () {
+        const input_field = $(this);
+        const char_count = input_field.closest('.form-group').find('#char-count');
+
+        charCount(char_count, input_field.val(), 250)
+    });
+
     $('.count-characters-2000').on('keyup', function () {
         const input_field = $(this);
         const char_count = input_field.closest('.form-group').find('#char-count');
@@ -113,6 +120,8 @@ $(document).ready(function () {
 
         feedback.html("Wachtwoorden zijn gelijk.").removeClass('text-danger').addClass('text-success');
     }
+
+
 });
 
 /**
@@ -123,4 +132,29 @@ $(document).ready(function () {
  */
 function onSubmit(token) {
     document.getElementById("recaptcha-form").submit();
+}
+
+function getStarsFromRating(rating){
+    if(rating > 5) return;
+    let stars = [];
+    let i = 1;
+    const estar = '<i class="far fa-star"></i>';
+    const fstar = '<i class="fas fa-star"></i>';
+    for(; i <= rating; i++){
+        stars.push('<i class="fas fa-star" onclick="handleStars(' + i + ')"></i>');
+    }
+    for(; i <= 5; i++){
+        stars.push('<i class="far fa-star" onclick="handleStars(' + i + ')"></i>');
+    }
+    return stars;
+}
+
+function handleStars(rating){
+    console.log(rating);
+    const stars = getStarsFromRating(rating);
+    const wrapper = document.getElementById("score-container").children[0];
+    wrapper.querySelectorAll("*").forEach(n => n.remove());
+    stars.forEach(star => wrapper.insertAdjacentHTML("beforeend", star));
+    document.getElementById("score-value").value = rating;
+    document.getElementById("submit-review").disabled = false;
 }

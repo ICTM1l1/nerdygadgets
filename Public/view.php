@@ -209,9 +209,63 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                              style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
                                      background-size: cover; width: 159px; height: 159px; "></div>
                     <?php endif; ?>
+                </a>
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <h1>Reviews.</h1>
+                <hr/>
+            </div>
+            <div class="row mt-4 mb-4">
+                <div class="col-sm text-left">
+                    <div class="container-fluid">
+                        <?php if((bool)session_get( "LoggedIn")) :?>
+                            <div class="row">
+                                <h2 class="text-white float-left text-left">Laat een review achter!</h2>
+                            </div>
+                            <div class="row mt-4">
+                                <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
+                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                    <input type="hidden" name="score-value" id="score-value" class="score-value" value="0"/>
+                                    <div class="form-group form-row">
+                                        <label for="score-input" class="col-sm-3 text-left"><h2>Score</h2></label>
+                                        <div class="score-container" id="score-container" class="col-sm-9" style="color: goldenrod;">
+                                            <h2>
+                                                <i id="star1" class="far fa-star" onclick="handleStars(1)"></i>
+                                                <i id="star2" class="far fa-star" onclick="handleStars(2)"></i>
+                                                <i id="star3" class="far fa-star" onclick="handleStars(3)"></i>
+                                                <i id="star4" class="far fa-star" onclick="handleStars(4)"></i>
+                                                <i id="star5" class="far fa-star" onclick="handleStars(5)"></i>
+                                            </h2>
+                                        </div>
+                                        <!--<input type="text" id="score-input" name="score-input" class="form-control col-sm-9">-->
+                                    </div>
+                                    <div class="form-group form-row">
+                                        <label for="review-text" class="col-sm-3 text-left"><h2>Review</h2></label>
+                                        <textarea id="review-text" name="review-text" autocomplete="off"
+                                                  class="form-control col-sm-9 count-characters-250"
+                                                  rows="5" maxlength="250" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" id="submit-review" disabled
+                                                class="btn btn-success float-right my-4"name="review">Indienen</button>
+                                    </div>
+                                </form>
+                            </div>
+                        <?php else :?>
+                            <div class="row">
+                                <h2 class="text-white">Log in of registreer om een review achter te laten.</h2>
+                            </div>
+                        <?php endif;?>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar.</h2>
+                </div>
+            </div>
         </div>
         <?php else : ?>
             <h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2>

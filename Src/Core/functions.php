@@ -212,9 +212,9 @@ function get_url(string $url) {
  */
 function get_current_url() {
     $prefix = 'http://';
-    if ($_SERVER['HTTPS'] === 'on') {
+    /*if ($_SERVER['HTTPS'] === 'on') {
         $prefix = 'https://';
-    }
+    }*/
 
     return $prefix . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 }
