@@ -3,6 +3,49 @@ require_once __DIR__ . "/../Src/header.php";
 
 csrf_validate(get_current_url());
 
+if(isset($_POST["review"])){
+    $valid = true;
+    if(!(bool)session_get("LoggedIn", false)){
+        add_user_error("U moet ingelogd zijn om een review achter te kunnen laten.");
+        $valid = false;
+    }
+    $text = get_form_data_post("review-text");
+    $score = intval(get_form_data_post("score-value", "0"));
+    $id = intval(get_form_data_post("itemid", "0"));
+    $pid = intval(session_get("personID", 0));
+    $orders = getOrdersByCustomer($pid);
+    //dd($orders);
+    $ordered = false;
+    foreach($orders as $order){
+        $lines = getOrderLinesByOrder($order["OrderID"]);
+        foreach($lines as $line){
+            if(intval($line["StockItemID"] ?? "0") == $id){
+                $ordered = true;
+                break;
+            }
+            if($ordered){
+                break;
+            }
+        }
+    }
+    if($ordered == false){
+        add_user_error("U moet het product besteld hebben voordat u een review achter kan laten.");
+        $valid = false;
+    }
+    if(strlen($text) > 250){
+        add_user_error("De tekst van een review kan niet langer zijn dan 250 tekens.");
+        $valid = false;
+    }
+    if(1 > $score && $score > 5){
+        add_user_error("Uw beoordeling moet tussen de 1 en de 5 sterren vallen.");
+        $valid = false;
+    }
+    if($valid){
+        createReview($id, $pid, $score, $text);
+    }
+    redirect(get_current_url());
+}
+
 $cart = get_cart();
 
 $product_id = (int) get_form_data_get('id');
@@ -216,8 +259,10 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
         </div>
         <div class="container-fluid">
             <div class="row">
-                <h1>Reviews.</h1>
-                <hr/>
+                <div class="col-sm">
+                    <h1>Reviews.</h1>
+                    <hr/>
+                </div>
             </div>
             <div class="row mt-4 mb-4">
                 <div class="col-sm text-left">
@@ -230,9 +275,10 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                 <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
                                     <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
                                     <input type="hidden" name="score-value" id="score-value" class="score-value" value="0"/>
+                                    <input type="hidden" name="itemid" value="<?=$product_id?>"
                                     <div class="form-group form-row">
                                         <label for="score-input" class="col-sm-3 text-left"><h2>Score</h2></label>
-                                        <div class="score-container" id="score-container" class="col-sm-9" style="color: goldenrod;">
+                                        <div class="score-container col-sm-9" id="score-container" style="color: goldenrod;">
                                             <h2>
                                                 <i id="star1" class="far fa-star" onclick="handleStars(1)"></i>
                                                 <i id="star2" class="far fa-star" onclick="handleStars(2)"></i>
@@ -249,7 +295,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                                   class="form-control col-sm-9 count-characters-250"
                                                   rows="5" maxlength="250" required></textarea>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group form-row">
                                         <button type="submit" id="submit-review" disabled
                                                 class="btn btn-success float-right my-4"name="review">Indienen</button>
                                     </div>
