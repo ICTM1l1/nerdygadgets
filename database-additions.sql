@@ -40,3 +40,13 @@ INSERT INTO people (
     0, '+310612345678', 'admin@admin.nl',
     '2020-12-8 23:59:59', '9999-12-31 23:59:59', 1
 );
+
+CREATE TABLE IF NOT EXISTS `nerdygadgets`.`review`
+(
+    `ReviewID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `StockItemID` INT(11) NOT NULL ,
+    `Review` VARCHAR(250) NOT NULL,
+    `PrivateCustomerID` INT(11) NOT NULL,
+    FOREIGN KEY(`stockitemid`) REFERENCES `nerdygadgets`.`stockitems`(`stockitemid`),
+    FOREIGN KEY(`privatecustomerid`) REFERENCES `nerdygadgets`.`privatecustomer`(`privatecustomerid`)
+);
