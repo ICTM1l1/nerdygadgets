@@ -9,3 +9,4 @@ require_once __DIR__ . '/authorize.php';
 require_once __DIR__ . '/security.php';
 require_once __DIR__ . '/csrf.php';
 require_once __DIR__ . '/score-password.php';
+require_once __DIR__ . '/review-display.php';

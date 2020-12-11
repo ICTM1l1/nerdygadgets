@@ -268,7 +268,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm">
-                    <h1>Reviews.</h1>
+                    <h1>Reviews</h1>
                     <hr/>
                 </div>
             </div>

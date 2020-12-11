@@ -141,10 +141,10 @@ function getStarsFromRating(rating){
     const estar = '<i class="far fa-star"></i>';
     const fstar = '<i class="fas fa-star"></i>';
     for(; i <= rating; i++){
-        stars.push('<i class="fas fa-star" onclick="handleStars(' + i + ')"></i>');
+        stars.push('<i class="fas fa-star" onclick="handleStars(' + i + ')"></i> ');
     }
     for(; i <= 5; i++){
-        stars.push('<i class="far fa-star" onclick="handleStars(' + i + ')"></i>');
+        stars.push('<i class="far fa-star" onclick="handleStars(' + i + ')"></i> ');
     }
     return stars;
 }
