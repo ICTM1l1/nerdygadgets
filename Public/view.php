@@ -147,6 +147,14 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 <h2 class="StockItemNameViewSize StockItemName">
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
+                <?php
+                $averageScore = round(getReviewAverageByID($product["StockItemID"]));
+                if($averageScore > 0) : ?>
+                    <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
+                    <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
+                <?php else : ?>
+                    <h3 class="text-white mt-3">Geen reviews.</h3>
+                <?php endif; ?>
                 <?php if ($quantityOnHandRaw <= 0) : ?>
                     <div class="QuantityText text-danger">
                         Dit product is niet op voorraad.
@@ -269,7 +277,14 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <div class="container-fluid">
                         <?php if((bool)session_get( "LoggedIn")) :?>
                             <div class="row">
-                                <h2 class="text-white float-left text-left">Laat een review achter!</h2>
+                                <div class="col-sm">
+                                    <h2 class="text-white float-left text-left">Laat een review achter!</h2>
+                                </div>
+                                <div class="col-sm">
+                                    <a href="<?= get_url("reviews.php?id=" . $product_id)?>">
+                                        <h2 class="text-white float-right text-left">Zie alle reviews.</h2>
+                                    </a>
+                                </div>
                             </div>
                             <div class="row mt-4">
                                 <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
@@ -280,11 +295,11 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                                         <label for="score-input" class="col-sm-3 text-left"><h2>Score</h2></label>
                                         <div class="score-container col-sm-9" id="score-container" style="color: goldenrod;">
                                             <h2>
-                                                <i id="star1" class="far fa-star" onclick="handleStars(1)"></i>
-                                                <i id="star2" class="far fa-star" onclick="handleStars(2)"></i>
-                                                <i id="star3" class="far fa-star" onclick="handleStars(3)"></i>
-                                                <i id="star4" class="far fa-star" onclick="handleStars(4)"></i>
-                                                <i id="star5" class="far fa-star" onclick="handleStars(5)"></i>
+                                                <i class="far fa-star" onclick="handleStars(1)"></i>
+                                                <i class="far fa-star" onclick="handleStars(2)"></i>
+                                                <i class="far fa-star" onclick="handleStars(3)"></i>
+                                                <i class="far fa-star" onclick="handleStars(4)"></i>
+                                                <i class="far fa-star" onclick="handleStars(5)"></i>
                                             </h2>
                                         </div>
                                         <!--<input type="text" id="score-input" name="score-input" class="form-control col-sm-9">-->
