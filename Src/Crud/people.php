@@ -11,7 +11,8 @@
  */
 function getPeopleByEmail(string $email) {
     return selectFirst("
-        SELECT * 
+        SELECT PersonID, LogonName, HashedPassword, EmailAddress, FullName, PhoneNumber, 
+        IsPermittedToLogon, IsEmployee
         FROM people 
         WHERE LogonName = :email
     ", ['email' => $email]);
@@ -28,7 +29,8 @@ function getPeopleByEmail(string $email) {
  */
 function getPeople(int $people) {
     return selectFirst("
-        SELECT * 
+        SELECT PersonID, LogonName, HashedPassword, EmailAddress, FullName, PhoneNumber, 
+        IsPermittedToLogon, IsEmployee
         FROM people 
         WHERE PersonID = :personID
     ", ['personID' => $people]);

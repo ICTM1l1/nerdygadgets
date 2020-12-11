@@ -41,14 +41,11 @@ function getLastCityId() {
  *   The id of the city.
  */
 function createCity(string $cityName) {
-    insert('cities', [
-        'CityId' => getLastCityId() + 1, // TODO make the city id auto increment
+    return insert('cities', [
         'CityName' => $cityName,
         'StateProvinceId' => 27,
         'LastEditedBy' => 1,
         'ValidFrom' => date('Y-m-d'),
         'ValidTo' => date('Y-m-d'),
     ]);
-
-    return getCity($cityName)['CityID'] ?? 0;
 }
