@@ -52,3 +52,10 @@ CREATE TABLE IF NOT EXISTS `nerdygadgets`.`review`
     FOREIGN KEY(`stockitemid`) REFERENCES `nerdygadgets`.`stockitems`(`stockitemid`),
     FOREIGN KEY(`privatecustomerid`) REFERENCES `nerdygadgets`.`people`(`personid`)
 );
+
+CREATE TABLE IF NOT EXISTS `nerdygadgets`.`average_score`
+(
+    `StockItemID` INT(11) NOT NULL PRIMARY KEY,
+    `Average` FLOAT(24) NOT NULL DEFAULT 0,
+    FOREIGN KEY(`StockItemID`) REFERENCES `nerdygadgets`.`stockitems`(`stockitemid`)
+);
