@@ -88,7 +88,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                     <a class="text-white" href="<?= get_url("view.php?id=" . $product["StockItemID"])?>"><?= $product['StockItemName'] ?? '' ?></a>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product["StockItemID"]));
+                $averageScore = round(getReviewAverageByID($product["StockItemID"] ?? 0));
                 if($averageScore > 0) : ?>
                     <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
                     <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
@@ -148,37 +148,40 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
             </div>
             <div class="container-fluid mt-4 mb-4">
                 <div class="row">
-                    <div class="col-sm">
+                    <div class="col-sm-6 text-left">
                         <h1>Reviews</h1>
-                        <hr/>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a href="<?= get_url('view.php?id=' . $product_id) ?>" class="btn btn-success">Terug naar product</a>
                     </div>
                 </div>
+                <div class="border-bottom border-white"></div>
                 <div class="row mt-1">
                     <?php if(empty($reviews)):?>
-                    <div class="col-sm">
+                    <div class="col-sm-12 mt-3">
                         <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar.</h2>
                     </div>
                     <?php else:?>
                         <div class="col-sm-12">
                             <div class="row d-flex justify-content-center">
                                 <?php foreach($reviews as $review):?>
-                                    <div class="col-sm-3 border border-white mr-4 mt-4">
+                                    <div class="col-sm-3 border border-white ml-2 mr-2 mt-3">
+                                        <h4><?= getCustomerByPeople($review["PrivateCustomerID"] ?? '' )["FullName"] ?? '' ?></h4>
                                         <div class="row">
-                                            <div class="col-sm-6 text-left">
-                                                <h3 class="mt-2 ml-2"><?= getCustomerByPeople($review["PrivateCustomerID"])["FullName"]?></h3>
+                                            <div class="col-sm-6" style="color: goldenrod">
+                                                <?= getRatingStars((int)$review["Score"])?>
                                             </div>
                                             <div class="col-sm-6 text-right">
                                                 <?= dateTimeFormatShort($review["ReviewDate"])?>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-6" style="color: goldenrod">
-                                                <?= getRatingStars((int)$review["Score"])?>
+                                        <?php if (isset($review['Review'])) : ?>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <p><?= $review["Review"] ?></p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <p class="mt-2 ml-4"><?= $review["Review"]?></p>
-                                        </div>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endforeach;?>
                             </div>

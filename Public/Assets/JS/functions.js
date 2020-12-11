@@ -66,6 +66,16 @@ $(document).ready(function () {
         $(this).closest('form').submit();
     })
 
+    $('.rate label').on('click', function (e) {
+        e.preventDefault();
+
+        const label = $(this);
+        const star = label.attr('for');
+
+        $('input[name="star"]').removeAttr('checked');
+        $('#' + star).attr('checked', true);
+    })
+
     $('#password').password({
         enterPass: '',
         shortPass: 'Wachtwoord is te kort',
@@ -132,29 +142,4 @@ $(document).ready(function () {
  */
 function onSubmit(token) {
     document.getElementById("recaptcha-form").submit();
-}
-
-function getStarsFromRating(rating){
-    if(rating > 5) return;
-    let stars = [];
-    let i = 1;
-    const estar = '<i class="far fa-star"></i>';
-    const fstar = '<i class="fas fa-star"></i>';
-    for(; i <= rating; i++){
-        stars.push('<i class="fas fa-star" onclick="handleStars(' + i + ')"></i> ');
-    }
-    for(; i <= 5; i++){
-        stars.push('<i class="far fa-star" onclick="handleStars(' + i + ')"></i> ');
-    }
-    return stars;
-}
-
-function handleStars(rating){
-    console.log(rating);
-    const stars = getStarsFromRating(rating);
-    const wrapper = document.getElementById("score-container").children[0];
-    wrapper.querySelectorAll("*").forEach(n => n.remove());
-    stars.forEach(star => wrapper.insertAdjacentHTML("beforeend", star));
-    document.getElementById("score-value").value = rating;
-    document.getElementById("submit-review").disabled = false;
 }

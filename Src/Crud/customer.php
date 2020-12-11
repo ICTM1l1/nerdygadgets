@@ -48,7 +48,8 @@ function createCustomer(string $name, string $phoneNumber, string $address, stri
  */
 function getCustomerByName(string $customer) {
     return selectFirst("
-        SELECT * 
+        SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
+        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName
         FROM privatecustomer
         WHERE PrivateCustomerName = :customerName
     ", ['customerName' => $customer]);
@@ -65,7 +66,8 @@ function getCustomerByName(string $customer) {
  */
 function getCustomer(int $customer) {
     return selectFirst("
-        SELECT *
+        SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
+        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName
         FROM privatecustomer
         JOIN cities ON DeliveryCityID = CityID
         WHERE PrivateCustomerID = :customerID
@@ -83,7 +85,8 @@ function getCustomer(int $customer) {
  */
 function getCustomerByPeople(int $people) {
     return selectFirst("
-        SELECT * 
+        SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
+        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName, FullName
         FROM privatecustomer C
         JOIN people P ON  C.PeopleID = P.PersonID
         JOIN cities ON DeliveryCityID = CityID
