@@ -13,6 +13,6 @@ function getCategories() {
         JOIN stockitemstockgroups SISG ON SG.StockGroupID = SISG.StockGroupID
         AND SG.ImagePath IS NOT NULL
         GROUP BY SG.StockGroupID
-        ORDER BY StockGroupID ASC
+        ORDER BY SG.StockGroupID ASC
     ");
 }
