@@ -16,6 +16,26 @@ function getAllReviewsForItem(int $id){
 }
 
 /**
+ * Retrieve all reviews for stock item.
+ *
+ * @param int $id
+ *   ID of item to retrieve reviews for.
+ * @param int $limit
+ *   Limit the number of returned reviews.
+ *
+ * @return array
+ *   Retrieved reviews.
+ */
+function getLimitedReviewsForItem(int $id, int $limit = 3){
+    return select("
+        SELECT * FROM review
+        WHERE StockItemID = :id
+        ORDER BY ReviewID
+        LIMIT :limit",
+        ["id" => $id, 'limit' => $limit]);
+}
+
+/**
  * Retrieve average score of all reviews for an item.
  *
  * @param int $id
