@@ -17,6 +17,11 @@ if(isset($_POST["review"])){
     $pid = (int)session_get("personID", 0);
     $orders = getOrdersByCustomer($pid);
 
+    if(productWasReviewedByCustomer($id, $pid)){
+        add_user_error("U kan een product maar een keer reviewen.");
+        $valid = false;
+    }
+
     $ordered = false;
     foreach($orders as $order){
         $lines = getOrderLinesByOrder($order["OrderID"] ?? 0);
@@ -48,8 +53,8 @@ if(isset($_POST["review"])){
 
     if ($valid) {
         createReview($id, $pid, $score, $text);
-        redirect(get_current_url());
     }
+    redirect(get_current_url());
 }
 
 $cart = get_cart();
@@ -286,6 +291,12 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
+                                <?php if(productWasReviewedByCustomer($product_id, (int)session_get("personID", 0))):?>
+                                <form action="<?= get_current_url()?>" method="post">
+                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                    <button name="Delete_Review" class="btn btn-danger float-right mr-5">Review verwijderen.</button>
+                                </form>
+                                <?php endif;?>
                             </div>
                         </div>
                         <div class="row mt-4">
@@ -331,7 +342,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>
-                                                            <?= getCustomerByPeople($review["PrivateCustomerID"] ?? '' )["FullName"] ?? '' ?>
+                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["FullName"] ?? '' ?>
                                                         </h3>
                                                     </div>
                                                 </div>
