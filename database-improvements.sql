@@ -176,7 +176,7 @@ END;
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS insert_correcte_postcode_customer;
+DROP TRIGGER IF EXISTS insert_correcte_postcode_privatecustomer;
 DELIMITER //
 CREATE TRIGGER insert_correcte_postcode_privatecustomer
     BEFORE INSERT ON privatecustomer
@@ -189,7 +189,7 @@ CREATE TRIGGER insert_correcte_postcode_privatecustomer
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS update_correcte_postcode_customer;
+DROP TRIGGER IF EXISTS update_correcte_postcode_privatecustomer;
 DELIMITER //
 CREATE TRIGGER update_correcte_postcode_privatecustomer
     BEFORE UPDATE ON privatecustomer
