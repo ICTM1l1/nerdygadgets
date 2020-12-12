@@ -59,7 +59,8 @@ function getReviewAuthor(int $id){
  */
 function getReviewedProductsByDate(string $date){
     return select("
-        SELECT * FROM review
+        SELECT * 
+        FROM review R
         JOIN stockitems SI ON SI.StockItemID = R.StockItemID
         WHERE DATE(ReviewDate) = :date
         GROUP BY SI.StockItemID
