@@ -85,8 +85,8 @@ function getReviewAverageByID(int $id){
  *
  * @param int $id
  *   Item to update average for.
- * @return int
- *   ID of last inserted average, or 0 on error.
+ * @return bool
+ *   Whether the update was successful.
  */
 function updateAverageByID(int $id){
     $reviews = getAllReviewsForItem($id);
@@ -103,7 +103,9 @@ function updateAverageByID(int $id){
     $avg = $sum / $amountReviews;
 
     delete("average_score", ["StockItemID" => $id]);
-    return insert("average_score", ["StockItemID" => $id, "Average" => $avg]);
+    $id = insert("average_score", ["StockItemID" => $id, "Average" => $avg]);
+
+    return !empty($id);
 }
 
 /**
@@ -128,9 +130,13 @@ function createReview(int $sid, int $pid, int $score, string $review){
         "Score" => $score
     ]);
 
-    updateAverageByID($sid);
+    if (!empty($id)) {
+        updateAverageByID($sid);
 
-    return $id;
+        return $id;
+    }
+
+    return 0;
 }
 
 /**
@@ -152,10 +158,28 @@ function productWasReviewedByCustomer(int $itemid, int $personid){
             "pid" => $personid
     ]);
 
-    if(count($reviews) == 0){
-        return false;
-    }
-    return true;
+    return !(count($reviews) === 0);
+}
+
+/**
+ * Gets the review for a product by a customer.
+ *
+ * @param int $itemid
+ *   ID of the item to check.
+ * @param int $personid
+ *   ID of the person to check.
+ *
+ * @return array
+ *   The review for the product.
+ */
+function getProductReviewByCustomer(int $itemid, int $personid){
+    return selectFirst("
+        SELECT * FROM review
+        WHERE StockItemID = :sid
+        AND PersonID = :pid",[
+        "sid" => $itemid,
+        "pid" => $personid
+    ]);
 }
 
 /**
@@ -189,6 +213,7 @@ function deleteReviewByID(int $id){
         WHERE ReviewID = :id", [
             "id" => $id
     ])["StockItemID"];
+
     return !delete("review",[
             "ReviewID" => $id
     ]) && updateAverageByID($itemid);
