@@ -56,6 +56,19 @@ if(isset($_POST["review"])){
     }
     redirect(get_current_url());
 }
+elseif(isset($_POST["Delete_Review"])){
+    //$valid = true;
+    if (!(bool)session_get("LoggedIn", false)) {
+        add_user_error("U moet ingelogd zijn om uw review achter te kunnen verwijderen.");
+        //$valid = false;
+    }
+    else {
+        $id = (int)get_form_data_post("id", "0");
+        $pid = (int)session_get("personID", 0);
+        deleteReview($id, $pid);
+    }
+    redirect(get_current_url());
+}
 
 $cart = get_cart();
 
@@ -294,6 +307,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <?php if(productWasReviewedByCustomer($product_id, (int)session_get("personID", 0))):?>
                                 <form action="<?= get_current_url()?>" method="post">
                                     <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                    <input type="hidden" name="id" value="<?=$product_id?>"/>
                                     <button name="Delete_Review" class="btn btn-danger float-right mr-5">Review verwijderen.</button>
                                 </form>
                                 <?php endif;?>
