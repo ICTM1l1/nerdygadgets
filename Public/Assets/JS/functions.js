@@ -20,6 +20,13 @@ $(document).ready(function () {
         charCount(char_count, input_field.val(), 100)
     });
 
+    $('.count-characters-250').on('keyup', function () {
+        const input_field = $(this);
+        const char_count = input_field.closest('.form-group').find('#char-count');
+
+        charCount(char_count, input_field.val(), 250)
+    });
+
     $('.count-characters-2000').on('keyup', function () {
         const input_field = $(this);
         const char_count = input_field.closest('.form-group').find('#char-count');
@@ -57,6 +64,16 @@ $(document).ready(function () {
 
     $('.submit-form-on-change').on('change', function () {
         $(this).closest('form').submit();
+    })
+
+    $('.rate label').on('click', function (e) {
+        e.preventDefault();
+
+        const label = $(this);
+        const star = label.attr('for');
+
+        $('input[name="star"]').removeAttr('checked');
+        $('#' + star).attr('checked', true);
     })
 
     $('#password').password({
@@ -113,6 +130,8 @@ $(document).ready(function () {
 
         feedback.html("Wachtwoorden zijn gelijk.").removeClass('text-danger').addClass('text-success');
     }
+
+
 });
 
 /**

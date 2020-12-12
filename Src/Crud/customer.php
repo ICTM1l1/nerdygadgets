@@ -67,8 +67,8 @@ function getCustomerByName(string $customer) {
 function getCustomer(int $customer) {
     return selectFirst("
         SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
-        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName
-        FROM privatecustomer
+        CityName, PhoneNumber, PrivateCustomerID
+        FROM privatecustomer AS p
         JOIN cities ON DeliveryCityID = CityID
         WHERE PrivateCustomerID = :customerID
     ", ['customerID' => $customer]);
@@ -86,7 +86,7 @@ function getCustomer(int $customer) {
 function getCustomerByPeople(int $people) {
     return selectFirst("
         SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
-        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName
+        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName, FullName
         FROM privatecustomer C
         JOIN people P ON  C.PeopleID = P.PersonID
         JOIN cities ON DeliveryCityID = CityID

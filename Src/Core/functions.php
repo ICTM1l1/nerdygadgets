@@ -253,6 +253,23 @@ function isValidDate(string $date, string $format = 'Y-m-d') {
 }
 
 /**
+ * Determines if the date is valid.
+ *
+ * @param string $date
+ *   The date.
+ * @param string $format
+ *   The format of the date.
+ *
+ * @return bool
+ *   Whether the date is valid or not.
+ */
+function isValidDateTime(string $date, string $format = 'Y-m-d H:i:s') {
+    $d = DateTime::createFromFormat($format, $date);
+
+    return $d && $d->format($format) === $date;
+}
+
+/**
  * Formats a given date.
  *
  * @param string $date
@@ -269,6 +286,25 @@ function dateFormatFull(string $date) {
     setlocale(LC_TIME, 'nl_NL');
 
     return strtolower(strftime('%d %B %Y', strtotime($date)));
+}
+
+/**
+ * Formats a given date.
+ *
+ * @param string $date
+ *   The date.
+ *
+ * @return string
+ *   The formatted date.
+ */
+function dateTimeFormatShort(string $date) {
+    if (!isValidDateTime($date)) {
+        return '';
+    }
+
+    setlocale(LC_TIME, 'nl_NL');
+
+    return strtolower(strftime('%d-%m-%Y', strtotime($date)));
 }
 
 /**

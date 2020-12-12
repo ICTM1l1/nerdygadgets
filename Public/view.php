@@ -3,12 +3,79 @@ require_once __DIR__ . "/../Src/header.php";
 
 csrf_validate(get_current_url());
 
+$text = get_form_data_post("review-text");
+$score = (int)get_form_data_post("score-value", "0");
+
+if(isset($_POST["review"])){
+    $valid = true;
+    if (!(bool)session_get("LoggedIn", false)) {
+        add_user_error("U moet ingelogd zijn om een review achter te kunnen laten.");
+        $valid = false;
+    }
+
+    $id = (int)get_form_data_post("itemid", "0");
+    $pid = (int)session_get("personID", 0);
+    $orders = getOrdersByCustomer($pid);
+
+    if (productWasReviewedByCustomer($id, $pid)) {
+        add_user_error("U kan een product maar 1 keer reviewen.");
+        $valid = false;
+    }
+
+    $ordered = false;
+    foreach($orders as $order){
+        $lines = getOrderLinesByOrder($order["OrderID"] ?? 0);
+        foreach($lines as $line){
+            if ((int) ($line["StockItemID"] ?? "0") == $id) {
+                $ordered = true;
+                break;
+            }
+
+            if ($ordered) {
+                break;
+            }
+        }
+    }
+    if (!$ordered){
+        add_user_error("U moet het product besteld hebben voordat u een review achter kan laten.");
+        $valid = false;
+    }
+
+    if (strlen($text) > 250) {
+        add_user_error("De tekst van een review kan niet langer zijn dan 250 tekens.");
+        $valid = false;
+    }
+
+    if (empty($score) || (1 > $score && $score > 5)) {
+        add_user_error("Uw beoordeling moet tussen de 1 en de 5 sterren vallen.");
+        $valid = false;
+    }
+
+    if ($valid) {
+        createReview($id, $pid, $score, $text);
+    }
+    redirect(get_current_url());
+}
+elseif(isset($_POST["Delete_Review"])){
+    if (!(bool)session_get("LoggedIn", false)) {
+        add_user_error("U moet ingelogd zijn om uw review te kunnen verwijderen.");
+    }
+    else {
+        $id = (int)get_form_data_post("id", "0");
+        $pid = (int)session_get("personID", 0);
+        deleteReview($id, $pid);
+    }
+    redirect(get_current_url());
+}
+
 $cart = get_cart();
 
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $categories = getCategoryIdForProduct($product_id);
+$reviews = getLimitedReviewsForItem($product_id);
+$productReview = getProductReviewByCustomer($product_id, (int)session_get("personID", 0));
 
 $relatedProductIds = [];
 $relatedProductImages = [];
@@ -51,7 +118,9 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
     $cart->removeItem($id);
     redirect(get_current_url());
 }
-?>
+
+include __DIR__ . '/../Src/Html/alert.php'; ?>
+
     <div id="CenteredContent">
         <?php if (!empty($product)) : ?>
             <?php if (isset($product['Video'])) : ?>
@@ -104,6 +173,13 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 <h2 class="StockItemNameViewSize StockItemName">
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
+                <?php
+                $averageScore = round(getReviewAverageByID($product["StockItemID"]));
+                if($averageScore > 0) : ?>
+                    <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
+                <?php else : ?>
+                    <h3 class="text-white mt-3">Geen reviews</h3>
+                <?php endif; ?>
                 <?php if ($quantityOnHandRaw <= 0) : ?>
                     <div class="QuantityText text-danger">
                         Dit product is niet op voorraad.
@@ -209,9 +285,141 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                              style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
                                      background-size: cover; width: 159px; height: 159px; "></div>
                     <?php endif; ?>
+                </a>
                 <?php endif; ?>
             </div>
             <?php endforeach; ?>
+        </div>
+        <div class="container-fluid">
+            <div class="row mt-4 mb-4">
+                <div class="col-sm-12 text-left">
+                    <?php if ((bool) session_get( "LoggedIn", false)) : ?>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2 class="text-white float-left">Schrijf een review</h2>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="<?= get_url("reviews.php?id=" . $product_id)?>"
+                                   class="float-right btn btn-success">
+                                    Bekijk reviews
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6 pl-4 pr-4">
+                                <?php if (!empty($productReview)) : ?>
+                                    <form action="<?= get_current_url()?>" class="text-center w-100" method="post">
+                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="id" value="<?=$product_id?>"/>
+
+                                        <h4>U heeft een review geplaatst</h4>
+                                        <div class="form-group form-row">
+                                            <div class="col-sm-12 border border-white mt-3">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h3>
+                                                            <?= getCustomerByPeople($productReview["PersonID"] ?? 0 )["FullName"] ?? '' ?>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6" style="color: goldenrod">
+                                                        <?= getRatingStars((int) ($productReview["Score"] ?? 0))?>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <?= dateTimeFormatShort($productReview["ReviewDate"] ?? '')?>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <button name="Delete_Review" class="btn btn-danger ml-auto mr-auto mt-4"
+                                                data-confirm="Weet u zeker dat u uw review wilt verwijderen?">
+                                            Review verwijderen
+                                        </button>
+                                    </form>
+                                <?php else : ?>
+                                    <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
+                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="itemid" value="<?=$product_id?>">
+
+                                        <div class="form-group form-row">
+                                            <label for="score-input" class="col-sm-3 pt-2 mt-1">Score</label>
+                                            <div class="score-container col-sm-9 pl-0 ml-0" id="score-container" style="color: goldenrod;">
+                                                <div class="rate pl-0 ml-0">
+                                                    <input type="radio" id="star5" name="score-value" value="5" />
+                                                    <label for="star5" title="text">5 stars</label>
+                                                    <input type="radio" id="star4" name="score-value" value="4" />
+                                                    <label for="star4" title="text">4 stars</label>
+                                                    <input type="radio" id="star3" name="score-value" value="3" />
+                                                    <label for="star3" title="text">3 stars</label>
+                                                    <input type="radio" id="star2" name="score-value" value="2" />
+                                                    <label for="star2" title="text">2 stars</label>
+                                                    <input type="radio" id="star1" name="score-value" value="1" />
+                                                    <label for="star1" title="text">1 star</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-row">
+                                            <label for="review-text" class="col-sm-3">Review</label>
+                                            <textarea id="review-text" name="review-text" autocomplete="off"
+                                                      class="form-control count-characters-250 col-sm-9"
+                                                      rows="5" maxlength="250"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" id="submit-review"
+                                                    class="btn btn-success float-right my-4" name="review">Plaatsen</button>
+                                        </div>
+                                    </form>
+                                <?php endif;?>
+                            </div>
+                            <div class="col-sm-6 pl-4 pr-4">
+                                <?php if (!empty($reviews)) : ?>
+                                    <div class="row d-flex justify-content-center">
+                                        <?php foreach($reviews as $review):?>
+                                            <div class="col-sm-12 border border-white mt-3">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h3>
+                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["FullName"] ?? '' ?>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6" style="color: goldenrod">
+                                                        <?= getRatingStars((int)$review["Score"])?>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <?= dateTimeFormatShort($review["ReviewDate"])?>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach;?>
+                                    </div>
+                                <?php else : ?>
+                                    <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar</h2>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php else :?>
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <h2 class="text-white">Log in of registreer om een review achter te laten.</h2>
+                            </div>
+                        </div>
+                <?php endif;?>
+                </div>
+            </div>
         </div>
         <?php else : ?>
             <h2 id="ProductNotFound">Het opgevraagde product is niet gevonden.</h2>
