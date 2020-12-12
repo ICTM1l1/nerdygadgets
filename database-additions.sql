@@ -1,4 +1,4 @@
-DROP TABLE `nerdygadgets`.`privatecustomer`;
+DROP TABLE IF EXISTS `nerdygadgets`.`privatecustomer`;
 CREATE TABLE `nerdygadgets`.`privatecustomer` (
   `PrivateCustomerID` INT NOT NULL AUTO_INCREMENT ,
   `PrivateCustomerName` VARCHAR(100) NOT NULL ,
@@ -15,7 +15,7 @@ CREATE TABLE `nerdygadgets`.`privatecustomer` (
   CONSTRAINT `FK_DeliveryMethodID` FOREIGN KEY (DeliveryMethodID) REFERENCES deliverymethods(`DeliveryMethodID`)
 );
 
-DROP TABLE `nerdygadgets`.`contact_requests`;
+DROP TABLE IF EXISTS `nerdygadgets`.`contact_requests`;
 CREATE TABLE `nerdygadgets`.`contact_requests` (
    `ContactRequestID` INT NOT NULL AUTO_INCREMENT,
    `ContactRequestName` VARCHAR(100) NOT NULL,
@@ -43,7 +43,7 @@ INSERT INTO people (
     '2020-12-8 23:59:59', '9999-12-31 23:59:59', 1
 );
 
-DROP TABLE `nerdygadgets`.`review`;
+DROP TABLE IF EXISTS `nerdygadgets`.`review`;
 CREATE TABLE IF NOT EXISTS `nerdygadgets`.`review`
 (
     `ReviewID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `nerdygadgets`.`review`
     FOREIGN KEY(`PersonID`) REFERENCES `nerdygadgets`.`people`(`personid`)
 );
 
-DROP TABLE `nerdygadgets`.`average_score`;
+DROP TABLE IF EXISTS `nerdygadgets`.`average_score`;
 CREATE TABLE IF NOT EXISTS `nerdygadgets`.`average_score`
 (
     `StockItemID` INT(11) NOT NULL PRIMARY KEY,
