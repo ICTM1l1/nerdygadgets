@@ -46,11 +46,12 @@ CREATE TABLE IF NOT EXISTS `nerdygadgets`.`review`
     `ReviewID` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `StockItemID` INT(11) NOT NULL ,
     `Review` VARCHAR(250) NOT NULL,
-    `PrivateCustomerID` INT(11) NOT NULL,
+    `PersonID` INT(11) NOT NULL,
     `Score` TINYINT(255) NOT NULL,
     `ReviewDate` DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    UNIQUE KEY (`StockItemID`, `PersonID`),
     FOREIGN KEY(`stockitemid`) REFERENCES `nerdygadgets`.`stockitems`(`stockitemid`),
-    FOREIGN KEY(`privatecustomerid`) REFERENCES `nerdygadgets`.`people`(`personid`)
+    FOREIGN KEY(`PersonID`) REFERENCES `nerdygadgets`.`people`(`personid`)
 );
 
 CREATE TABLE IF NOT EXISTS `nerdygadgets`.`average_score`
