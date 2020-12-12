@@ -15,10 +15,30 @@ function getAllReviewsForItem(int $id){
     ["id" => $id]);
 }
 
-function getAllReviews(){
-    return select("SELECT * FROM review");
+/**
+ * Gets all reviews.
+ *
+ * @return array
+ *   The reviews.
+ */
+function getReviewedProducts(){
+    return select("
+        SELECT * 
+        FROM review R
+        JOIN stockitems SI ON SI.StockItemID = R.StockItemID
+        GROUP BY SI.StockItemID
+    ");
 }
 
+/**
+ * Gets the reviews for an author.
+ *
+ * @param int $id
+ *   The id of the author.
+ *
+ * @return array
+ *   The reviews for the author.
+ */
 function getReviewAuthor(int $id){
     return selectFirst("
         SELECT * FROM people JOIN review
@@ -37,12 +57,13 @@ function getReviewAuthor(int $id){
  * @return array
  *   An array of the reviews filed on the specified date.
  */
-function getReviewsByDate(string $date){
+function getReviewedProductsByDate(string $date){
     return select("
         SELECT * FROM review
-        WHERE DATE(ReviewDate) = :date", [
-            "date" => $date
-    ]);
+        JOIN stockitems SI ON SI.StockItemID = R.StockItemID
+        WHERE DATE(ReviewDate) = :date
+        GROUP BY SI.StockItemID
+    ", ["date" => $date]);
 }
 
 /**
