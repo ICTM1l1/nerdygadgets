@@ -152,6 +152,10 @@ CREATE TRIGGER insert_correcte_postcode_customer
          IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]' THEN
           SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
          END IF;
+
+        IF NEW.DeliveryPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]' THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
+END IF;
        END;
 //
 DELIMITER ;
@@ -165,6 +169,9 @@ BEGIN
     IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]' THEN
           SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
 END IF;
+    IF NEW.DeliveryPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]' THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
+END IF;
 END;
 //
 DELIMITER ;
@@ -172,10 +179,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS insert_correcte_postcode_customer;
 DELIMITER //
 CREATE TRIGGER insert_correcte_postcode_privatecustomer
-    BEFORE INSERT ON privatecustomers
+    BEFORE INSERT ON privatecustomer
     FOR EACH ROW
     BEGIN
-        IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]'
+        IF NEW.DeliveryPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]'
             THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
         END IF;
     END;
@@ -185,10 +192,10 @@ DELIMITER ;
 DROP TRIGGER IF EXISTS update_correcte_postcode_customer;
 DELIMITER //
 CREATE TRIGGER update_correcte_postcode_privatecustomer
-    BEFORE UPDATE ON privatecustomers
+    BEFORE UPDATE ON privatecustomer
                          FOR EACH ROW
 BEGIN
-        IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]'
+        IF NEW.DeliveryPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]'
             THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
 END IF;
 END;
