@@ -7,10 +7,10 @@ if (!authorizeAdmin()) {
     redirect('Config');
 }
 
-$reviews = getAllReviews();
+$reviews = getReviewedProducts();
 $input_date = get_form_data_get('date');
 if (!empty($input_date)) {
-    $reviews = getContactRequestsByDate($input_date);
+    $reviews = getReviewedProductsByDate($input_date);
 }
 
 $amountReviews = count($reviews);
@@ -42,9 +42,9 @@ if (isset($_POST['delete_review'])) {
                                 <div class="col-md-12 mr-2 mb-4">
                                     <div class="h2 font-weight-bold text-primary text-uppercase float-left">
                                         <?php if ($amountReviews === 1) : ?>
-                                            <?= $amountReviews ?> review
+                                            <?= $amountReviews ?> gereviewde product
                                         <?php else : ?>
-                                            <?= $amountReviews ?> reviews
+                                            <?= $amountReviews ?> gereviewde producten
                                         <?php endif; ?>
                                     </div>
                                     <form class="form-inline float-right" method="get" action="<?= get_url('manage-reviews.php') ?>">
@@ -87,11 +87,13 @@ if (isset($_POST['delete_review'])) {
                                                        data-toggle="list" style="z-index: 0;"
                                                        href="#list-<?= $key ?>" role="tab"
                                                        aria-controls="<?= $key ?>">
-                                                        <div class="float-left">
-                                                            <?= getReviewAuthor($review["ReviewID"])["FullName"] ?? 0 ?>
-                                                        </div>
-                                                        <div class="float-right">
-                                                            <?= dateFormatShort($review['ReviewDate'] ?? '') ?>
+                                                        <div class="row">
+                                                            <div class="col-sm-7">
+                                                                <?= $review['StockItemName'] ?? '' ?>
+                                                            </div>
+                                                            <div class="col-sm-5">
+                                                                <?= dateTimeFormatShort($review['ReviewDate'] ?? '') ?>
+                                                            </div>
                                                         </div>
                                                     </a>
                                                     <?php $active = '';
@@ -103,53 +105,68 @@ if (isset($_POST['delete_review'])) {
                                         <div class="tab-content text-white" id="nav-tabContent">
                                             <?php $active = 'active';
                                             foreach ($reviews as $key => $review) :
-                                                $reviewID = $review["ReviewID"] ?? 0;
+                                                $productReviews = getAllReviewsForItem($review['StockItemID'][0] ?? 0);
                                                 ?>
                                                 <div class="tab-pane fade show <?= $active ?>"
                                                      id="list-<?= $key ?>" role="tabpanel"
                                                      aria-labelledby="list-<?= $key ?>">
+                                                    <?php if (!empty($productReviews)) : ?>
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="row border-bottom mb-3">
+                                                                    <div class="col-sm-12 h4">
+                                                                        Reviews voor <?= $review['StockItemName'] ?? '' ?>
+                                                                    </div>
+                                                                </div>
+                                                                <?php foreach ($productReviews as $productReview) : ?>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-11">
+                                                                            <h3><?= dateTimeFormatShort($review["ReviewDate"] ?? '') ?></h3>
+                                                                        </div>
+                                                                        <div class="col-sm-1">
+                                                                            <form class="text-right" method="post" action="<?= get_current_url()?>">
+                                                                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                                                                <input type="hidden" name="reviewid" value="<?= $reviewID ?? 0 ?>">
+
+                                                                                <button type="submit" class="btn btn-outline-danger"
+                                                                                        data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review["ReviewID"])["FullName"] ?? "" ?> wilt verwijderen?"
+                                                                                        name="delete_review">
+                                                                                    <i class="fas fa-trash"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+
+                                                                        <div class="col-sm-12">
+                                                                            <div class="row mt-4 border-bottom border-white pb-3">
+                                                                                <div class="col-sm-3 font-weight-bold h4">Naam: </div>
+                                                                                <div class="col-sm-9">
+                                                                                    <h3><?= getReviewAuthor($review["ReviewID"])["FullName"] ?? '' ?></h3>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mt-4 border-bottom border-white pb-3">
+                                                                                <div class="col-sm-3 font-weight-bold h4">Score: </div>
+                                                                                <div class="col-sm-9">
+                                                                                    <h3 style="color: goldenrod;"><?= getRatingStars($review["Score"]) ?? '' ?></h3>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row mt-4 border-bottom border-white pb-3">
+                                                                                <div class="col-sm-3 font-weight-bold h4">Review: </div>
+                                                                                <div class="col-sm-9">
+                                                                                    <h3><?= $review["Review"] ?? '' ?></h3>
+                                                                                </div>
+                                                                            </div
+                                                                        </div>
+                                                                    </div>
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        </div>
+                                                    <?php else : ?>
                                                     <div class="row">
-                                                        <div class="col-sm-11">
-                                                            <h1><?= dateFormatFull($review["ReviewDate"] ?? '') ?></h1>
-                                                        </div>
-                                                        <div class="col-sm-1">
-                                                            <form class="text-right" method="post" action="<?= get_current_url()?>">
-                                                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
-                                                                <input type="hidden" name="reviewid"
-                                                                       value="<?= $reviewID ?? 0 ?>">
-
-                                                                <button type="submit"
-                                                                        class="btn btn-outline-danger"
-                                                                        data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review["ReviewID"])["FullName"] ?? "" ?> wilt verwijderen?"
-                                                                        name="delete_review">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
+                                                        <div class="col-sm-12">
+                                                            <p>Er zijn geen reviews gevonden voor dit product.</p>
                                                         </div>
                                                     </div>
-
-                                                    <div class="row mt-2 pt-2 border-top border-white">
-                                                        <div class="col-md-12">
-                                                            <div class="row mt-4 border-bottom border-white pb-3">
-                                                                <div class="col-sm-3 font-weight-bold h4">Naam: </div>
-                                                                <div class="col-sm-9">
-                                                                    <h2><?= getReviewAuthor($review["ReviewID"])["FullName"] ?? '' ?></h2>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-4 border-bottom border-white pb-3">
-                                                                <div class="col-sm-3 font-weight-bold h4">Score: </div>
-                                                                <div class="col-sm-9">
-                                                                    <h2 style="color: goldenrod;"><?= getRatingStars($review["Score"]) ?? '' ?></h2>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-4 border-bottom border-white pb-3">
-                                                                <div class="col-sm-3 font-weight-bold h4">Onderwerp: </div>
-                                                                <div class="col-sm-9">
-                                                                    <h3><?= $review["Review"] ?? '' ?></h3>
-                                                                </div>
-                                                            </div
-                                                        </div>
-                                                    </div>
+                                                    <?php endif; ?>
                                                 </div>
                                                 <?php $active = '';
                                             endforeach; ?>
