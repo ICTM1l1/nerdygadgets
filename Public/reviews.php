@@ -166,7 +166,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                             <div class="row d-flex justify-content-center">
                                 <?php foreach($reviews as $review):?>
                                     <div class="col-sm-3 border border-white ml-2 mr-2 mt-3">
-                                        <h4><?= getCustomerByPeople($review["PrivateCustomerID"] ?? '' )["FullName"] ?? '' ?></h4>
+                                        <h4><?= getCustomerByPeople($review["PersonID"] ?? '' )["FullName"] ?? '' ?></h4>
                                         <div class="row">
                                             <div class="col-sm-6" style="color: goldenrod">
                                                 <?= getRatingStars((int)$review["Score"])?>
