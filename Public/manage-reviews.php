@@ -86,14 +86,7 @@ if (isset($_POST['delete_review'])) {
                                                            data-toggle="list" style="z-index: 0;"
                                                            href="#list-<?= $key ?>" role="tab"
                                                            aria-controls="<?= $key ?>">
-                                                            <div class="row">
-                                                                <div class="col-sm-7">
-                                                                    <?= $review['StockItemName'] ?? '' ?>
-                                                                </div>
-                                                                <div class="col-sm-5">
-                                                                    <?= dateTimeFormatShort($review['ReviewDate'] ?? '') ?>
-                                                                </div>
-                                                            </div>
+                                                            <?= $review['StockItemName'] ?? '' ?>
                                                         </a>
                                                         <?php $active = '';
                                                     endforeach; ?>
@@ -122,6 +115,7 @@ if (isset($_POST['delete_review'])) {
                                                                 <th scope="col">Naam</th>
                                                                 <th scope="col">Score</th>
                                                                 <th scope="col">Review</th>
+                                                                <th scope="col">Datum</th>
                                                                 <th scope="col"></th>
                                                             </tr>
                                                             </thead>
@@ -136,7 +130,14 @@ if (isset($_POST['delete_review'])) {
                                                                         <?= getRatingStars($productReview["Score"]) ?? '' ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?= $productReview["Review"] ?? '' ?>
+                                                                        <?php if (!empty($productReview['Review'])) : ?>
+                                                                            <?= $productReview["Review"] ?? '' ?>
+                                                                        <?php else : ?>
+                                                                            Geen review geschreven
+                                                                        <?php endif; ?>
+                                                                    </td>
+                                                                    <td>
+                                                                        <?= dateTimeFormatShort($productReview['ReviewDate'] ?? '') ?>
                                                                     </td>
                                                                     <td>
                                                                         <form class="text-right" method="post" action="<?= get_current_url()?>">
