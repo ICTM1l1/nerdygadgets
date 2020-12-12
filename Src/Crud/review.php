@@ -15,6 +15,36 @@ function getAllReviewsForItem(int $id){
     ["id" => $id]);
 }
 
+function getAllReviews(){
+    return select("SELECT * FROM review");
+}
+
+function getReviewAuthor(int $id){
+    return selectFirst("
+        SELECT * FROM people JOIN review
+        ON people.personid = review.personid
+        WHERE reviewid = :id", [
+            "id" => $id
+    ]);
+}
+
+/**
+ * Get all reviews added on a specific date.
+ *
+ * @param string $date
+ *   A datetime object of the date of which the reviews are to be retrieved.
+ *
+ * @return array
+ *   An array of the reviews filed on the specified date.
+ */
+function getReviewsByDate(string $date){
+    return select("
+        SELECT * FROM review
+        WHERE DATE(ReviewDate) = :date", [
+            "date" => $date
+    ]);
+}
+
 /**
  * Retrieve all reviews for stock item.
  *
@@ -142,5 +172,24 @@ function deleteReview(int $itemid, int $personid){
     return !delete("review",[
         "StockItemID" => $itemid,
         "PersonID" => $personid
+    ]) && updateAverageByID($itemid);
+}
+
+/**
+ * Deletes a review by ID.
+ *
+ * @param int $id
+ *   ID of the review to delete.
+ * @return bool
+ *   True if deletion was successful.
+ */
+function deleteReviewByID(int $id){
+    $itemid = selectFirst("
+        SELECT StockItemID FROM review
+        WHERE ReviewID = :id", [
+            "id" => $id
+    ])["StockItemID"];
+    return !delete("review",[
+            "ReviewID" => $id
     ]) && updateAverageByID($itemid);
 }
