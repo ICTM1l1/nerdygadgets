@@ -1,6 +1,4 @@
-/**
-  Make all primary keys auto increment.
- */
+# Make all primary keys auto increment.
 SET FOREIGN_KEY_CHECKS = 0;
 
 LOCK TABLES `people` WRITE;
@@ -127,13 +125,11 @@ CHANGE COLUMN `TransactionTypeID` `TransactionTypeID` INT(11) NOT NULL AUTO_INCR
 SET FOREIGN_KEY_CHECKS = 1;
 UNLOCK TABLES;
 
-/**
-    Triggers.
- */
+# Triggers.
 #Trigger on people insert, check if email is valid
 
-DELIMITER //
 DROP TRIGGER IF EXISTS correcte_email;
+DELIMITER //
 CREATE TRIGGER correcte_email
     BEFORE INSERT ON people
     FOR EACH ROW
@@ -147,9 +143,9 @@ DELIMITER ;
 
 #Trigger on customer insert, check if postalcode is valid
 
+DROP TRIGGER IF EXISTS insert_correcte_postcode_customer;
 DELIMITER //
-DROP TRIGGER IF EXISTS correcte_postcode;
-CREATE TRIGGER correcte_postcode
+CREATE TRIGGER insert_correcte_postcode_customer
     BEFORE INSERT ON customers
     FOR EACH ROW
        BEGIN
@@ -160,36 +156,73 @@ CREATE TRIGGER correcte_postcode
 //
 DELIMITER ;
 
-#Trigger on orderline insert, call procedure "UpdateProductVoorraad"
-
+DROP TRIGGER IF EXISTS update_correcte_postcode_customer;
 DELIMITER //
-DROP TRIGGER IF EXISTS orderlineInserted//
-CREATE TRIGGER orderlineInserted
-				BEFORE INSERT ON orderlines
-                FOR EACH ROW
+CREATE TRIGGER update_correcte_postcode_customer
+    BEFORE UPDATE ON customers
+    FOR EACH ROW
 BEGIN
-	IF new.quantity > 0 AND (SELECT QuantityOnHand
-	FROM stockitemholdings s
-	JOIN orderlines o ON s.StockItemID = o.StockItemID
-	WHERE s.StockItemID = 86
-	AND QuantityOnHand - new.quantity > 0
-	ORDER BY orderlineID LIMIT 1)
-    THEN
-	CALL UpdateProductVoorraad(new.stockitemid, new.quantity);
-    ELSE
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Het product is niet voorradig genoeg';
-    END IF;
+    IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]' THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
+END IF;
 END;
 //
 DELIMITER ;
 
-/**
-    Procedures.
- */
+DROP TRIGGER IF EXISTS insert_correcte_postcode_customer;
+DELIMITER //
+CREATE TRIGGER insert_correcte_postcode_privatecustomer
+    BEFORE INSERT ON privatecustomers
+    FOR EACH ROW
+    BEGIN
+        IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]'
+            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
+        END IF;
+    END;
+//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS update_correcte_postcode_customer;
+DELIMITER //
+CREATE TRIGGER update_correcte_postcode_privatecustomer
+    BEFORE UPDATE ON privatecustomers
+                         FOR EACH ROW
+BEGIN
+        IF NEW.PostalPostalCode NOT LIKE '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]'
+            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
+END IF;
+END;
+//
+DELIMITER ;
+
+#Trigger on orderline insert, call procedure "UpdateProductVoorraad"
+
+DROP TRIGGER IF EXISTS orderlineInserted;
+DELIMITER //
+CREATE TRIGGER orderlineInserted
+    BEFORE INSERT ON orderlines
+    FOR EACH ROW
+    BEGIN
+        IF new.quantity > 0 AND (SELECT QuantityOnHand
+        FROM stockitemholdings s
+        JOIN orderlines o ON s.StockItemID = o.StockItemID
+        WHERE s.StockItemID = 86
+        AND QuantityOnHand - new.quantity > 0
+        ORDER BY orderlineID LIMIT 1)
+        THEN
+            CALL UpdateProductVoorraad(new.stockitemid, new.quantity);
+        ELSE
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Het product is niet voorradig genoeg';
+        END IF;
+    END;
+//
+DELIMITER ;
+
+# Procedures
 #Procedure to update stock quantity on orderline insert
 
+DROP PROCEDURE IF EXISTS UpdateProductVoorraad;
 DELIMITER //
-DROP PROCEDURE IF EXISTS UpdateProductVoorraad//
 CREATE PROCEDURE UpdateProductVoorraad(StockItemID int(11), Quantity int(11))
 BEGIN
     UPDATE stockitemholdings AS s
@@ -199,14 +232,8 @@ END;
 //
 DELIMITER ;
 
-/**
-  Performance improvements.
- */
 
-
-/**
-  Authorisation.
- */
+# Authorisation
 DROP USER IF EXISTS'nerdygadgets_read'@'localhost';
 DROP USER IF EXISTS'nerdygadgets_create'@'localhost';
 DROP USER IF EXISTS'nerdygadgets_update'@'localhost';
@@ -233,18 +260,5 @@ CREATE USER 'nerdygadgets_delete'@'localhost' IDENTIFIED BY 'KKP7Ylcw$A0t1Kx95D2
 REVOKE ALL PRIVILEGES ON * . * FROM 'nerdygadgets_delete'@'localhost';
 GRANT SELECT, DELETE ON * . * TO 'nerdygadgets_delete'@'localhost';
 
-/**
-  Database rules additions.
- */
-
-
-/**
-  Storage engines changes.
- */
-
+# Storage engines changes
 ALTER TABLE coldroomtemperatures ENGINE = MEMORY;
-
-/**
-  Transactions.
- */
-
