@@ -28,6 +28,11 @@ if (isset($_POST['checkout'])) {
         add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
     }
 
+    if ($values_valid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
+        add_user_error('Ongeldige postcode opgegeven.');
+        $values_valid = false;
+    }
+
     if ($values_valid) {
         $customer_id = $account['PrivateCustomerID'] ?? 0;
         if (empty($customer_id)) {
@@ -55,31 +60,31 @@ if (isset($_POST['checkout'])) {
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
-                                   placeholder="Naam" value="<?= $name ?>" <?= $loggedIn ? 'disabled' : '' ?>>
+                                   placeholder="Naam" value="<?= $name ?>" <?= $loggedIn && !authorizeAdmin() ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="postalcode" class="col-sm-3 text-left">Postcode <span class="text-danger">*</span></label>
                             <input type="text" maxlength="6" id="postalcode" name="postalcode" class="form-control col-sm-9"
-                                   placeholder="Postcode" value="<?= $postalCode ?>" <?= $loggedIn ? 'disabled' : '' ?>>
+                                   placeholder="Postcode" value="<?= $postalCode ?>" <?= $loggedIn && !authorizeAdmin() ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="address" class="col-sm-3 text-left">Adres <span class="text-danger">*</span></label>
                             <input type="text" id="address" name="address" class="form-control col-sm-9"
-                                   placeholder="Adres" value="<?= $address ?>" <?= $loggedIn ? 'disabled' : '' ?>>
+                                   placeholder="Adres" value="<?= $address ?>" <?= $loggedIn && !authorizeAdmin() ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="city" class="col-sm-3 text-left">Woonplaats <span class="text-danger">*</span></label>
                             <input type="text" id="city" name="city" class="form-control col-sm-9"
-                                   placeholder="Woonplaats" value="<?= $city ?>" <?= $loggedIn ? 'disabled' : '' ?>>
+                                   placeholder="Woonplaats" value="<?= $city ?>" <?= $loggedIn && !authorizeAdmin() ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group form-row">
                             <label for="phonenumber" class="col-sm-3 text-left">Telefoonnummer <span class="text-danger">*</span></label>
                             <input type="tel" id="phonenumber" name="phonenumber" class="form-control col-sm-9"
-                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>" <?= $loggedIn ? 'disabled' : '' ?>>
+                                   placeholder="Telefoonnummer" value="<?= $phoneNumber ?>" <?= $loggedIn && !authorizeAdmin() ? 'disabled' : '' ?>>
                         </div>
 
                         <div class="form-group">

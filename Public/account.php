@@ -38,6 +38,11 @@ if (isset($_POST["update"])) {
         redirect(get_url("account.php"));
     }
 
+    if (!preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
+        add_user_error('Ongeldige postcode opgegeven.');
+        redirect(get_url("account.php"));
+    }
+
     updatePeople($account['PersonID'] ?? 0, $name, $phoneNumber);
     updateCustomer($account['PersonID'] ?? 0, $name, $address, $postalCode, $phoneNumber, $city);
 
