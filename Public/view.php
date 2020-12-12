@@ -17,8 +17,8 @@ if(isset($_POST["review"])){
     $pid = (int)session_get("personID", 0);
     $orders = getOrdersByCustomer($pid);
 
-    if(productWasReviewedByCustomer($id, $pid)){
-        add_user_error("U kan een product maar een keer reviewen.");
+    if (productWasReviewedByCustomer($id, $pid)) {
+        add_user_error("U kan een product maar 1 keer reviewen.");
         $valid = false;
     }
 
@@ -57,10 +57,8 @@ if(isset($_POST["review"])){
     redirect(get_current_url());
 }
 elseif(isset($_POST["Delete_Review"])){
-    //$valid = true;
     if (!(bool)session_get("LoggedIn", false)) {
-        add_user_error("U moet ingelogd zijn om uw review achter te kunnen verwijderen.");
-        //$valid = false;
+        add_user_error("U moet ingelogd zijn om uw review te kunnen verwijderen.");
     }
     else {
         $id = (int)get_form_data_post("id", "0");
@@ -77,6 +75,7 @@ $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $categories = getCategoryIdForProduct($product_id);
 $reviews = getLimitedReviewsForItem($product_id);
+$productReview = getProductReviewByCustomer($product_id, (int)session_get("personID", 0));
 
 $relatedProductIds = [];
 $relatedProductImages = [];
@@ -304,49 +303,80 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
-                                <?php if(productWasReviewedByCustomer($product_id, (int)session_get("personID", 0))):?>
-                                <form action="<?= get_current_url()?>" method="post">
-                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
-                                    <input type="hidden" name="id" value="<?=$product_id?>"/>
-                                    <button name="Delete_Review" class="btn btn-danger float-right mr-5">Review verwijderen.</button>
-                                </form>
-                                <?php endif;?>
                             </div>
                         </div>
                         <div class="row mt-4">
                             <div class="col-sm-6 pl-4 pr-4">
-                                <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
-                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
-                                    <input type="hidden" name="itemid" value="<?=$product_id?>">
+                                <?php if (!empty($productReview)) : ?>
+                                    <form action="<?= get_current_url()?>" class="text-center w-100" method="post">
+                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="id" value="<?=$product_id?>"/>
 
-                                    <div class="form-group form-row">
-                                        <label for="score-input" class="col-sm-3 pt-2 mt-1">Score</label>
-                                        <div class="score-container col-sm-9 pl-0 ml-0" id="score-container" style="color: goldenrod;">
-                                            <div class="rate pl-0 ml-0">
-                                                <input type="radio" id="star5" name="score-value" value="5" />
-                                                <label for="star5" title="text">5 stars</label>
-                                                <input type="radio" id="star4" name="score-value" value="4" />
-                                                <label for="star4" title="text">4 stars</label>
-                                                <input type="radio" id="star3" name="score-value" value="3" />
-                                                <label for="star3" title="text">3 stars</label>
-                                                <input type="radio" id="star2" name="score-value" value="2" />
-                                                <label for="star2" title="text">2 stars</label>
-                                                <input type="radio" id="star1" name="score-value" value="1" />
-                                                <label for="star1" title="text">1 star</label>
+                                        <h4>U heeft een review geplaatst</h4>
+                                        <div class="form-group form-row">
+                                            <div class="col-sm-12 border border-white mt-3">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h3>
+                                                            <?= getCustomerByPeople($productReview["PersonID"] ?? 0 )["FullName"] ?? '' ?>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6" style="color: goldenrod">
+                                                        <?= getRatingStars((int) ($productReview["Score"] ?? 0))?>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <?= dateTimeFormatShort($productReview["ReviewDate"] ?? '')?>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group form-row">
-                                        <label for="review-text" class="col-sm-3">Review</label>
-                                        <textarea id="review-text" name="review-text" autocomplete="off"
-                                                  class="form-control count-characters-250 col-sm-9"
-                                                  rows="5" maxlength="250"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" id="submit-review"
-                                                class="btn btn-success float-right my-4" name="review">Plaatsen</button>
-                                    </div>
-                                </form>
+
+                                        <button name="Delete_Review" class="btn btn-danger ml-auto mr-auto mt-4"
+                                                data-confirm="Weet u zeker dat u uw review wilt verwijderen?">
+                                            Review verwijderen
+                                        </button>
+                                    </form>
+                                <?php else : ?>
+                                    <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
+                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="itemid" value="<?=$product_id?>">
+
+                                        <div class="form-group form-row">
+                                            <label for="score-input" class="col-sm-3 pt-2 mt-1">Score</label>
+                                            <div class="score-container col-sm-9 pl-0 ml-0" id="score-container" style="color: goldenrod;">
+                                                <div class="rate pl-0 ml-0">
+                                                    <input type="radio" id="star5" name="score-value" value="5" />
+                                                    <label for="star5" title="text">5 stars</label>
+                                                    <input type="radio" id="star4" name="score-value" value="4" />
+                                                    <label for="star4" title="text">4 stars</label>
+                                                    <input type="radio" id="star3" name="score-value" value="3" />
+                                                    <label for="star3" title="text">3 stars</label>
+                                                    <input type="radio" id="star2" name="score-value" value="2" />
+                                                    <label for="star2" title="text">2 stars</label>
+                                                    <input type="radio" id="star1" name="score-value" value="1" />
+                                                    <label for="star1" title="text">1 star</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-row">
+                                            <label for="review-text" class="col-sm-3">Review</label>
+                                            <textarea id="review-text" name="review-text" autocomplete="off"
+                                                      class="form-control count-characters-250 col-sm-9"
+                                                      rows="5" maxlength="250"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" id="submit-review"
+                                                    class="btn btn-success float-right my-4" name="review">Plaatsen</button>
+                                        </div>
+                                    </form>
+                                <?php endif;?>
                             </div>
                             <div class="col-sm-6 pl-4 pr-4">
                                 <?php if (!empty($reviews)) : ?>
@@ -383,7 +413,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                         </div>
                     <?php else :?>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 text-center">
                                 <h2 class="text-white">Log in of registreer om een review achter te laten.</h2>
                             </div>
                         </div>

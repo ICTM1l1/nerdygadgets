@@ -42,9 +42,9 @@ if (isset($_POST['delete_review'])) {
                                 <div class="col-md-12 mr-2 mb-4">
                                     <div class="h2 font-weight-bold text-primary text-uppercase float-left">
                                         <?php if ($amountReviews === 1) : ?>
-                                            <?= $amountReviews ?> contact aanvraag
+                                            <?= $amountReviews ?> review
                                         <?php else : ?>
-                                            <?= $amountReviews ?> contact aanvragen
+                                            <?= $amountReviews ?> reviews
                                         <?php endif; ?>
                                     </div>
                                     <form class="form-inline float-right" method="get" action="<?= get_url('manage-reviews.php') ?>">
@@ -61,7 +61,7 @@ if (isset($_POST['delete_review'])) {
                                 <?php if ($amountReviews < 1) : ?>
                                     <div class="col-md-12">
                                         <p class="mt-2 font-weight-bold">
-                                            Er zijn geen contact aanvragen gevonden.
+                                            Er zijn geen reviews gevonden.
                                         </p>
                                     </div>
                                 <?php endif; ?>

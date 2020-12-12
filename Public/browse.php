@@ -191,10 +191,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                         <?php
                         $averageScore = round(getReviewAverageByID($product["StockItemID"]));
                         if($averageScore > 0) : ?>
-                        <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
                             <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
-                        <?php else : ?>
-                            <h3 class="text-white">Geen reviews.</h3>
                         <?php endif; ?>
                         <?php if ($quantityOnHandRaw <= 0) : ?>
                             <h4 class="ItemQuantity text-danger">
