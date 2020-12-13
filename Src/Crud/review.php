@@ -5,6 +5,7 @@
  *
  * @param int $id
  *   ID of item to retrieve reviews for.
+ * 
  * @return array
  *   Retrieved reviews.
  */
@@ -13,6 +14,25 @@ function getAllReviewsForItem(int $id){
         SELECT * FROM review
         WHERE StockItemID = :id",
     ["id" => $id]);
+}
+
+/**
+ * Retrieve all reviews for stock item.
+ *
+ * @param int $id
+ *   ID of item to retrieve reviews for.
+ * @param string $date
+ *   A datetime object of the date of which the reviews are to be retrieved.
+ *
+ * @return array
+ *   Retrieved reviews.
+ */
+function getAllReviewsForItemByDate(int $id, string $date){
+    return select("
+        SELECT * FROM review
+        WHERE StockItemID = :id
+        AND DATE(ReviewDate) = :date
+    ", ["id" => $id, 'date' => $date]);
 }
 
 /**
