@@ -226,8 +226,7 @@ function getProductIdsForCategory(int $categoryID) {
  */
 function getRandomProductForCategory(int $categoryID){
     $productIds = getProductIdsForCategory($categoryID);
-    $amountProductIds = count($productIds);
-    $selectedProduct = $productIds[random_int(0, $amountProductIds)] ?? [];
+    $selectedProduct = $productIds[array_rand($productIds)];
 
     return $selectedProduct["StockItemID"] ?? 0;
 }
