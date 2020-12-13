@@ -125,7 +125,7 @@ if (isset($_POST['delete_review'])) {
                                                                     <th scope="row" width="25px;">
                                                                         <?= $productReview['ReviewID'] ?? 0 ?>
                                                                     </th>
-                                                                    <td><?= getReviewAuthor($productReview["ReviewID"])["FullName"] ?? '' ?></td>
+                                                                    <td><?= getReviewAuthor($productReview["ReviewID"])["PreferredName"] ?? '' ?></td>
                                                                     <td style="color: goldenrod;">
                                                                         <?= getRatingStars($productReview["Score"]) ?? '' ?>
                                                                     </td>
