@@ -29,6 +29,11 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
+    if ($valuesValid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
+        add_user_error('Ongeldige postcode opgegeven.');
+        $valuesValid = false;
+    }
+
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
         add_user_error('Email wordt al gebruikt.');

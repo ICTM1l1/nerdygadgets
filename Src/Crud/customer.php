@@ -86,7 +86,7 @@ function getCustomer(int $customer) {
 function getCustomerByPeople(int $people) {
     return selectFirst("
         SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
-        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName, FullName
+        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName, FullName, PreferredName
         FROM privatecustomer C
         JOIN people P ON  C.PeopleID = P.PersonID
         JOIN cities ON DeliveryCityID = CityID

@@ -318,7 +318,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>
-                                                            <?= getCustomerByPeople($productReview["PersonID"] ?? 0 )["FullName"] ?? '' ?>
+                                                            <?= getCustomerByPeople($productReview["PersonID"] ?? 0 )["PreferredName"] ?? '' ?>
                                                         </h3>
                                                     </div>
                                                 </div>
@@ -386,7 +386,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>
-                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["FullName"] ?? '' ?>
+                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["PreferredName"] ?? '' ?>
                                                         </h3>
                                                     </div>
                                                 </div>

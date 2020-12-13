@@ -98,6 +98,9 @@ if (isset($_POST['delete_review'])) {
                                                 <?php $active = 'active';
                                                 foreach ($reviews as $key => $review) :
                                                     $productReviews = getAllReviewsForItem($review['StockItemID'][0] ?? 0);
+                                                    if (!empty($input_date)) {
+                                                        $productReviews = getAllReviewsForItemByDate($review['StockItemID'][0] ?? 0, $input_date);
+                                                    }
                                                     ?>
                                                     <div class="tab-pane fade show <?= $active ?>"
                                                          id="list-<?= $key ?>" role="tabpanel"
@@ -125,7 +128,7 @@ if (isset($_POST['delete_review'])) {
                                                                     <th scope="row" width="25px;">
                                                                         <?= $productReview['ReviewID'] ?? 0 ?>
                                                                     </th>
-                                                                    <td><?= getReviewAuthor($productReview["ReviewID"])["FullName"] ?? '' ?></td>
+                                                                    <td><?= getReviewAuthor($productReview["ReviewID"])["PreferredName"] ?? '' ?></td>
                                                                     <td style="color: goldenrod;">
                                                                         <?= getRatingStars($productReview["Score"]) ?? '' ?>
                                                                     </td>
