@@ -41,6 +41,14 @@ if (!empty($productCustomFields)) {
     $customFields = json_decode($productCustomFields, true, 512, JSON_THROW_ON_ERROR);
 }
 
+$temperatuur = select("SELECT * FROM coldroomtemperatures");
+if (!empty($temperatuur)) {
+    $temperatuur = "Temperatuur: " . $temperatuur[0]["Temperature"] . "℃";
+}
+else {
+    unset($temperatuur);
+}
+
 $productInCart = $cart->getItemCount($product_id) > 0;
 if ($id = get_form_data_post("Add_Cart", NULL)) {
     $cart->addItem($id);
@@ -111,6 +119,13 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 <h2 class="StockItemNameViewSize StockItemName">
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
+                <?php if (!isset($temperatuur)) : ?>
+                    <div class="QuantityText text-danger py-4">
+                        Er is geen actuele temperatuur.
+                    </div>
+                <?php else: ?>
+                    <div class="QuantityText py-4"><?= $temperatuur ?></div>
+                <?php endif; ?>
                 <?php if (!isset($temperatuur)) : ?>
                     <div class="QuantityText text-danger py-4">
                         Er is geen actuele temperatuur.
