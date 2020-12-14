@@ -22,7 +22,7 @@ Bepaal de exacte versie van MariaDB op jouw systeem:
 8. Klaarzetten van de ARCHIVE-omgeving
 9. Installeer de ARCHIVE-engine:
 10. Maak een directory lib\plugin aan in de xampp\mysql-directory (als deze nog niet bestaat).
-11. Kopieer de twee bestanden ha-connect.dll en ha-connect.lib naar de xampp\mysql\lib\plugin-directory
+11. Kopieer de twee bestanden ha-archive.dll naar de xampp\mysql\lib\plugin-directory
 12. Open de command line interface (CLI)[1] van MySQL met de volgende commando 's:
 13. Open ‘shell’ in XAMPP
 14. Geef het commando ‘mysql -u root’ (zonder quotes; als je een andere user hebt aangemaakt voor MariaDB dan moet je die gebruiken)
