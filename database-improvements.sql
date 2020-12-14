@@ -1,25 +1,25 @@
 # Make all primary keys auto increment.
 SET FOREIGN_KEY_CHECKS = 0;
 
-LOCK TABLES `people` WRITE;
-ALTER TABLE `people`
+LOCK TABLES `nerdygadgets`.`people` WRITE;
+ALTER TABLE `nerdygadgets`.`people`
 CHANGE COLUMN `PersonID` `PersonID` INT(11) NOT NULL AUTO_INCREMENT;
 
-LOCK TABLES `customers` WRITE;
-ALTER TABLE `customers`
+LOCK TABLES `nerdygadgets`.`customers` WRITE;
+ALTER TABLE `nerdygadgets`.`customers`
 CHANGE COLUMN `CustomerID` `CustomerID` INT(11) NOT NULL AUTO_INCREMENT;
 
-LOCK TABLES `orders` WRITE;
-ALTER TABLE `orders`
+LOCK TABLES `nerdygadgets`.`orders` WRITE;
+ALTER TABLE `nerdygadgets`.`orders`
 CHANGE COLUMN `OrderID` `OrderID` INT(11) NOT NULL AUTO_INCREMENT;
 SET max_statement_time=0;
 
-LOCK TABLES `orderlines` WRITE;
-ALTER TABLE `orderlines`
+LOCK TABLES `nerdygadgets`.`orderlines` WRITE;
+ALTER TABLE `nerdygadgets`.`orderlines`
 CHANGE COLUMN `OrderLineID` `OrderLineID` INT(11) NOT NULL AUTO_INCREMENT;
 
-LOCK TABLES `cities` WRITE;
-ALTER TABLE `cities`
+LOCK TABLES `nerdygadgets`.`cities` WRITE;
+ALTER TABLE `nerdygadgets`.`cities`
 CHANGE COLUMN `CityID` `CityID` INT(11) NOT NULL AUTO_INCREMENT;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -28,57 +28,57 @@ UNLOCK TABLES;
 # Triggers.
 #Trigger on people insert, check if email is valid
 
-DROP TRIGGER IF EXISTS correcte_email;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`correcte_email`;
 DELIMITER //
-CREATE TRIGGER correcte_email
-    BEFORE INSERT ON people
+CREATE TRIGGER `nerdygadgets`.`correcte_email`
+    BEFORE INSERT ON `nerdygadgets`.`people`
     FOR EACH ROW
-       BEGIN
-         IF NEW.EmailAddress NOT LIKE '_%@_%.__%' THEN
+BEGIN
+    IF NEW.EmailAddress NOT LIKE '_%@_%.__%' THEN
           SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email field is invalid';
-         END IF;
-       END;
+    END IF;
+END;
 //
 DELIMITER ;
 
 #Trigger on customer insert, check if postalcode is valid
 
-DROP TRIGGER IF EXISTS insert_correcte_postcode_customer;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`insert_correcte_postcode_customer`;
 DELIMITER //
-CREATE TRIGGER insert_correcte_postcode_customer
-    BEFORE INSERT ON customers
-    FOR EACH ROW
-       BEGIN
-         IF REGEXP_INSTR(NEW.PostalPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]') THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
-         END IF;
-        IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
-            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
-        END IF;
-       END;
-//
-DELIMITER ;
-
-DROP TRIGGER IF EXISTS update_correcte_postcode_customer;
-DELIMITER //
-CREATE TRIGGER update_correcte_postcode_customer
-    BEFORE UPDATE ON customers
+CREATE TRIGGER `nerdygadgets`.`insert_correcte_postcode_customer`
+    BEFORE INSERT ON `nerdygadgets`.`customers`
     FOR EACH ROW
 BEGIN
     IF REGEXP_INSTR(NEW.PostalPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]') THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
-END IF;
-IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
-            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
-END IF;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
+    IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
 END;
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS insert_correcte_postcode_privatecustomer;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`update_correcte_postcode_customer`;
 DELIMITER //
-CREATE TRIGGER insert_correcte_postcode_privatecustomer
-    BEFORE INSERT ON privatecustomer
+CREATE TRIGGER `nerdygadgets`.`update_correcte_postcode_customer`
+    BEFORE UPDATE ON `nerdygadgets`.`customers`
+    FOR EACH ROW
+BEGIN
+    IF REGEXP_INSTR(NEW.PostalPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]') THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
+    IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
+                THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
+END;
+//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS `nerdygadgets`.`insert_correcte_postcode_privatecustomer`;
+DELIMITER //
+CREATE TRIGGER `nerdygadgets`.`insert_correcte_postcode_privatecustomer`
+    BEFORE INSERT ON `nerdygadgets`.`privatecustomer`
     FOR EACH ROW
     BEGIN
         IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
@@ -88,11 +88,11 @@ CREATE TRIGGER insert_correcte_postcode_privatecustomer
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS update_correcte_postcode_privatecustomer;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`update_correcte_postcode_privatecustomer`;
 DELIMITER //
-CREATE TRIGGER update_correcte_postcode_privatecustomer
-    BEFORE UPDATE ON privatecustomer
-                         FOR EACH ROW
+CREATE TRIGGER `nerdygadgets`.`update_correcte_postcode_privatecustomer`
+    BEFORE UPDATE ON `nerdygadgets`.`privatecustomer`
+    FOR EACH ROW
 BEGIN
     IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
         THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
@@ -103,10 +103,10 @@ DELIMITER ;
 
 #Trigger on orderline insert, call procedure "UpdateProductVoorraad"
 
-DROP TRIGGER IF EXISTS orderlineInserted;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`orderlineInserted`;
 DELIMITER //
-CREATE TRIGGER orderlineInserted
-    BEFORE INSERT ON orderlines
+CREATE TRIGGER `nerdygadgets`.`orderlineInserted`
+    BEFORE INSERT ON `nerdygadgets`.`orderlines`
     FOR EACH ROW
     BEGIN
         IF new.quantity > 0 AND (SELECT QuantityOnHand
