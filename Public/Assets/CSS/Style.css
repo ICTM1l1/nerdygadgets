@@ -441,6 +441,12 @@ ul#ul-class-price li {
 .ListItem:hover {
     text-decoration: none;
 }
+.orderListItem {
+    color: #ffffff;
+}
+.orderListItem:hover {
+    color: #808080;
+}
 #emptySearchResults {
     text-align: center;
     height: 100%;

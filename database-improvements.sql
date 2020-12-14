@@ -1,126 +1,26 @@
 # Make all primary keys auto increment.
 SET FOREIGN_KEY_CHECKS = 0;
 
-LOCK TABLES `people` WRITE;
-ALTER TABLE `people`
+LOCK TABLES `nerdygadgets`.`people` WRITE;
+ALTER TABLE `nerdygadgets`.`people`
 CHANGE COLUMN `PersonID` `PersonID` INT(11) NOT NULL AUTO_INCREMENT;
 
-LOCK TABLES `customers` WRITE;
-ALTER TABLE `customers`
+LOCK TABLES `nerdygadgets`.`customers` WRITE;
+ALTER TABLE `nerdygadgets`.`customers`
 CHANGE COLUMN `CustomerID` `CustomerID` INT(11) NOT NULL AUTO_INCREMENT;
 
-LOCK TABLES `orders` WRITE;
-ALTER TABLE `orders`
+LOCK TABLES `nerdygadgets`.`orders` WRITE;
+ALTER TABLE `nerdygadgets`.`orders`
 CHANGE COLUMN `OrderID` `OrderID` INT(11) NOT NULL AUTO_INCREMENT;
 SET max_statement_time=0;
 
-LOCK TABLES `orderlines` WRITE;
-ALTER TABLE `orderlines`
+LOCK TABLES `nerdygadgets`.`orderlines` WRITE;
+ALTER TABLE `nerdygadgets`.`orderlines`
 CHANGE COLUMN `OrderLineID` `OrderLineID` INT(11) NOT NULL AUTO_INCREMENT;
 
-LOCK TABLES `buyinggroups` WRITE;
-ALTER TABLE `buyinggroups`
-CHANGE COLUMN `BuyingGroupID` `BuyingGroupID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `cities` WRITE;
-ALTER TABLE `cities`
+LOCK TABLES `nerdygadgets`.`cities` WRITE;
+ALTER TABLE `nerdygadgets`.`cities`
 CHANGE COLUMN `CityID` `CityID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `colors` WRITE;
-ALTER TABLE `colors`
-CHANGE COLUMN `ColorID` `ColorID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `countries` WRITE;
-ALTER TABLE `countries`
-CHANGE COLUMN `CountryID` `CountryID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `customercategories` WRITE;
-ALTER TABLE `customercategories`
-CHANGE COLUMN `CustomerCategoryID` `CustomerCategoryID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `customertransactions` WRITE;
-ALTER TABLE `customertransactions`
-CHANGE COLUMN `CustomerTransactionID` `CustomerTransactionID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `deliverymethods` WRITE;
-ALTER TABLE `deliverymethods`
-CHANGE COLUMN `DeliveryMethodID` `DeliveryMethodID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `invoicelines` WRITE;
-ALTER TABLE `invoicelines`
-CHANGE COLUMN `InvoiceLineID` `InvoiceLineID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `invoices` WRITE;
-ALTER TABLE `invoices`
-CHANGE COLUMN `InvoiceID` `InvoiceID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `packagetypes` WRITE;
-ALTER TABLE `packagetypes`
-CHANGE COLUMN `PackageTypeID` `PackageTypeID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `paymentmethods` WRITE;
-ALTER TABLE `paymentmethods`
-CHANGE COLUMN `PaymentMethodID` `PaymentMethodID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `purchaseorderlines` WRITE;
-ALTER TABLE `purchaseorderlines`
-CHANGE COLUMN `PurchaseOrderLineID` `PurchaseOrderLineID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `purchaseorders` WRITE;
-ALTER TABLE `purchaseorders`
-CHANGE COLUMN `PurchaseOrderID` `PurchaseOrderID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `specialdeals` WRITE;
-ALTER TABLE `specialdeals`
-CHANGE COLUMN `SpecialDealID` `SpecialDealID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stateprovinces` WRITE;
-ALTER TABLE `stateprovinces`
-CHANGE COLUMN `StateProvinceID` `StateProvinceID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stockgroups` WRITE;
-ALTER TABLE `stockgroups`
-CHANGE COLUMN `StockGroupID` `StockGroupID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stockitemholdings` WRITE;
-ALTER TABLE `stockitemholdings`
-CHANGE COLUMN `StockItemID` `StockItemID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stockitemimages` WRITE;
-ALTER TABLE `stockitemimages`
-CHANGE COLUMN `StockItemID` `StockItemID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stockitems` WRITE;
-ALTER TABLE `stockitems`
-CHANGE COLUMN `StockItemID` `StockItemID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stockitemstockgroups` WRITE;
-ALTER TABLE `stockitemstockgroups`
-CHANGE COLUMN `StockItemStockGroupID` `StockItemStockGroupID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `stockitemtransactions` WRITE;
-ALTER TABLE `stockitemtransactions`
-CHANGE COLUMN `StockItemTransactionID` `StockItemTransactionID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `suppliercategories` WRITE;
-ALTER TABLE `suppliercategories`
-CHANGE COLUMN `SupplierCategoryID` `SupplierCategoryID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `suppliers` WRITE;
-ALTER TABLE `suppliers`
-CHANGE COLUMN `SupplierID` `SupplierID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `suppliertransactions` WRITE;
-ALTER TABLE `suppliertransactions`
-CHANGE COLUMN `SupplierTransactionID` `SupplierTransactionID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `systemparameters` WRITE;
-ALTER TABLE `systemparameters`
-CHANGE COLUMN `SystemParameterID` `SystemParameterID` INT(11) NOT NULL AUTO_INCREMENT;
-
-LOCK TABLES `transactiontypes` WRITE;
-ALTER TABLE `transactiontypes`
-CHANGE COLUMN `TransactionTypeID` `TransactionTypeID` INT(11) NOT NULL AUTO_INCREMENT;
 
 SET FOREIGN_KEY_CHECKS = 1;
 UNLOCK TABLES;
@@ -128,74 +28,74 @@ UNLOCK TABLES;
 # Triggers.
 #Trigger on people insert, check if email is valid
 
-DROP TRIGGER IF EXISTS correcte_email;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`correcte_email`;
 DELIMITER //
-CREATE TRIGGER correcte_email
-    BEFORE INSERT ON people
+CREATE TRIGGER `nerdygadgets`.`correcte_email`
+    BEFORE INSERT ON `nerdygadgets`.`people`
     FOR EACH ROW
-       BEGIN
-         IF NEW.EmailAddress NOT LIKE '_%@_%.__%' THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email field is not valid';
-         END IF;
-       END;
+BEGIN
+    IF NEW.EmailAddress NOT LIKE '_%@_%.__%' THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Email field is invalid';
+    END IF;
+END;
 //
 DELIMITER ;
 
 #Trigger on customer insert, check if postalcode is valid
 
-DROP TRIGGER IF EXISTS insert_correcte_postcode_customer;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`insert_correcte_postcode_customer`;
 DELIMITER //
-CREATE TRIGGER insert_correcte_postcode_customer
-    BEFORE INSERT ON customers
-    FOR EACH ROW
-       BEGIN
-         IF REGEXP_INSTR(NEW.PostalPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]') THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
-         END IF;
-        IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
-            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = NEW.DeliveryPostalCode;
-        END IF;
-       END;
-//
-DELIMITER ;
-
-DROP TRIGGER IF EXISTS update_correcte_postcode_customer;
-DELIMITER //
-CREATE TRIGGER update_correcte_postcode_customer
-    BEFORE UPDATE ON customers
+CREATE TRIGGER `nerdygadgets`.`insert_correcte_postcode_customer`
+    BEFORE INSERT ON `nerdygadgets`.`customers`
     FOR EACH ROW
 BEGIN
     IF REGEXP_INSTR(NEW.PostalPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]') THEN
-          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postcode is not valid';
-END IF;
-IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
-            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = NEW.DeliveryPostalCode;
-END IF;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
+    IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
 END;
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS insert_correcte_postcode_privatecustomer;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`update_correcte_postcode_customer`;
 DELIMITER //
-CREATE TRIGGER insert_correcte_postcode_privatecustomer
-    BEFORE INSERT ON privatecustomer
+CREATE TRIGGER `nerdygadgets`.`update_correcte_postcode_customer`
+    BEFORE UPDATE ON `nerdygadgets`.`customers`
+    FOR EACH ROW
+BEGIN
+    IF REGEXP_INSTR(NEW.PostalPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]') THEN
+          SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
+    IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
+                THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
+    END IF;
+END;
+//
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS `nerdygadgets`.`insert_correcte_postcode_privatecustomer`;
+DELIMITER //
+CREATE TRIGGER `nerdygadgets`.`insert_correcte_postcode_privatecustomer`
+    BEFORE INSERT ON `nerdygadgets`.`privatecustomer`
     FOR EACH ROW
     BEGIN
         IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
-            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = NEW.DeliveryPostalCode;
+            THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
         END IF;
     END;
 //
 DELIMITER ;
 
-DROP TRIGGER IF EXISTS update_correcte_postcode_privatecustomer;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`update_correcte_postcode_privatecustomer`;
 DELIMITER //
-CREATE TRIGGER update_correcte_postcode_privatecustomer
-    BEFORE UPDATE ON privatecustomer
-                         FOR EACH ROW
+CREATE TRIGGER `nerdygadgets`.`update_correcte_postcode_privatecustomer`
+    BEFORE UPDATE ON `nerdygadgets`.`privatecustomer`
+    FOR EACH ROW
 BEGIN
     IF NOT REGEXP_INSTR(NEW.DeliveryPostalCode, '[0-9][0-9][0-9][0-9][a-zA-Z][a-zA-Z]')
-        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = NEW.DeliveryPostalCode;
+        THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Postal code is not valid';
     END IF;
 END;
 //
@@ -203,10 +103,10 @@ DELIMITER ;
 
 #Trigger on orderline insert, call procedure "UpdateProductVoorraad"
 
-DROP TRIGGER IF EXISTS orderlineInserted;
+DROP TRIGGER IF EXISTS `nerdygadgets`.`orderlineInserted`;
 DELIMITER //
-CREATE TRIGGER orderlineInserted
-    BEFORE INSERT ON orderlines
+CREATE TRIGGER `nerdygadgets`.`orderlineInserted`
+    BEFORE INSERT ON `nerdygadgets`.`orderlines`
     FOR EACH ROW
     BEGIN
         IF new.quantity > 0 AND (SELECT QuantityOnHand
@@ -218,7 +118,7 @@ CREATE TRIGGER orderlineInserted
         THEN
             CALL UpdateProductVoorraad(new.stockitemid, new.quantity);
         ELSE
-            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Het product is niet voorradig genoeg';
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'This product will be out of stock after this change.';
         END IF;
     END;
 //
@@ -267,4 +167,89 @@ REVOKE ALL PRIVILEGES ON * . * FROM 'nerdygadgets_delete'@'localhost';
 GRANT SELECT, DELETE ON * . * TO 'nerdygadgets_delete'@'localhost';
 
 # Storage engines changes
-ALTER TABLE coldroomtemperatures ENGINE = MEMORY;
+ALTER TABLE `nerdygadgets`.`coldroomtemperatures` ENGINE = MEMORY;
+
+CREATE TABLE `nerdygadgets`.`buyinggroups_archive_old` AS (SELECT * FROM `nerdygadgets`.`buyinggroups_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`buyinggroups_archive`;
+CREATE TABLE `nerdygadgets`.`buyinggroups_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`buyinggroups_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`buyinggroups_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`cities_archive_old` AS (SELECT * FROM `nerdygadgets`.`cities_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`cities_archive`;
+CREATE TABLE `nerdygadgets`.`cities_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`cities_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`cities_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`coldroomtemperatures_archive_old` AS (SELECT * FROM `nerdygadgets`.`coldroomtemperatures_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`coldroomtemperatures_archive`;
+CREATE TABLE `nerdygadgets`.`coldroomtemperatures_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`coldroomtemperatures_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`coldroomtemperatures_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`colors_archive_old` AS (SELECT * FROM `nerdygadgets`.`colors_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`colors_archive`;
+CREATE TABLE `nerdygadgets`.`colors_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`colors_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`colors_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`countries_archive_old` AS (SELECT * FROM `nerdygadgets`.`countries_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`countries_archive`;
+CREATE TABLE `nerdygadgets`.`countries_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`countries_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`countries_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`customercategories_archive_old` AS (SELECT * FROM `nerdygadgets`.`customercategories_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`customercategories_archive`;
+CREATE TABLE `nerdygadgets`.`customercategories_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`customercategories_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`customercategories_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`customers_archive_old` AS (SELECT * FROM `nerdygadgets`.`customers_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`customers_archive`;
+CREATE TABLE `nerdygadgets`.`customers_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`customers_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`customers_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`deliverymethods_archive_old` AS (SELECT * FROM `nerdygadgets`.`deliverymethods_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`deliverymethods_archive`;
+CREATE TABLE `nerdygadgets`.`deliverymethods_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`deliverymethods_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`deliverymethods_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`packagetypes_archive_old` AS (SELECT * FROM `nerdygadgets`.`packagetypes_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`packagetypes_archive`;
+CREATE TABLE `nerdygadgets`.`packagetypes_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`packagetypes_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`packagetypes_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`paymentmethods_archive_old` AS (SELECT * FROM `nerdygadgets`.`paymentmethods_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`paymentmethods_archive`;
+CREATE TABLE `nerdygadgets`.`paymentmethods_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`paymentmethods_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`paymentmethods_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`people_archive_old` AS (SELECT * FROM `nerdygadgets`.`people_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`people_archive`;
+CREATE TABLE `nerdygadgets`.`people_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`people_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`people_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`stateprovinces_archive_old` AS (SELECT * FROM `nerdygadgets`.`stateprovinces_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`stateprovinces_archive`;
+CREATE TABLE `nerdygadgets`.`stateprovinces_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`stateprovinces_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`stateprovinces_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`stockgroups_archive_old` AS (SELECT * FROM `nerdygadgets`.`stockgroups_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`stockgroups_archive`;
+CREATE TABLE `nerdygadgets`.`stockgroups_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`stockgroups_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`stockgroups_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`stockitems_archive_old` AS (SELECT * FROM `nerdygadgets`.`stockitems_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`stockitems_archive`;
+CREATE TABLE `nerdygadgets`.`stockitems_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`stockitems_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`stockitems_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`suppliercategories_archive_old` AS (SELECT * FROM `nerdygadgets`.`suppliercategories_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`suppliercategories_archive`;
+CREATE TABLE `nerdygadgets`.`suppliercategories_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`suppliercategories_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`suppliercategories_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`suppliers_archive_old` AS (SELECT * FROM `nerdygadgets`.`suppliers_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`suppliers_archive`;
+CREATE TABLE `nerdygadgets`.`suppliers_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`suppliers_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`suppliers_archive_old`;
+
+CREATE TABLE `nerdygadgets`.`transactiontypes_archive_old` AS (SELECT * FROM `nerdygadgets`.`transactiontypes_archive`);
+DROP TABLE IF EXISTS `nerdygadgets`.`transactiontypes_archive`;
+CREATE TABLE `nerdygadgets`.`transactiontypes_archive` ENGINE = ARCHIVE AS (SELECT * FROM `nerdygadgets`.`transactiontypes_archive_old`);
+DROP TABLE IF EXISTS `nerdygadgets`.`transactiontypes_archive_old`;

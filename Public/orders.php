@@ -122,36 +122,39 @@ $amountOrders = count($orders);
                                                                         $productPriceTotal = $pricePerPiece * $productQuantity;
                                                                         $priceTotal += $productPriceTotal;
                                                                         ?>
-                                                                        <div class="row border-bottom border-white pb-2">
-                                                                            <div class="col-sm-2">
-                                                                                <?php if (isset($orderLine['ImagePath'])) : ?>
-                                                                                    <div class="ImgFrame"
-                                                                                         style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
-                                                                                                 background-size: 75px; background-repeat: no-repeat; background-position: center;"></div>
-                                                                                <?php elseif (isset($orderLine['BackupImagePath'])) : ?>
-                                                                                    <div class="ImgFrame"
-                                                                                         style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
-                                                                                                 background-size: cover;"></div>
-                                                                                <?php else : ?>
-                                                                                    <div class="ImgFrame" style="width: 100px; height: 100px;"></div>
-                                                                                <?php endif; ?>
-                                                                            </div>
-                                                                            <div class="col-sm-10">
-                                                                                <div class="product-details" style="position: absolute; top: 35%; right: 0; left: 0;">
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-1">
-                                                                                            <p class="h4"><?= $productQuantity ?>x</p>
-                                                                                        </div>
-                                                                                        <div class="col-sm-8">
-                                                                                            <p class="h4"><?= $orderLine['Description'] ?? '' ?></p>
-                                                                                        </div>
-                                                                                        <div class="col-sm-3">
-                                                                                            <p class="h4">&euro; <?= price_format($productPriceTotal) ?></p>
+                                                                        <a class="ListItem orderListItem"
+                                                                           href='<?= get_url('view.php?id=' . $orderLine['StockItemID'] ?? 0) ?>'>
+                                                                            <div class="row border-bottom border-white pb-2">
+                                                                                    <div class="col-sm-2">
+                                                                                        <?php if (isset($orderLine['ImagePath'])) : ?>
+                                                                                            <div class="ImgFrame"
+                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
+                                                                                                         background-size: 75px; background-repeat: no-repeat; background-position: center;"></div>
+                                                                                        <?php elseif (isset($orderLine['BackupImagePath'])) : ?>
+                                                                                            <div class="ImgFrame"
+                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
+                                                                                                         background-size: cover;"></div>
+                                                                                        <?php else : ?>
+                                                                                            <div class="ImgFrame" style="width: 100px; height: 100px;"></div>
+                                                                                        <?php endif; ?>
+                                                                                    </div>
+                                                                                    <div class="col-sm-10">
+                                                                                        <div class="product-details" style="position: absolute; top: 35%; right: 0; left: 0;">
+                                                                                            <div class="row">
+                                                                                                <div class="col-sm-1">
+                                                                                                    <p class="h4"><?= $productQuantity ?>x</p>
+                                                                                                </div>
+                                                                                                <div class="col-sm-8">
+                                                                                                    <p class="h4"><?= $orderLine['Description'] ?? '' ?></p>
+                                                                                                </div>
+                                                                                                <div class="col-sm-3">
+                                                                                                    <p class="h4">&euro; <?= price_format($productPriceTotal) ?></p>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
+                                                                        </a>
                                                                     <?php endforeach; ?>
                                                                 <?php endif; ?>
                                                             </div>
