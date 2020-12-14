@@ -28,7 +28,7 @@ CREATE TABLE `nerdygadgets`.`contact_requests` (
 );
 
 /** Password for this user is 'nimda' */
-INSERT INTO people (
+INSERT INTO `nerdygadgets`.`people` (
     FullName, PreferredName, SearchName,
     IsPermittedToLogon, LogonName,
     IsExternalLogonProvider, HashedPassword,
