@@ -119,6 +119,14 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
     redirect(get_current_url());
 }
 
+$temperature = getTemperature();
+if (!empty($temperature)) {
+    $temperature = "Temperatuur: " . $temperature[0]["Temperature"] . "℃";
+}
+else {
+    unset($temperature);
+}
+
 include __DIR__ . '/../Src/Html/alert.php'; ?>
 
     <div id="CenteredContent">
@@ -179,6 +187,13 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
                     <h3 class="text-white mt-3">Geen reviews</h3>
+                <?php endif; ?>
+                <?php if (!isset($temperature)) : ?>
+                    <div class="QuantityText text-danger py-4">
+                        Er is geen actuele temperatuur.
+                    </div>
+                <?php else: ?>
+                    <div class="QuantityText py-4"><?= $temperature ?></div>
                 <?php endif; ?>
                 <?php if ($quantityOnHandRaw <= 0) : ?>
                     <div class="QuantityText text-danger">
