@@ -121,10 +121,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 
 $temperature = getTemperature();
 if (!empty($temperature)) {
-    $temperature = "Temperatuur: " . $temperature[0]["Temperature"] . "℃";
-}
-else {
-    unset($temperature);
+    $temperature = "Temperatuur: " . ($temperature["Temperature"] ?? 0) . "℃";
 }
 
 include __DIR__ . '/../Src/Html/alert.php'; ?>
@@ -189,7 +186,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <h3 class="text-white mt-3">Geen reviews</h3>
                 <?php endif; ?>
                 <?php if (isset($product['IsChillerStock']) && $product['IsChillerStock']) : ?>
-                    <?php if (!isset($temperature)) : ?>
+                    <?php if (empty($temperature)) : ?>
                         <div class="QuantityText text-danger py-4">
                             Er is geen actuele temperatuur.
                         </div>
