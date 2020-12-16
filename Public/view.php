@@ -188,12 +188,14 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 <?php else : ?>
                     <h3 class="text-white mt-3">Geen reviews</h3>
                 <?php endif; ?>
-                <?php if (!isset($temperature)) : ?>
-                    <div class="QuantityText text-danger py-4">
-                        Er is geen actuele temperatuur.
-                    </div>
-                <?php else: ?>
-                    <div class="QuantityText py-4"><?= $temperature ?></div>
+                <?php if (isset($product['IsChillerStock']) && $product['IsChillerStock']) : ?>
+                    <?php if (!isset($temperature)) : ?>
+                        <div class="QuantityText text-danger py-4">
+                            Er is geen actuele temperatuur.
+                        </div>
+                    <?php else: ?>
+                        <div class="QuantityText py-4"><?= $temperature ?></div>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($quantityOnHandRaw <= 0) : ?>
                     <div class="QuantityText text-danger">

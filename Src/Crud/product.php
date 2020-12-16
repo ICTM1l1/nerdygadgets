@@ -11,7 +11,7 @@
  */
 function getProduct(int $product_id) {
     return selectFirst("
-        SELECT SI.StockItemID, 
+        SELECT SI.StockItemID, SI.IsChillerStock AS 'IsChillerStock',
         (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
         StockItemName, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
         CONCAT('Voorraad: ',QuantityOnHand)AS QuantityOnHand,
