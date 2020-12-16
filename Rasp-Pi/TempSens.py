@@ -8,4 +8,4 @@ apiKey = "55ed7846125b1aa3abc20c2c430133cc17e9a61a9f2b906dc15ee7c0179eacdc4b1029
 while True:
     temperature = sense.get_temperature()
     req = requests.post("localhost/NerdyGadgets/temperatureupdate.php", {"ApiKey" : apiKey, "Temperature" : temperature})
-    sleep(10)
+    sleep(3)
