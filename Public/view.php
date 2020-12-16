@@ -427,8 +427,49 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                         </div>
                     <?php else :?>
                         <div class="row">
-                            <div class="col-sm-12 text-center">
-                                <h2 class="text-white">Log in of registreer om een review achter te laten.</h2>
+                            <div class="col-sm-10">
+                                <h2 class="text-white float-left">Log in of registreer om een review achter te laten</h2>
+                            </div>
+                            <div class="col-sm-2">
+                                <a href="<?= get_url("reviews.php?id=" . $product_id)?>"
+                                   class="float-right btn btn-success">
+                                    Bekijk reviews
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4 mb-4">
+                            <div class="col-sm-12 pl-4 pr-4">
+                                <?php if (!empty($reviews)) : ?>
+                                    <div class="row d-flex justify-content-center">
+                                        <?php foreach($reviews as $review):?>
+                                            <div class="col-sm-4 border border-white mt-3">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h3>
+                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["PreferredName"] ?? '' ?>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6" style="color: goldenrod">
+                                                        <?= getRatingStars((int)$review["Score"])?>
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        <?= dateTimeFormatShort($review["ReviewDate"])?>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach;?>
+                                    </div>
+                                <?php else : ?>
+                                    <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar</h2>
+                                <?php endif; ?>
                             </div>
                         </div>
                 <?php endif;?>
