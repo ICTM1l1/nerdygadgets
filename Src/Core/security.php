@@ -11,9 +11,10 @@
  */
 function preventXSS(string $value) {
     return replaceQuotesForWhiteSpaces(
-        str_replace(';', '',
+        str_replace('\\', '',
+            str_replace(';', '',
             htmlspecialchars($value, ENT_NOQUOTES)
-        )
+        ))
     );
 }
 
