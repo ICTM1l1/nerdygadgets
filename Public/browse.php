@@ -91,7 +91,6 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
     <form method="get" action="<?= get_current_url() ?>">
-        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
         <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
