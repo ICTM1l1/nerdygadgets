@@ -4,7 +4,7 @@ require_once __DIR__ . "/../Src/header.php";
 $products = getRandomProducts(10);
 ?>
 <div class="IndexStyle">
-    <div class="col-11">
+    <div class="col-11 m-auto">
         <?php if (!empty($products)) : ?>
             <?php foreach($products as $key => $product) : ?>
                 <?php if (!empty($product)) : ?>
@@ -30,7 +30,7 @@ $products = getRandomProducts(10);
                 <?php endif; ?>
             <?php endforeach; ?>
         <?php else : ?>
-            <p>Er zijn geen producten gevonden.</p>
+            <h1 class="text-center mt-5 pt-5">Er zijn geen producten gevonden</h1>
         <?php endif; ?>
     </div>
 </div>
