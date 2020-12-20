@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
@@ -40,7 +40,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if(score_password($password, 8) < 75){
+    if(score_password($password, 8) < 75) {
         add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
@@ -57,7 +57,7 @@ if (!empty($_POST)) {
             session_save('personID', $account['PersonID'] ?? 0, true);
 
             add_user_message('Je bent succesvol ingelogd.');
-            redirect(get_url("account.php"));
+            redirect(get_url('account.php'));
         }
 
         add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
@@ -140,5 +140,5 @@ if (!empty($_POST)) {
     </div>
 
 <?php
-require_once __DIR__."/../Src/footer.php";
+require_once __DIR__.'/../Src/footer.php';
 ?>
