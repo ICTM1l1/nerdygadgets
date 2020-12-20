@@ -3,47 +3,47 @@ require_once __DIR__ . "/../Src/header.php";
 
 csrf_validate(get_current_url());
 
-$name = get_form_data_post("name");
-$email = get_form_data_post("email");
-$subject = get_form_data_post("subject");
-$message = get_form_data_post("message");
+$name = get_form_data_post('name');
+$email = get_form_data_post('email');
+$subject = get_form_data_post('subject');
+$message = get_form_data_post('message');
 
 if (!empty($_POST)) {
     $values_valid = true;
     if(empty($email) || empty($name) || empty($subject) || empty($message)) {
-        add_user_error("Niet alle verplichte velden met een * zijn ingevuld.");
+        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
         $values_valid = false;
     }
 
     if ($values_valid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error("Ongeldige email opgegeven.");
+        add_user_error('Ongeldige email opgegeven.');
         $values_valid = false;
     }
 
     if(strlen($message) > 100) {
-        add_user_error("Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)");
+        add_user_error('Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)');
         $values_valid = false;
     }
 
     if(strlen($email) > 100) {
-        add_user_error("Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)");
+        add_user_error('Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)');
         $values_valid = false;
     }
 
     if(strlen($subject) > 100) {
-        add_user_error("Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).");
+        add_user_error('Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).');
         $values_valid = false;
     }
 
     if(strlen($message) > 2000) {
-        add_user_error("Uw bericht is langer dan toegestaan.");
+        add_user_error('Uw bericht is langer dan toegestaan.');
         $values_valid = false;
     }
 
     if ($values_valid) {
         if (validateRecaptcha()) {
             createContactRequest($name, $email, $subject, $message);
-            add_user_message("Uw bericht is verstuurd.");
+            add_user_message('Uw bericht is verstuurd.');
             redirect(get_current_url());
         }
 
@@ -117,4 +117,4 @@ include __DIR__ . '/../Src/Html/alert.php';
     </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
