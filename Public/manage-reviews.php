@@ -128,13 +128,13 @@ if (isset($_POST['delete_review'])) {
                                                                     <th scope="row" width="25px;">
                                                                         <?= $productReview['ReviewID'] ?? 0 ?>
                                                                     </th>
-                                                                    <td><?= getReviewAuthor($productReview["ReviewID"])["PreferredName"] ?? '' ?></td>
+                                                                    <td><?= getReviewAuthor($productReview['ReviewID'])['PreferredName'] ?? '' ?></td>
                                                                     <td style="color: goldenrod;">
-                                                                        <?= getRatingStars($productReview["Score"]) ?? '' ?>
+                                                                        <?= getRatingStars($productReview['Score']) ?? '' ?>
                                                                     </td>
                                                                     <td>
                                                                         <?php if (!empty($productReview['Review'])) : ?>
-                                                                            <?= $productReview["Review"] ?? '' ?>
+                                                                            <?= $productReview['Review'] ?? '' ?>
                                                                         <?php else : ?>
                                                                             Geen review geschreven
                                                                         <?php endif; ?>
@@ -148,7 +148,7 @@ if (isset($_POST['delete_review'])) {
                                                                             <input type="hidden" name="review_id" value="<?= $productReview['ReviewID'] ?? 0 ?>">
 
                                                                             <button type="submit" class="btn btn-outline-danger"
-                                                                                    data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review["ReviewID"])["FullName"] ?? "" ?> wilt verwijderen?"
+                                                                                    data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review['ReviewID'])['FullName'] ?? "" ?> wilt verwijderen?"
                                                                                     name="delete_review">
                                                                                 <i class="fas fa-trash"></i>
                                                                             </button>
