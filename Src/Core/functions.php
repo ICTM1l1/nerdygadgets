@@ -352,7 +352,7 @@ function dd(...$variables) {
  *   Associative array containing the start date at index "start" and the end date at index "end".
  * @throws Exception
  */
-function get_week_boundaries_from_date(DateTime $date){
+function getWeekBoundariesFromDate(DateTime $date){
     $w = array();
     $year = (int)$date->format("Y");
     $weekN = (int)$date->format("W");

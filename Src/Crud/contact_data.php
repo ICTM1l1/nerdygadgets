@@ -86,7 +86,7 @@ function getContactRequestsByDate(string $date){
  * @throws Exception
  */
 function getContactRequestsInWeekByDate(DateTime $date){
-    $week = get_week_boundaries_from_date($date);
+    $week = getWeekBoundariesFromDate($date);
 
     return select('
         SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
