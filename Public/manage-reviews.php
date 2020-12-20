@@ -16,7 +16,7 @@ if (!empty($input_date)) {
 $amountReviews = count($reviews);
 
 if (isset($_POST['delete_review'])) {
-    $review_id = get_form_data_post('review_id');
+    $review_id = getFormDataPost('review_id');
     if (empty($review_id)) {
         add_user_error('Review kon niet worden verwijderd.');
         redirect(get_current_url());

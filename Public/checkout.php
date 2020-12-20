@@ -15,11 +15,11 @@ $loggedIn = (bool) session_get('LoggedIn', false);
 $personID = session_get('personID', 0);
 $account = getCustomerByPeople($personID);
 
-$name = get_form_data_post('name', $account['PrivateCustomerName'] ?? '');
-$postalCode = get_form_data_post('postalcode', $account['DeliveryPostalCode'] ?? '');
-$address = get_form_data_post('address', $account['DeliveryAddressLine1'] ?? '');
-$city = get_form_data_post('city', $account['CityName'] ?? '');
-$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'] ?? '');
+$name = getFormDataPost('name', $account['PrivateCustomerName'] ?? '');
+$postalCode = getFormDataPost('postalcode', $account['DeliveryPostalCode'] ?? '');
+$address = getFormDataPost('address', $account['DeliveryAddressLine1'] ?? '');
+$city = getFormDataPost('city', $account['CityName'] ?? '');
+$phoneNumber = getFormDataPost('phonenumber', $account['PhoneNumber'] ?? '');
 
 if (isset($_POST['checkout'])) {
     $values_valid = true;

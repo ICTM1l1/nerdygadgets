@@ -3,14 +3,14 @@ require_once __DIR__ . '/../Src/header.php';
 
 csrfValidate(get_current_url());
 
-$name = get_form_data_post('name');
-$password = get_form_data_post('password');
-$password2 = get_form_data_post('password2');
-$email = get_form_data_post('email');
-$postalCode = get_form_data_post('postalcode');
-$address = get_form_data_post('address');
-$city = get_form_data_post('city');
-$phoneNumber = get_form_data_post('phonenumber');
+$name = getFormDataPost('name');
+$password = getFormDataPost('password');
+$password2 = getFormDataPost('password2');
+$email = getFormDataPost('email');
+$postalCode = getFormDataPost('postalcode');
+$address = getFormDataPost('address');
+$city = getFormDataPost('city');
+$phoneNumber = getFormDataPost('phonenumber');
 
 if (!empty($_POST)) {
     $valuesValid = true;

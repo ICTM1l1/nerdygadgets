@@ -3,10 +3,10 @@ require_once __DIR__ . "/../Src/header.php";
 
 csrfValidate(get_current_url());
 
-$name = get_form_data_post('name');
-$email = get_form_data_post('email');
-$subject = get_form_data_post('subject');
-$message = get_form_data_post('message');
+$name = getFormDataPost('name');
+$email = getFormDataPost('email');
+$subject = getFormDataPost('subject');
+$message = getFormDataPost('message');
 
 if (!empty($_POST)) {
     $values_valid = true;

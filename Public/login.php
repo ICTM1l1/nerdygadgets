@@ -8,8 +8,8 @@ if ($loggedIn) {
     redirect(get_url('index.php'));
 }
 
-$password = get_form_data_post('password');
-$email = get_form_data_post('email');
+$password = getFormDataPost('password');
+$email = getFormDataPost('email');
 
 if (!empty($_POST)) {
     $valuesValid = true;

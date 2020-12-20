@@ -28,7 +28,7 @@ function getFormDataGet(string $key, $default = '') {
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function get_form_data_post(string $key, $default = '') {
+function getFormDataPost(string $key, $default = '') {
     return request_from_super_globals($_POST, $key, $default);
 }
 

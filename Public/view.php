@@ -3,8 +3,8 @@ require_once __DIR__ . '/../Src/header.php';
 
 csrfValidate(get_current_url());
 
-$text = get_form_data_post('review-text');
-$score = (int)get_form_data_post('score-value', '0');
+$text = getFormDataPost('review-text');
+$score = (int)getFormDataPost('score-value', '0');
 
 if(isset($_POST['review'])){
     $valid = true;
@@ -13,7 +13,7 @@ if(isset($_POST['review'])){
         $valid = false;
     }
 
-    $id = (int)get_form_data_post('itemid', '0');
+    $id = (int)getFormDataPost('itemid', '0');
     $pid = (int)session_get('personID', 0);
     $orders = getOrdersByCustomer($pid);
 
@@ -61,7 +61,7 @@ elseif(isset($_POST['Delete_Review'])){
         add_user_error('U moet ingelogd zijn om uw review te kunnen verwijderen.');
     }
     else {
-        $id = (int)get_form_data_post('id', '0');
+        $id = (int)getFormDataPost('id', '0');
         $pid = (int)session_get('personID', 0);
         deleteReview($id, $pid);
     }
@@ -102,19 +102,19 @@ if (!empty($productCustomFields)) {
 }
 
 $productInCart = $cart->getItemCount($product_id) > 0;
-if ($id = get_form_data_post('Add_Cart', NULL)) {
+if ($id = getFormDataPost('Add_Cart', NULL)) {
     $cart->addItem($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post('Min_Cart', NULL)) {
+elseif ($id = getFormDataPost('Min_Cart', NULL)) {
     $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post('Increase_Cart', NULL)) {
+elseif ($id = getFormDataPost('Increase_Cart', NULL)) {
     $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post('Del_Cart', NULL)) {
+elseif ($id = getFormDataPost('Del_Cart', NULL)) {
     $cart->removeItem($id);
     redirect(get_current_url());
 }

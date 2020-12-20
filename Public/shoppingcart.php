@@ -7,15 +7,15 @@ $cart = getCart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
-if($id = get_form_data_post('Add_Product', NULL)){
+if($id = getFormDataPost('Add_Product', NULL)){
     $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
-elseif($id = get_form_data_post('Min_Product', NULL)){
+elseif($id = getFormDataPost('Min_Product', NULL)){
     $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif($id = get_form_data_post('Del_Product', NULL)){
+elseif($id = getFormDataPost('Del_Product', NULL)){
     $cart->removeItem($id);
     redirect(get_current_url());
 }

@@ -18,19 +18,19 @@ if (!empty($productCustomFields)) {
 }
 
 $productInCart = $cart->getItemCount($product_id) > 0;
-if ($id = get_form_data_post('Add_Cart', NULL)) {
+if ($id = getFormDataPost('Add_Cart', NULL)) {
     $cart->addItem($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post('Min_Cart', NULL)) {
+elseif ($id = getFormDataPost('Min_Cart', NULL)) {
     $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post('Increase_Cart', NULL)) {
+elseif ($id = getFormDataPost('Increase_Cart', NULL)) {
     $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post('Del_Cart', NULL)) {
+elseif ($id = getFormDataPost('Del_Cart', NULL)) {
     $cart->removeItem($id);
     redirect(get_current_url());
 }
