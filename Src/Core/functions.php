@@ -210,7 +210,7 @@ function getUrl(string $url) {
  * @return string
  *   The current url.
  */
-function get_current_url() {
+function getCurrentUrl() {
     $prefix = 'http://';
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
         $prefix = 'https://';

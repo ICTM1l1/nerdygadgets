@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-csrfValidate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 $name = getFormDataPost('name');
 $password = getFormDataPost('password');

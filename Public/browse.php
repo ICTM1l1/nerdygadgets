@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-csrfValidate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 $cart = getCart();
 
@@ -82,15 +82,15 @@ if ($amountProducts !== 0) {
 
 if ($id = getFormDataPost('Add_Cart', NULL)) {
     $cart->addItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 elseif ($id = getFormDataPost('Del_Cart', NULL)) {
     $cart->removeItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
-    <form method="get" action="<?= get_current_url() ?>">
+    <form method="get" action="<?= getCurrentUrl() ?>">
         <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
@@ -161,7 +161,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
 
                         <div id="StockItemFrameRight">
                             <div class="CenterPriceLeftChild">
-                                <form class="text-center" style="margin-top: 65px;" method="post" action="<?= get_current_url() ?>">
+                                <form class="text-center" style="margin-top: 65px;" method="post" action="<?= getCurrentUrl() ?>">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger w-100"
                                                 data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? '') ?>` wilt verwijderen?"
@@ -205,7 +205,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
         </div>
 
         <div class="pagination-container">
-            <form id="PageSelector" method="get" action="<?= get_current_url() ?>">
+            <form id="PageSelector" method="get" action="<?= getCurrentUrl() ?>">
                 <input type="hidden" name="search_string" id="search_string" value="<?= $searchString ?>">
                 <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
                 <input type="hidden" name="result_page_numbers" id="result_page_numbers" value="<?= $amountOfPages ?>">

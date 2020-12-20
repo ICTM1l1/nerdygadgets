@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-csrfValidate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 $name = getFormDataPost('name');
 $email = getFormDataPost('email');
@@ -44,7 +44,7 @@ if (!empty($_POST)) {
         if (validateRecaptcha()) {
             createContactRequest($name, $email, $subject, $message);
             addUserMessage('Uw bericht is verstuurd.');
-            redirect(get_current_url());
+            redirect(getCurrentUrl());
         }
 
         addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');

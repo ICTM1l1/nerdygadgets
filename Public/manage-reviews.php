@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-csrfValidate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 if (!authorizeAdmin()) {
     redirect('Config');
@@ -19,12 +19,12 @@ if (isset($_POST['delete_review'])) {
     $review_id = getFormDataPost('review_id');
     if (empty($review_id)) {
         addUserError('Review kon niet worden verwijderd.');
-        redirect(get_current_url());
+        redirect(getCurrentUrl());
     }
 
     deleteReviewByID($review_id);
     addUserMessage('Review is succesvol verwijderd.');
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 ?>
 
@@ -143,7 +143,7 @@ if (isset($_POST['delete_review'])) {
                                                                         <?= dateTimeFormatShort($productReview['ReviewDate'] ?? '') ?>
                                                                     </td>
                                                                     <td>
-                                                                        <form class="text-right" method="post" action="<?= get_current_url()?>">
+                                                                        <form class="text-right" method="post" action="<?= getCurrentUrl()?>">
                                                                             <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                                                             <input type="hidden" name="review_id" value="<?= $productReview['ReviewID'] ?? 0 ?>">
 

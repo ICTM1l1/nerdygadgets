@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-csrfValidate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 $cart = getCart();
 
@@ -20,19 +20,19 @@ if (!empty($productCustomFields)) {
 $productInCart = $cart->getItemCount($product_id) > 0;
 if ($id = getFormDataPost('Add_Cart', NULL)) {
     $cart->addItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 elseif ($id = getFormDataPost('Min_Cart', NULL)) {
     $cart->decreaseItemCount($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 elseif ($id = getFormDataPost('Increase_Cart', NULL)) {
     $cart->increaseItemCount($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 elseif ($id = getFormDataPost('Del_Cart', NULL)) {
     $cart->removeItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 ?>
     <div id="CenteredContent">
@@ -105,7 +105,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                     <div class="CenterPriceLeft">
                         <div class="CenterPriceCartButton">
                             <form class="form-inline float-right mt-5 pt-2 w-100" method="post"
-                                  action="<?= get_current_url() ?>">
+                                  action="<?= getCurrentUrl() ?>">
                                 <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 <div class="edit-actions w-100 mb-2">
                                     <?php if ($productInCart) : ?>

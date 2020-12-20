@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-csrfValidate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 $cart = getCart();
 $cartItems = $cart->getItems();
@@ -9,15 +9,15 @@ $amountCartItems = $cart->getCount();
 
 if($id = getFormDataPost('Add_Product', NULL)){
     $cart->increaseItemCount($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 elseif($id = getFormDataPost('Min_Product', NULL)){
     $cart->decreaseItemCount($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 elseif($id = getFormDataPost('Del_Product', NULL)){
     $cart->removeItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 ?>
 

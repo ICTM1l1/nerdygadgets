@@ -78,14 +78,14 @@ $countedCategories = count($categories);
                     ?>
                     <li>
                         <a href="<?= getUrl("browse.php?category_id={$category_id}") ?>"
-                           class="HrefDecoration <?= strpos(get_current_url(), "category_id={$category_id}") !== false ? 'active' : '' ?>">
+                           class="HrefDecoration <?= strpos(getCurrentUrl(), "category_id={$category_id}") !== false ? 'active' : '' ?>">
                             <?= $categories[$x]['StockGroupName'] ?? '' ?>
                         </a>
                     </li>
                 <?php endfor; ?>
                 <li>
                     <a href="<?= getUrl('categories.php') ?>"
-                       class="HrefDecoration <?= strpos(get_current_url(), 'categories') !== false ? 'active' : '' ?>">
+                       class="HrefDecoration <?= strpos(getCurrentUrl(), 'categories') !== false ? 'active' : '' ?>">
                         Alle categorieën
                     </a>
                 </li>
@@ -95,13 +95,13 @@ $countedCategories = count($categories);
             <li>
                 <?php if ($loggedIn) : ?>
                     <a href="<?= getUrl('account.php') ?>"
-                       class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'account') !== false ? 'active' : '' ?>">
+                       class="HrefDecoration mr-3 <?= strpos(getCurrentUrl(), 'account') !== false ? 'active' : '' ?>">
                         <i class="fas fa-user" style="color:#676EFF;"></i>
                         Account
                     </a>
                 <?php else : ?>
                     <a href="<?= getUrl('login.php') ?>"
-                       class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'login') !== false ? 'active' : '' ?>">
+                       class="HrefDecoration mr-3 <?= strpos(getCurrentUrl(), 'login') !== false ? 'active' : '' ?>">
                         <i class="fas fa-user" style="color:#676EFF;"></i>
                         Inloggen
                     </a>
@@ -109,14 +109,14 @@ $countedCategories = count($categories);
             </li>
             <li>
                 <a href="<?= getUrl('shoppingcart.php') ?>"
-                   class="HrefDecoration mr-3 <?= strpos(get_current_url(), 'shoppingcart') !== false ? 'active' : '' ?>">
+                   class="HrefDecoration mr-3 <?= strpos(getCurrentUrl(), 'shoppingcart') !== false ? 'active' : '' ?>">
                     <i class="fas fa-shopping-cart" style="color:#676EFF;"></i>
                     Winkelwagen <?php if ($cart->getCount() > 0) : ?> <b>(<?= $cart->getCount() ?>)</b><?php endif; ?>
                 </a>
             </li>
             <li>
                 <a href="<?= getUrl('browse.php') ?>"
-                   class="HrefDecoration  <?= strpos(get_current_url(), 'browse') !== false && strpos(get_current_url(), 'category_id') === false ? 'active' : '' ?>">
+                   class="HrefDecoration  <?= strpos(getCurrentUrl(), 'browse') !== false && strpos(getCurrentUrl(), 'category_id') === false ? 'active' : '' ?>">
                     <i class="fas fa-search" style="color:#676EFF;"></i> Zoeken
                 </a>
             </li>
