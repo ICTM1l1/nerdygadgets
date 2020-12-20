@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
@@ -7,15 +7,15 @@ $cart = get_cart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
-if($id = get_form_data_post("Add_Product", NULL)){
+if($id = get_form_data_post('Add_Product', NULL)){
     $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
-elseif($id = get_form_data_post("Min_Product", NULL)){
+elseif($id = get_form_data_post('Min_Product', NULL)){
     $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif($id = get_form_data_post("Del_Product", NULL)){
+elseif($id = get_form_data_post('Del_Product', NULL)){
     $cart->removeItem($id);
     redirect(get_current_url());
 }
@@ -41,13 +41,13 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
 
                 if ($amountCartItems > 0) :
                     foreach ($cartItems as $cartItem) :
-                        $productId = (int) ($cartItem["id"] ?? 0);
+                        $productId = (int) ($cartItem['id'] ?? 0);
                         $productFromDb = getProduct($productId);
                         $image = getProductImage($productId);
 
                         $quantityOnHandRaw = (int) ($productFromDb['QuantityOnHandRaw'] ?? 0);
                         $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
-                        $productQuantity = (int) ($cartItem["amount"] ?? 0);
+                        $productQuantity = (int) ($cartItem['amount'] ?? 0);
                         $productPriceTotal = $pricePerPiece * $productQuantity;
                         $priceTotal += $productPriceTotal;
                 ?>
@@ -86,7 +86,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                                         <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
 
                                         <button class="btn btn-outline-danger float-right w-100"
-                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? "") ?>` wilt verwijderen?"
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? '') ?>` wilt verwijderen?"
                                                 type="submit" name="Del_Product" value="<?= $productId ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -180,5 +180,5 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
 
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
