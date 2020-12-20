@@ -44,7 +44,7 @@ if ($orderSuccessful) {
 
         commitTransaction($connection);
 
-        reset_cart();
+        resetCart();
         add_user_message('De bestelling is succesvol geplaatst.');
     } catch (Exception $exception) {
         $orderSuccessful = false;

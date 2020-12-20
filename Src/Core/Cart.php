@@ -245,7 +245,7 @@ function saveCart(Cart $cart) {
 /**
  * Resets and saves the cart into the session.
  */
-function reset_cart() {
+function resetCart() {
     session_save('cart', serialize(new Cart()), true);
 }
 
