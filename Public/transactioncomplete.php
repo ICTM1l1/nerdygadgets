@@ -16,8 +16,8 @@ $loggedIn = (bool) sessionGet('LoggedIn', false);
 $customer = getCustomer($customerId);
 
 // Always clear the payment process in order to be able to start a new payment.
-session_key_unset('customer_id');
-session_key_unset('paymentId');
+sessionKeyUnset('customer_id');
+sessionKeyUnset('paymentId');
 
 if ($orderSuccessful) {
     $connection = getDatabaseConnection(config_get('database_user_create_or_update'), config_get('database_password_create_or_update'));

@@ -107,7 +107,7 @@ function addUserError(string $value) {
  */
 function getUserErrors() {
     $errors = sessionGet('errors', []);
-    session_key_unset('errors');
+    sessionKeyUnset('errors');
 
     return $errors;
 }
@@ -130,7 +130,7 @@ function addUserMessage(string $message) {
  */
 function getUserMessages() {
     $messages = sessionGet('messages', []);
-    session_key_unset('messages');
+    sessionKeyUnset('messages');
 
     return $messages;
 }
@@ -141,7 +141,7 @@ function getUserMessages() {
  * @param string $key
  *   The key to be destroyed.
  */
-function session_key_unset(string $key) {
+function sessionKeyUnset(string $key) {
     if (isset($_SESSION[$key])) {
         unset($_SESSION[$key]);
     }

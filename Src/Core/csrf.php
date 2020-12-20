@@ -56,8 +56,8 @@ function csrfGetToken(){
  */
 function csrfValidate($destination = ''){
     $csrf_token = csrfGetToken();
-    session_key_unset('ptoken');
-    session_key_unset('pexpiry');
+    sessionKeyUnset('ptoken');
+    sessionKeyUnset('pexpiry');
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if(hash_equals($csrf_token, $_POST['token'] ?? '')){
