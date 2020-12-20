@@ -10,7 +10,7 @@
  * @throws Exception
  *   Exception is thrown when no randomness source can be found.
  */
-function csrf_get_token_private(int $size=32){
+function csrfGetTokenPrivate(int $size=32){
     return bin2hex(random_bytes($size));
 }
 
@@ -35,7 +35,7 @@ function csrf_get_token(){
         $overwrite = true;
     }
 
-    session_save('ptoken', csrf_get_token_private(), $overwrite);
+    session_save('ptoken', csrfGetTokenPrivate(), $overwrite);
     session_save('pexpiry', time() + config_get('csrf_token_lifetime', 300), $overwrite);
 
     return hash_hmac('sha256', $_SERVER['SCRIPT_NAME'], $_SESSION['ptoken']) ?? '';
