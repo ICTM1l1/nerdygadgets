@@ -9,18 +9,20 @@ require_once __DIR__ . "/../Mollie/vendor/autoload.php";
  *   The price to be payed.
  * @param int $order_nr
  *   The order number.
+ * @throws \Mollie\Api\Exceptions\ApiException
+ *   Thrown on API connection error.
  */
 function initiatePayment(string $price, int $order_nr) {
     $mollie = new \Mollie\Api\MollieApiClient();
-    $mollie->setApiKey("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
+    $mollie->setApiKey('test_sKWktBBCgNax7dGjt8sU6cF92zRuzb');
     $payment = $mollie->payments->create([
-        "amount" => [
-            "currency" => "EUR",
-            "value" => $price
+        'amount' => [
+            'currency' => 'EUR',
+            'value' => $price
         ],
-        "description" => "Order #{$order_nr}",
-        "redirectUrl" => get_url('transactioncomplete.php'),
-        "webhookUrl"  => "",
+        'description' => "Order #{$order_nr}",
+        'redirectUrl' => get_url('transactioncomplete.php'),
+        'webhookUrl'  => '',
     ]);
 
     session_save('paymentId', $payment->id, true);
@@ -35,6 +37,8 @@ function initiatePayment(string $price, int $order_nr) {
  *
  * @return bool
  *   Whether the payment has been payed or not.
+ * @throws \Mollie\Api\Exceptions\ApiException
+ *   Thrown on API error.
  */
 function checkPayment(string $paymentId) {
     if (empty($paymentId)) {
@@ -42,7 +46,7 @@ function checkPayment(string $paymentId) {
     }
 
     $mollie = new \Mollie\Api\MollieApiClient();
-    $mollie->setApiKey("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
+    $mollie->setApiKey('test_sKWktBBCgNax7dGjt8sU6cF92zRuzb');
     $payment = $mollie->payments->get($paymentId);
 
     return $payment->isPaid();
