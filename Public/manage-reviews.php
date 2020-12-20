@@ -8,7 +8,7 @@ if (!authorizeAdmin()) {
 }
 
 $reviews = getReviewedProducts();
-$input_date = get_form_data_get('date');
+$input_date = getFormDataGet('date');
 if (!empty($input_date)) {
     $reviews = getReviewedProductsByDate($input_date);
 }

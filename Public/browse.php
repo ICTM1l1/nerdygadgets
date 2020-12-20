@@ -5,13 +5,13 @@ csrfValidate(get_current_url());
 
 $cart = getCart();
 
-$searchString = get_form_data_get('search_string');
-$categoryID = (int) get_form_data_get('category_id');
+$searchString = getFormDataGet('search_string');
+$categoryID = (int) getFormDataGet('category_id');
 $products = null;
 
-$sortOnPage = get_form_data_get('sort', 'price_low_high');
-$productsOnPage = (int) get_form_data_get('products_on_page', '25');
-$pageNumber = (int) get_form_data_get('page_number');
+$sortOnPage = getFormDataGet('sort', 'price_low_high');
+$productsOnPage = (int) getFormDataGet('products_on_page', '25');
+$pageNumber = (int) getFormDataGet('page_number');
 
 $queryBuildResult = "";
 switch ($sortOnPage) {

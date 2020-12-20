@@ -5,7 +5,7 @@ csrfValidate(get_current_url());
 
 $cart = getCart();
 
-$product_id = (int) get_form_data_get('id');
+$product_id = (int) getFormDataGet('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $reviews = getAllReviewsForItem($product_id);

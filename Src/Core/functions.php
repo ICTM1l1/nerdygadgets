@@ -13,7 +13,7 @@ $config = require __DIR__ . '/../../Config/config.php';
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function get_form_data_get(string $key, $default = '') {
+function getFormDataGet(string $key, $default = '') {
     return request_from_super_globals($_GET, $key, $default);
 }
 

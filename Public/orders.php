@@ -7,7 +7,7 @@ $personID = session_get('personID', 0);
 $account = getCustomerByPeople($personID);
 
 $orders = getOrdersByCustomer($personID);
-if ($date = get_form_data_get('date')) {
+if ($date = getFormDataGet('date')) {
     $orders = getOrdersByCustomerByDate($personID, $date);
 }
 
@@ -36,7 +36,7 @@ $amountOrders = count($orders);
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
                                                 <input type="date" id="date" class="form-control submit-form-on-change" name="date"
-                                                       value="<?= get_form_data_get('date') ?>">
+                                                       value="<?= getFormDataGet('date') ?>">
                                             </div>
                                         </form>
                                     </div>

@@ -70,7 +70,7 @@ elseif(isset($_POST['Delete_Review'])){
 
 $cart = getCart();
 
-$product_id = (int) get_form_data_get('id');
+$product_id = (int) getFormDataGet('id');
 $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $categories = getCategoryIdForProduct($product_id);
