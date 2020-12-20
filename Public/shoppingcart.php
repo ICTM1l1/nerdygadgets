@@ -104,7 +104,7 @@ elseif($id = get_form_data_post('Del_Product', NULL)){
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-sm-3 mt-2 text-right">
-                                    <h4>&euro; <?= price_format($productPriceTotal) ?></h4>
+                                    <h4>&euro; <?= priceFormat($productPriceTotal) ?></h4>
                                     <h6>Inclusief BTW</h6>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@ elseif($id = get_form_data_post('Del_Product', NULL)){
         <div class="row mt-5">
             <div class="col-sm-12">
                 <p class="h4 pt-1 float-left">
-                    Totale kosten: &euro; <?= price_format($priceTotal) ?>
+                    Totale kosten: &euro; <?= priceFormat($priceTotal) ?>
                 </p>
 
                 <a class="btn btn-success float-right" href="<?= get_url('products-overview.php') ?>">

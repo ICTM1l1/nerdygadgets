@@ -238,7 +238,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                             </form>
 
                             <p class="StockItemPriceText">
-                                <b>&euro; <?= price_format($product['SellPrice'] ?? 0) ?></b>
+                                <b>&euro; <?= priceFormat($product['SellPrice'] ?? 0) ?></b>
                             </p>
                             <h6>Inclusief BTW </h6>
                         </div>

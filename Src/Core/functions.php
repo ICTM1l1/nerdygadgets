@@ -399,6 +399,6 @@ function replaceQuotesForWhiteSpaces(string $string) {
  * @return string
  *   The formatted price.
  */
-function price_format(float $price) {
+function priceFormat(float $price) {
     return number_format($price, 2, ",", ".");
 }

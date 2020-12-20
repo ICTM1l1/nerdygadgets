@@ -20,7 +20,7 @@ $products = getRandomProducts(10);
                                 </div>
                                 <ul id="ul-class-price">
                                     <li class="HomePagePrice">
-                                        &euro; <?= price_format($product['SellPrice'] ?? 0) ?>
+                                        &euro; <?= priceFormat($product['SellPrice'] ?? 0) ?>
                                     </li>
                                 </ul>
                         </div>

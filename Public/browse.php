@@ -179,7 +179,7 @@ elseif ($id = get_form_data_post('Del_Cart', NULL)) {
                                     <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 </form>
                                 <h1 class="StockItemPriceText">
-                                    &euro; <?= price_format($product['SellPrice'] ?? 0) ?>
+                                    &euro; <?= priceFormat($product['SellPrice'] ?? 0) ?>
                                 </h1>
                                 <h6>Inclusief BTW </h6>
                             </div>
