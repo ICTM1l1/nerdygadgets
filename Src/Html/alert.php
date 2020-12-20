@@ -1,5 +1,5 @@
 <?php
-$errors = get_user_errors();
+$errors = getUserErrors();
 $error_message = '';
 foreach ($errors as $error) {
     $error_message .= "{$error} <br>";

@@ -105,7 +105,7 @@ function addUserError(string $value) {
  * @return array
  *   The found user errors.
  */
-function get_user_errors() {
+function getUserErrors() {
     $errors = sessionGet('errors', []);
     session_key_unset('errors');
 
