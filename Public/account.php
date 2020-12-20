@@ -5,7 +5,7 @@ csrfValidate(get_current_url());
 
 authorizeUser();
 
-$personID = session_get('personID', 0);
+$personID = sessionGet('personID', 0);
 $account = getCustomerByPeople($personID);
 $adminAccount = null;
 if (empty($account) && authorizeAdmin()) {

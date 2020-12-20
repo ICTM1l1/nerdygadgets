@@ -43,7 +43,7 @@ function getFormDataPost(string $key, $default = '') {
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function session_get(string $key, $default = '') {
+function sessionGet(string $key, $default = '') {
     return request_from_super_globals($_SESSION, $key, $default);
 }
 
@@ -106,7 +106,7 @@ function add_user_error(string $value) {
  *   The found user errors.
  */
 function get_user_errors() {
-    $errors = session_get('errors', []);
+    $errors = sessionGet('errors', []);
     session_key_unset('errors');
 
     return $errors;
@@ -129,7 +129,7 @@ function add_user_message(string $message) {
  *   The found user message.
  */
 function get_user_messages() {
-    $messages = session_get('messages', []);
+    $messages = sessionGet('messages', []);
     session_key_unset('messages');
 
     return $messages;

@@ -15,7 +15,7 @@ session_start();
 secureSession();
 
 $cart = getCart();
-$loggedIn = session_get('LoggedIn');
+$loggedIn = sessionGet('LoggedIn');
 
 $categories = getCategories();
 $countedCategories = count($categories);

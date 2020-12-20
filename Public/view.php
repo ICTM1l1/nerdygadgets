@@ -8,13 +8,13 @@ $score = (int)getFormDataPost('score-value', '0');
 
 if(isset($_POST['review'])){
     $valid = true;
-    if (!(bool)session_get('LoggedIn', false)) {
+    if (!(bool)sessionGet('LoggedIn', false)) {
         add_user_error('U moet ingelogd zijn om een review achter te kunnen laten.');
         $valid = false;
     }
 
     $id = (int)getFormDataPost('itemid', '0');
-    $pid = (int)session_get('personID', 0);
+    $pid = (int)sessionGet('personID', 0);
     $orders = getOrdersByCustomer($pid);
 
     if (productWasReviewedByCustomer($id, $pid)) {
@@ -57,12 +57,12 @@ if(isset($_POST['review'])){
     redirect(get_current_url());
 }
 elseif(isset($_POST['Delete_Review'])){
-    if (!(bool)session_get('LoggedIn', false)) {
+    if (!(bool)sessionGet('LoggedIn', false)) {
         add_user_error('U moet ingelogd zijn om uw review te kunnen verwijderen.');
     }
     else {
         $id = (int)getFormDataPost('id', '0');
-        $pid = (int)session_get('personID', 0);
+        $pid = (int)sessionGet('personID', 0);
         deleteReview($id, $pid);
     }
     redirect(get_current_url());
@@ -75,7 +75,7 @@ $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $categories = getCategoryIdForProduct($product_id);
 $reviews = getLimitedReviewsForItem($product_id);
-$productReview = getProductReviewByCustomer($product_id, (int)session_get('personID', 0));
+$productReview = getProductReviewByCustomer($product_id, (int)sessionGet('personID', 0));
 
 $relatedProductIds = [];
 $relatedProductImages = [];
@@ -307,7 +307,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
         <div class="container-fluid">
             <div class="row mt-4 mb-4">
                 <div class="col-sm-12 text-left">
-                    <?php if ((bool) session_get( 'LoggedIn', false)) : ?>
+                    <?php if ((bool) sessionGet( 'LoggedIn', false)) : ?>
                         <div class="row">
                             <div class="col-sm-6">
                                 <h2 class="text-white float-left">Schrijf een review</h2>

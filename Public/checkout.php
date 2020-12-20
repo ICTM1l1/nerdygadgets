@@ -11,8 +11,8 @@ if (empty($price) || empty($cart->getItems())) {
     redirect(get_url('shoppingcart.php'));
 }
 
-$loggedIn = (bool) session_get('LoggedIn', false);
-$personID = session_get('personID', 0);
+$loggedIn = (bool) sessionGet('LoggedIn', false);
+$personID = sessionGet('personID', 0);
 $account = getCustomerByPeople($personID);
 
 $name = getFormDataPost('name', $account['PrivateCustomerName'] ?? '');

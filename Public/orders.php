@@ -3,7 +3,7 @@ require_once __DIR__ . '/../Src/header.php';
 
 authorizeUser();
 
-$personID = session_get('personID', 0);
+$personID = sessionGet('personID', 0);
 $account = getCustomerByPeople($personID);
 
 $orders = getOrdersByCustomer($personID);

@@ -9,10 +9,10 @@ if (empty($price) || empty($cart->getItems())) {
     redirect(get_url('shoppingcart.php'));
 }
 
-$orderSuccessful = checkPayment(session_get('paymentId'));
+$orderSuccessful = checkPayment(sessionGet('paymentId'));
 
-$customerId = (int) session_get('customer_id', 0);
-$loggedIn = (bool) session_get('LoggedIn', false);
+$customerId = (int) sessionGet('customer_id', 0);
+$loggedIn = (bool) sessionGet('LoggedIn', false);
 $customer = getCustomer($customerId);
 
 // Always clear the payment process in order to be able to start a new payment.

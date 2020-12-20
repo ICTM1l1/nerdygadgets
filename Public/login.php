@@ -3,7 +3,7 @@ require_once __DIR__ . '/../Src/header.php';
 
 csrfValidate(get_current_url());
 
-$loggedIn = (bool) session_get('LoggedIn', false);
+$loggedIn = (bool) sessionGet('LoggedIn', false);
 if ($loggedIn) {
     redirect(get_url('index.php'));
 }
