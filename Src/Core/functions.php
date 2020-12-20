@@ -170,7 +170,7 @@ function configGet(string $key, $default = '') {
  * @return string
  *   The base url.
  */
-function get_base_url() {
+function getBaseUrl() {
     return configGet('base_url');
 }
 
@@ -184,7 +184,7 @@ function get_base_url() {
  *   The asset url.
  */
 function get_asset_url(string $asset_url) {
-    $base_url = get_base_url();
+    $base_url = getBaseUrl();
 
     return "{$base_url}/Assets/{$asset_url}";
 }
@@ -199,7 +199,7 @@ function get_asset_url(string $asset_url) {
  *   The url.
  */
 function get_url(string $url) {
-    $base_url = get_base_url();
+    $base_url = getBaseUrl();
 
     return "{$base_url}/{$url}";
 }
