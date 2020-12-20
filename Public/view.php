@@ -206,7 +206,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                         <div class="CenterPriceCartButton">
                             <form class="form-inline float-right mt-5 pt-2 w-100" method="post"
                                   action="<?= get_current_url() ?>">
-                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 <div class="edit-actions w-100 mb-2">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger mr-2"
@@ -323,7 +323,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                             <div class="col-sm-6 pl-4 pr-4">
                                 <?php if (!empty($productReview)) : ?>
                                     <form action="<?= get_current_url()?>" class="text-center w-100" method="post">
-                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                         <input type="hidden" name="id" value="<?=$product_id?>"/>
 
                                         <h4>U heeft een review geplaatst</h4>
@@ -359,7 +359,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                     </form>
                                 <?php else : ?>
                                     <form class="text-center w-100" method="post" action="<?=get_current_url()?>">
-                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                         <input type="hidden" name="itemid" value="<?=$product_id?>">
 
                                         <div class="form-group form-row">

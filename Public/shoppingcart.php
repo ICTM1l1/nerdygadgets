@@ -83,7 +83,7 @@ elseif($id = get_form_data_post('Del_Product', NULL)){
                                             <p class="h4 font-weight-bold float-right"><?= $cartItem["amount"] ?? 0 ?>x</p>
                                         </div>
 
-                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
 
                                         <button class="btn btn-outline-danger float-right w-100"
                                                 data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? '') ?>` wilt verwijderen?"

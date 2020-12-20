@@ -24,7 +24,7 @@ function csrfGetTokenPrivate(int $size=32){
  *   Thrown when there is no adequate randomness source for the
  *   pseudo-random token.
  */
-function csrf_get_token(){
+function csrfGetToken(){
     if(session_status() != PHP_SESSION_ACTIVE){
         return '';
     }
@@ -55,7 +55,7 @@ function csrf_get_token(){
  *   Thrown when there is no adequate randomness source for private key.
  */
 function csrf_validate($destination = ''){
-    $csrf_token = csrf_get_token();
+    $csrf_token = csrfGetToken();
     session_key_unset('ptoken');
     session_key_unset('pexpiry');
 

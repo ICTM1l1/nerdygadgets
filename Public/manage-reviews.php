@@ -144,7 +144,7 @@ if (isset($_POST['delete_review'])) {
                                                                     </td>
                                                                     <td>
                                                                         <form class="text-right" method="post" action="<?= get_current_url()?>">
-                                                                            <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                                                            <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                                                             <input type="hidden" name="review_id" value="<?= $productReview['ReviewID'] ?? 0 ?>">
 
                                                                             <button type="submit" class="btn btn-outline-danger"

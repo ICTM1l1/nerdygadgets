@@ -106,7 +106,7 @@ elseif ($id = get_form_data_post('Del_Cart', NULL)) {
                         <div class="CenterPriceCartButton">
                             <form class="form-inline float-right mt-5 pt-2 w-100" method="post"
                                   action="<?= get_current_url() ?>">
-                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 <div class="edit-actions w-100 mb-2">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger mr-2"
