@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 $products = getRandomProducts(10);
 ?>
@@ -9,7 +9,7 @@ $products = getRandomProducts(10);
             <?php foreach($products as $key => $product) : ?>
                 <?php if (!empty($product)) : ?>
                     <?php
-                    $product_id = $product["StockItemID"] ?? 0;
+                    $product_id = $product['StockItemID'] ?? 0;
                     $images = getProductImages($product_id);
                     ?>
 
@@ -35,6 +35,6 @@ $products = getRandomProducts(10);
     </div>
 </div>
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
 
