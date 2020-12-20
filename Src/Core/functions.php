@@ -128,7 +128,7 @@ function addUserMessage(string $message) {
  * @return array
  *   The found user message.
  */
-function get_user_messages() {
+function getUserMessages() {
     $messages = sessionGet('messages', []);
     session_key_unset('messages');
 

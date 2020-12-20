@@ -5,7 +5,7 @@ foreach ($errors as $error) {
     $error_message .= "{$error} <br>";
 }
 
-$messages = get_user_messages();
+$messages = getUserMessages();
 $success_message = '';
 foreach ($messages as $message) {
     $success_message .= "{$message} <br>";
