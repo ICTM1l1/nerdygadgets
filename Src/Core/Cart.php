@@ -61,7 +61,7 @@ class Cart {
             $this->updated = true;
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -89,7 +89,7 @@ class Cart {
             add_user_message('Product aantal is succesvol bijgewerkt.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -110,7 +110,7 @@ class Cart {
             add_user_message('Product aantal is succesvol bijgewerkt.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -164,7 +164,7 @@ class Cart {
             add_user_message('Product ' . ($product['StockItemName'] ?? '') . ' is toegevoegd aan de winkelwagen.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -183,7 +183,7 @@ class Cart {
             add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -193,7 +193,7 @@ class Cart {
         $this->items = array();
         $this->updated = true;
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -216,7 +216,7 @@ class Cart {
 
         $this->updated = false;
         $this->cost = $total;
-        save_cart($this);
+        saveCart($this);
 
         return $total;
     }
@@ -238,7 +238,7 @@ class Cart {
  * @param Cart $cart
  *   The cart.
  */
-function save_cart(Cart $cart) {
+function saveCart(Cart $cart) {
     session_save('cart', serialize($cart), true);
 }
 
@@ -259,7 +259,7 @@ function get_cart() {
     $cart = $_SESSION['cart'] ?? null;
     if (!$cart) {
         $cart = new Cart();
-        save_cart($cart);
+        saveCart($cart);
         $cart = serialize($cart);
     }
 
