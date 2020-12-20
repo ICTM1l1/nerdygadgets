@@ -289,7 +289,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     $imagePath = $relatedImage['ImagePath'] ?? '';
                     $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
                 ?>
-                <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
+                <a href="<?= getUrl("view.php?id={$relatedProductIds[$key]}") ?>">
                     <?php if (!empty($imagePath)) : ?>
                         <div class="ImgFrame"
                              style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $imagePath) ?>');
@@ -313,7 +313,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <h2 class="text-white float-left">Schrijf een review</h2>
                             </div>
                             <div class="col-sm-6">
-                                <a href="<?= get_url('reviews.php?id=' . $product_id)?>"
+                                <a href="<?= getUrl('reviews.php?id=' . $product_id)?>"
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
@@ -431,7 +431,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <h2 class="text-white float-left">Log in of registreer om een review achter te laten</h2>
                             </div>
                             <div class="col-sm-2">
-                                <a href="<?= get_url('reviews.php?id=' . $product_id)?>"
+                                <a href="<?= getUrl('reviews.php?id=' . $product_id)?>"
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>

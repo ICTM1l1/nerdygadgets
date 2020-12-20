@@ -57,7 +57,7 @@ if (!empty($_POST)) {
             sessionSave('personID', $account['PersonID'] ?? 0, true);
 
             addUserMessage('Je bent succesvol ingelogd.');
-            redirect(get_url('account.php'));
+            redirect(getUrl('account.php'));
         }
 
         addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
@@ -70,7 +70,7 @@ if (!empty($_POST)) {
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('register.php') ?>" method="post">
+                    <form class="text-center w-100" id="recaptcha-form" action="<?= getUrl('register.php') ?>" method="post">
                         <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
@@ -124,7 +124,7 @@ if (!empty($_POST)) {
                         </div>
 
                         <div class="form-group">
-                            <a href="<?= get_url('login.php') ?>" class="btn btn-danger my-4 float-left">
+                            <a href="<?= getUrl('login.php') ?>" class="btn btn-danger my-4 float-left">
                                 Terug
                             </a>
 

@@ -5,7 +5,7 @@ csrfValidate(get_current_url());
 
 $loggedIn = (bool) sessionGet('LoggedIn', false);
 if ($loggedIn) {
-    redirect(get_url('index.php'));
+    redirect(getUrl('index.php'));
 }
 
 $password = getFormDataPost('password');
@@ -37,7 +37,7 @@ if (!empty($_POST)) {
             sessionSave('personID', $account['PersonID'] ?? 0, true);
 
             addUserMessage('Je bent succesvol ingelogd.');
-            redirect(get_url('account.php'));
+            redirect(getUrl('account.php'));
         }
 
         addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
@@ -50,7 +50,7 @@ if (!empty($_POST)) {
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('login.php') ?>" method="post">
+                    <form class="text-center w-100" id="recaptcha-form" action="<?= getUrl('login.php') ?>" method="post">
                         <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                         <h1 class="mb-lg-5">Inloggen</h1>
                         <div class="form-group form-row">
@@ -67,7 +67,7 @@ if (!empty($_POST)) {
 
                         <div class="d-flex justify-content-center links">
                             Geen account?&#8287
-                            <a href="<?= get_url('register.php') ?>">Maak een account</a>
+                            <a href="<?= getUrl('register.php') ?>">Maak een account</a>
                         </div>
                         <div class="form-group">
                             <button class="g-recaptcha btn btn-success my-4" type="submit" name="login"

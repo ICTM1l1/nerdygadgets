@@ -131,7 +131,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
             </div>
 
             <div class="form-group mt-4">
-                <a type="button" href="<?= get_url('browse.php?category_id=' . $categoryID) ?>" class="button button-danger float-left">
+                <a type="button" href="<?= getUrl('browse.php?category_id=' . $categoryID) ?>" class="button button-danger float-left">
                     Reset
                 </a>
 
@@ -149,7 +149,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                 $productInCart = $cart->getItemCount($product['StockItemID' ?? 0]) > 0;
                 $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
                 ?>
-                <a class="ListItem" href='<?= get_url('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
+                <a class="ListItem" href='<?= getUrl('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
                             <div class="ImgFrame"

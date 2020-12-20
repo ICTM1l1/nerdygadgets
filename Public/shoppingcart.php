@@ -66,7 +66,7 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                         <div class="col-sm-9 pt-2">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <a class="ListItem text-white" href='<?= get_url('view.php?id=' . $productId) ?>'>
+                                    <a class="ListItem text-white" href='<?= getUrl('view.php?id=' . $productId) ?>'>
                                         <h5>#<?= $productId ?></h5>
                                         <h4><?= $productFromDb['StockItemName'] ?? '' ?></h4>
                                     </a>
@@ -124,7 +124,7 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                     Totale kosten: &euro; <?= priceFormat($priceTotal) ?>
                 </p>
 
-                <a class="btn btn-success float-right" href="<?= get_url('products-overview.php') ?>">
+                <a class="btn btn-success float-right" href="<?= getUrl('products-overview.php') ?>">
                     Koop producten
                 </a>
             </div>
@@ -159,7 +159,7 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                         $imagePath = $relatedImage['ImagePath'] ?? '';
                         $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
                     ?>
-                    <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
+                    <a href="<?= getUrl("view.php?id={$relatedProductIds[$key]}") ?>">
                         <?php if (!empty($imagePath)) : ?>
                             <div class="ImgFrame"
                                 style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $imagePath) ?>');

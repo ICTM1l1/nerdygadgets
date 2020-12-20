@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="col-sm-12 mt-2 text-center">
-                        <a href="<?= get_url('index.php') ?>">Ga terug naar de homepagina.</a>
+                        <a href="<?= getUrl('index.php') ?>">Ga terug naar de homepagina.</a>
                     </div>
                 </div>
 <?php

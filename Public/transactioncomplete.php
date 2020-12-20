@@ -6,7 +6,7 @@ $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
     addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    redirect(getUrl('shoppingcart.php'));
 }
 
 $orderSuccessful = checkPayment(sessionGet('paymentId'));
@@ -89,7 +89,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     </ul>
 
                     <div class="form-group mt-5 text-center">
-                        <a class="btn btn-success my-4" href="<?= get_url('index.php') ?>">
+                        <a class="btn btn-success my-4" href="<?= getUrl('index.php') ?>">
                             3. Afronden
                         </a>
                     </div>
@@ -97,7 +97,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <h1 class="text-danger text-center">Producten afrekenen is mislukt</h1>
 
                     <div class="form-group mt-5 text-center">
-                        <a href="<?= get_url('checkout.php') ?>" class="btn btn-success my-4">
+                        <a href="<?= getUrl('checkout.php') ?>" class="btn btn-success my-4">
                             Opnieuw afrekenen
                         </a>
                     </div>

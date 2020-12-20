@@ -46,7 +46,7 @@ if (isset($_POST['delete_review'])) {
                                                 <?= $amountReviews ?> gereviewde producten
                                             <?php endif; ?>
                                         </div>
-                                        <form class="form-inline float-right" method="get" action="<?= get_url('manage-reviews.php') ?>">
+                                        <form class="form-inline float-right" method="get" action="<?= getUrl('manage-reviews.php') ?>">
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
                                                 <input type="date" id="date" class="form-control submit-form-on-change" name="date"

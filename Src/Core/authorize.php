@@ -6,7 +6,7 @@
 function authorizeUser() {
     $loggedIn = (bool) sessionGet('LoggedIn', false);
     if (!$loggedIn) {
-        redirect(get_url('login.php'));
+        redirect(getUrl('login.php'));
     }
 }
 

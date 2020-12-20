@@ -21,7 +21,7 @@ function initiatePayment(string $price, int $order_nr) {
             'value' => $price
         ],
         'description' => "Order #{$order_nr}",
-        'redirectUrl' => get_url('transactioncomplete.php'),
+        'redirectUrl' => getUrl('transactioncomplete.php'),
         'webhookUrl'  => '',
     ]);
 

@@ -6,7 +6,7 @@ $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
     addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    redirect(getUrl('shoppingcart.php'));
 }
 
 initiatePayment(number_format($price, 2, '.', ''), random_int(1,9999));

@@ -32,7 +32,7 @@ $amountOrders = count($orders);
                                                 <?= $amountOrders ?> geplaatste bestellingen
                                             <?php endif; ?>
                                         </div>
-                                        <form class="form-inline float-right" method="get" action="<?= get_url('orders.php') ?>">
+                                        <form class="form-inline float-right" method="get" action="<?= getUrl('orders.php') ?>">
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
                                                 <input type="date" id="date" class="form-control submit-form-on-change" name="date"
@@ -123,7 +123,7 @@ $amountOrders = count($orders);
                                                                         $priceTotal += $productPriceTotal;
                                                                         ?>
                                                                         <a class="ListItem orderListItem"
-                                                                           href='<?= get_url('view.php?id=' . $orderLine['StockItemID'] ?? 0) ?>'>
+                                                                           href='<?= getUrl('view.php?id=' . $orderLine['StockItemID'] ?? 0) ?>'>
                                                                             <div class="row border-bottom border-white pb-2">
                                                                                     <div class="col-sm-2">
                                                                                         <?php if (isset($orderLine['ImagePath'])) : ?>

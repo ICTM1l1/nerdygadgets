@@ -6,7 +6,7 @@ $categories = getCategories();
 <div id="Wrap">
     <?php if (!empty($categories)) : ?>
         <?php foreach($categories as $key => $category) : $key++; ?>
-            <a href="<?= get_url('browse.php?category_id=' . $category['StockGroupID'] ?? 0) ?>">
+            <a href="<?= getUrl('browse.php?category_id=' . $category['StockGroupID'] ?? 0) ?>">
                 <div id="StockGroup<?= $key ?>"
                      style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $category['ImagePath'] ?? '') ?>')"
                      class="StockGroups">

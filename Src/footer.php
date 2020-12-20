@@ -4,7 +4,7 @@
 </div>
 
 <!-- Displays the help symbol at the left bottom of the screen. -->
-<a class="text-success h1 position-fixed" style="bottom: 15px; right: 27px;" href="<?= get_url('contact.php') ?>">
+<a class="text-success h1 position-fixed" style="bottom: 15px; right: 27px;" href="<?= getUrl('contact.php') ?>">
     <i class="far fa-question-circle"></i>
 </a>
 

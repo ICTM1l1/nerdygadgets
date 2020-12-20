@@ -7,7 +7,7 @@ $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
     addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    redirect(getUrl('shoppingcart.php'));
 }
 ?>
 
@@ -70,11 +70,11 @@ if (empty($price) || empty($cart->getItems())) {
 
         <div class="row mt-5">
             <div class="col-sm-12">
-                <a class="btn btn-primary float-left" href="<?= get_url('shoppingcart.php') ?>">
+                <a class="btn btn-primary float-left" href="<?= getUrl('shoppingcart.php') ?>">
                     Terug naar winkelwagen
                 </a>
 
-                <a class="btn btn-success float-right" href="<?= get_url('checkout.php') ?>">
+                <a class="btn btn-success float-right" href="<?= getUrl('checkout.php') ?>">
                     Afrekenen
                 </a>
             </div>

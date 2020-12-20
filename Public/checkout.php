@@ -8,7 +8,7 @@ $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
     addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    redirect(getUrl('shoppingcart.php'));
 }
 
 $loggedIn = (bool) sessionGet('LoggedIn', false);
@@ -55,7 +55,7 @@ if (isset($_POST['checkout'])) {
 
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" action="<?= get_url('checkout.php') ?>" method="post">
+                    <form class="text-center w-100" action="<?= getUrl('checkout.php') ?>" method="post">
                         <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
@@ -88,7 +88,7 @@ if (isset($_POST['checkout'])) {
                         </div>
 
                         <div class="form-group">
-                            <a href="<?= get_url('products-overview.php') ?>" class="btn btn-danger float-left my-4" type="button">
+                            <a href="<?= getUrl('products-overview.php') ?>" class="btn btn-danger float-left my-4" type="button">
                                 Terug naar overzicht
                             </a>
                             <button class="btn btn-success float-right my-4" type="submit" name="checkout">

@@ -85,7 +85,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
 
                 <h1 class="StockItemID">Artikelnummer: <?= $product['StockItemID'] ?? 0 ?></h1>
                 <h2 class="StockItemNameViewSize StockItemName">
-                    <a class="text-white" href="<?= get_url('view.php?id=' . $product['StockItemID'])?>"><?= $product['StockItemName'] ?? '' ?></a>
+                    <a class="text-white" href="<?= getUrl('view.php?id=' . $product['StockItemID'])?>"><?= $product['StockItemName'] ?? '' ?></a>
                 </h2>
                 <?php
                 $averageScore = round(getReviewAverageByID($product['StockItemID'] ?? 0));
@@ -151,7 +151,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                         <h1>Reviews</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="<?= get_url('view.php?id=' . $product_id) ?>" class="btn btn-success">Terug naar product</a>
+                        <a href="<?= getUrl('view.php?id=' . $product_id) ?>" class="btn btn-success">Terug naar product</a>
                     </div>
                 </div>
                 <div class="border-bottom border-white"></div>

@@ -23,24 +23,24 @@ $phoneNumber = getFormDataPost('phonenumber', $account['PhoneNumber'] ?? '');
 if (isset($_POST['update'])) {
     if (empty($name) || empty($password) || empty($email) || empty($address) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
         addUserError('Niet all verplichte velden met een * zijn ingevuld.');
-        redirect(get_url('account.php'));
+        redirect(getUrl('account.php'));
     }
 
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
     if (!password_verify($password, $account_password)) {
         addUserError('Wachtwoord incorrect.');
-        redirect(get_url('account.php'));
+        redirect(getUrl('account.php'));
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         addUserError('Ongeldig email address.');
-        redirect(get_url('account.php'));
+        redirect(getUrl('account.php'));
     }
 
     if (!preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
         addUserError('Ongeldige postcode opgegeven.');
-        redirect(get_url('account.php'));
+        redirect(getUrl('account.php'));
     }
 
     updatePeople($account['PersonID'] ?? 0, $name, $phoneNumber);
@@ -64,7 +64,7 @@ if (isset($_POST['update'])) {
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <form class="text-center" action="<?= get_url('account.php') ?>" method="post">
+                            <form class="text-center" action="<?= getUrl('account.php') ?>" method="post">
                                 <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 <div class="form-group form-row">
                                     <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
