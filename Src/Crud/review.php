@@ -10,10 +10,10 @@
  *   Retrieved reviews.
  */
 function getAllReviewsForItem(int $id){
-    return select("
+    return select('
         SELECT * FROM review
-        WHERE StockItemID = :id",
-    ["id" => $id]);
+        WHERE StockItemID = :id',
+    ['id' => $id]);
 }
 
 /**
@@ -28,11 +28,11 @@ function getAllReviewsForItem(int $id){
  *   Retrieved reviews.
  */
 function getAllReviewsForItemByDate(int $id, string $date){
-    return select("
+    return select('
         SELECT * FROM review
         WHERE StockItemID = :id
         AND DATE(ReviewDate) = :date
-    ", ["id" => $id, 'date' => $date]);
+    ', ['id' => $id, 'date' => $date]);
 }
 
 /**
@@ -42,12 +42,12 @@ function getAllReviewsForItemByDate(int $id, string $date){
  *   The reviews.
  */
 function getReviewedProducts(){
-    return select("
+    return select('
         SELECT * 
         FROM review R
         JOIN stockitems SI ON SI.StockItemID = R.StockItemID
         GROUP BY SI.StockItemID
-    ");
+    ');
 }
 
 /**
@@ -60,11 +60,11 @@ function getReviewedProducts(){
  *   The reviews for the author.
  */
 function getReviewAuthor(int $id){
-    return selectFirst("
+    return selectFirst('
         SELECT * FROM people JOIN review
         ON people.personid = review.personid
-        WHERE reviewid = :id", [
-            "id" => $id
+        WHERE reviewid = :id', [
+            'id' => $id
     ]);
 }
 
@@ -78,13 +78,13 @@ function getReviewAuthor(int $id){
  *   An array of the reviews filed on the specified date.
  */
 function getReviewedProductsByDate(string $date){
-    return select("
+    return select('
         SELECT * 
         FROM review R
         JOIN stockitems SI ON SI.StockItemID = R.StockItemID
         WHERE DATE(ReviewDate) = :date
         GROUP BY SI.StockItemID
-    ", ["date" => $date]);
+    ', ['date' => $date]);
 }
 
 /**
@@ -99,12 +99,12 @@ function getReviewedProductsByDate(string $date){
  *   Retrieved reviews.
  */
 function getLimitedReviewsForItem(int $id, int $limit = 3){
-    return select("
+    return select('
         SELECT * FROM review
         WHERE StockItemID = :id
         ORDER BY ReviewID DESC
-        LIMIT :limit",
-        ["id" => $id, 'limit' => $limit]);
+        LIMIT :limit',
+        ['id' => $id, 'limit' => $limit]);
 }
 
 /**
@@ -116,10 +116,10 @@ function getLimitedReviewsForItem(int $id, int $limit = 3){
  *   Average score of all reviews. 0 when an error occurred.
  */
 function getReviewAverageByID(int $id){
-    return selectFirst("
+    return selectFirst('
         SELECT Average FROM average_score
-        WHERE StockItemID = :id",
-    ["id" => $id])["Average"] ?? 0;
+        WHERE StockItemID = :id',
+    ['id' => $id])['Average'] ?? 0;
 }
 
 /**
@@ -135,18 +135,18 @@ function updateAverageByID(int $id){
 
     $sum = 0;
     foreach($reviews as $review){
-        $sum += (int) ($review["Score"] ?? 0);
+        $sum += (int) ($review['Score'] ?? 0);
     }
 
     $amountReviews = count($reviews);
     if($amountReviews === 0){
-        delete("average_score", ["StockItemID" => $id]);
+        delete('average_score', ['StockItemID' => $id]);
         return 0;
     }
     $avg = $sum / $amountReviews;
 
-    delete("average_score", ["StockItemID" => $id]);
-    $id = insert("average_score", ["StockItemID" => $id, "Average" => $avg]);
+    delete('average_score', ['StockItemID' => $id]);
+    $id = insert('average_score', ['StockItemID' => $id, 'Average' => $avg]);
 
     return !empty($id);
 }
@@ -166,11 +166,11 @@ function updateAverageByID(int $id){
  *   Last inserted item ID.
  */
 function createReview(int $sid, int $pid, int $score, string $review){
-    $id = insert("review", [
-        "StockItemID" => $sid,
-        "Review" => $review,
-        "PersonID" => $pid,
-        "Score" => $score
+    $id = insert('review', [
+        'StockItemID' => $sid,
+        'Review' => $review,
+        'PersonID' => $pid,
+        'Score' => $score
     ]);
 
     if (!empty($id)) {
@@ -193,12 +193,12 @@ function createReview(int $sid, int $pid, int $score, string $review){
  *   True if the product was reviewed by the customer.
  */
 function productWasReviewedByCustomer(int $itemid, int $personid){
-    $reviews = select("
+    $reviews = select('
         SELECT * FROM review
         WHERE StockItemID = :sid
-        AND PersonID = :pid",[
-            "sid" => $itemid,
-            "pid" => $personid
+        AND PersonID = :pid',[
+            'sid' => $itemid,
+            'pid' => $personid
     ]);
 
     return !(count($reviews) === 0);
@@ -216,12 +216,12 @@ function productWasReviewedByCustomer(int $itemid, int $personid){
  *   The review for the product.
  */
 function getProductReviewByCustomer(int $itemid, int $personid){
-    return selectFirst("
+    return selectFirst('
         SELECT * FROM review
         WHERE StockItemID = :sid
-        AND PersonID = :pid",[
-        "sid" => $itemid,
-        "pid" => $personid
+        AND PersonID = :pid',[
+        'sid' => $itemid,
+        'pid' => $personid
     ]);
 }
 
@@ -236,9 +236,9 @@ function getProductReviewByCustomer(int $itemid, int $personid){
  *   True if deletion was successful.
  */
 function deleteReview(int $itemid, int $personid){
-    return !delete("review",[
-        "StockItemID" => $itemid,
-        "PersonID" => $personid
+    return !delete('review',[
+        'StockItemID' => $itemid,
+        'PersonID' => $personid
     ]) && updateAverageByID($itemid);
 }
 
@@ -251,13 +251,13 @@ function deleteReview(int $itemid, int $personid){
  *   True if deletion was successful.
  */
 function deleteReviewByID(int $id){
-    $itemid = selectFirst("
+    $itemid = selectFirst('
         SELECT StockItemID FROM review
-        WHERE ReviewID = :id", [
-            "id" => $id
-    ])["StockItemID"];
+        WHERE ReviewID = :id', [
+            'id' => $id
+    ])['StockItemID'];
 
-    return !delete("review",[
-            "ReviewID" => $id
+    return !delete('review',[
+            'ReviewID' => $id
     ]) && updateAverageByID($itemid);
 }
