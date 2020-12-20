@@ -46,7 +46,7 @@ function checkRepetition(int $rep, string $password){
  * @return int
  *   The score calculated for the password.
  */
-function score_password(string $password, int $minlen){
+function scorePassword(string $password, int $minlen){
     /*Score the password as per the scoring mechanism used in the JS script*/
 
     if(strlen($password) < $minlen){

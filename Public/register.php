@@ -40,7 +40,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if(score_password($password, 8) < 75) {
+    if(scorePassword($password, 8) < 75) {
         addUserError('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
