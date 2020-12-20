@@ -14,7 +14,7 @@ $config = require __DIR__ . '/../../Config/config.php';
  *   The data from the submitted form data.
  */
 function getFormDataGet(string $key, $default = '') {
-    return request_from_super_globals($_GET, $key, $default);
+    return requestFromSuperGlobals($_GET, $key, $default);
 }
 
 /**
@@ -29,7 +29,7 @@ function getFormDataGet(string $key, $default = '') {
  *   The data from the submitted form data.
  */
 function getFormDataPost(string $key, $default = '') {
-    return request_from_super_globals($_POST, $key, $default);
+    return requestFromSuperGlobals($_POST, $key, $default);
 }
 
 /**
@@ -44,7 +44,7 @@ function getFormDataPost(string $key, $default = '') {
  *   The data from the submitted form data.
  */
 function sessionGet(string $key, $default = '') {
-    return request_from_super_globals($_SESSION, $key, $default);
+    return requestFromSuperGlobals($_SESSION, $key, $default);
 }
 
 /**
@@ -60,7 +60,7 @@ function sessionGet(string $key, $default = '') {
  * @return string
  *   The sanitized string.
  */
-function request_from_super_globals(array $global, string $key, $default = '') {
+function requestFromSuperGlobals(array $global, string $key, $default = '') {
     $value = $global[$key] ?? $default;
     if (is_string($value)) {
         return preventXSS($value);
