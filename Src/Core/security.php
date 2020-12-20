@@ -32,7 +32,7 @@ function validateRecaptcha() {
     $response = file_get_contents($url);
     $responseKeys = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
-    return (bool) ($responseKeys["success"] ?? false);
+    return (bool) ($responseKeys['success'] ?? false);
 }
 
 /**
