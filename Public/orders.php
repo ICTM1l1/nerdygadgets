@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 authorizeUser();
 
@@ -118,7 +118,7 @@ $amountOrders = count($orders);
                                                                 <?php else : ?>
                                                                     <?php foreach ($orderLines as $orderLine) :
                                                                         $pricePerPiece = (float) ($orderLine['SoldPrice'] ?? 0);
-                                                                        $productQuantity = (int) ($orderLine["Quantity"] ?? 0);
+                                                                        $productQuantity = (int) ($orderLine['Quantity'] ?? 0);
                                                                         $productPriceTotal = $pricePerPiece * $productQuantity;
                                                                         $priceTotal += $productPriceTotal;
                                                                         ?>
@@ -179,5 +179,5 @@ $amountOrders = count($orders);
     </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
