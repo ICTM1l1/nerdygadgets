@@ -27,13 +27,13 @@ function createCustomer(string $name, string $phoneNumber, string $address, stri
     }
 
     return insert('privatecustomer', [
-        "PrivateCustomerName" => $name,
-        "DeliveryMethodID" => 1,
-        "DeliveryCityID" => $cityId,
-        "PhoneNumber" => $phoneNumber,
-        "PeopleID" => $personID,
-        "DeliveryAddressLine1" => $address,
-        "DeliveryPostalCode" => $postalCode,
+        'PrivateCustomerName' => $name,
+        'DeliveryMethodID' => 1,
+        'DeliveryCityID' => $cityId,
+        'PhoneNumber' => $phoneNumber,
+        'PeopleID' => $personID,
+        'DeliveryAddressLine1' => $address,
+        'DeliveryPostalCode' => $postalCode,
     ]);
 }
 
@@ -47,12 +47,12 @@ function createCustomer(string $name, string $phoneNumber, string $address, stri
  *   The found customer.
  */
 function getCustomerByName(string $customer) {
-    return selectFirst("
+    return selectFirst('
         SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
         CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName
         FROM privatecustomer
         WHERE PrivateCustomerName = :customerName
-    ", ['customerName' => $customer]);
+    ', ['customerName' => $customer]);
 }
 
 /**
@@ -65,13 +65,13 @@ function getCustomerByName(string $customer) {
  *   The found customer.
  */
 function getCustomer(int $customer) {
-    return selectFirst("
+    return selectFirst('
         SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
         CityName, PhoneNumber, PrivateCustomerID
         FROM privatecustomer AS p
         JOIN cities ON DeliveryCityID = CityID
         WHERE PrivateCustomerID = :customerID
-    ", ['customerID' => $customer]);
+    ', ['customerID' => $customer]);
 }
 
 /**
@@ -84,14 +84,14 @@ function getCustomer(int $customer) {
  *   The the found customer for the people.
  */
 function getCustomerByPeople(int $people) {
-    return selectFirst("
+    return selectFirst('
         SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
         CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName, FullName, PreferredName
         FROM privatecustomer C
         JOIN people P ON  C.PeopleID = P.PersonID
         JOIN cities ON DeliveryCityID = CityID
         WHERE PeopleID = :peopleID
-    ", ['peopleID' => $people]);
+    ', ['peopleID' => $people]);
 }
 
 /**
@@ -117,14 +117,14 @@ function updateCustomer(int $peopleID, string $name, string $address, string $po
         $cityId = createCity($city);
     }
 
-    update("privatecustomer", [
-        "PrivateCustomerName" => $name,
-        "DeliveryPostalCode" => $postalCode,
-        "PhoneNumber" => $phoneNumber,
-        "DeliveryAddressLine1" => $address,
-        "DeliveryCityID" => $cityId,
+    update('privatecustomer', [
+        'PrivateCustomerName' => $name,
+        'DeliveryPostalCode' => $postalCode,
+        'PhoneNumber' => $phoneNumber,
+        'DeliveryAddressLine1' => $address,
+        'DeliveryCityID' => $cityId,
     ], [
-        "PeopleID" => $peopleID
+        'PeopleID' => $peopleID
     ]);
 }
 
