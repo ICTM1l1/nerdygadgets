@@ -358,9 +358,9 @@ function get_week_boundaries_from_date(DateTime $date){
     $weekN = (int)$date->format("W");
     $week = new DateTime();
     $week->setISODate($year, $weekN);
-    $w["start"] = $week->format("Y-m-d");
+    $w['start'] = $week->format("Y-m-d");
     $week->modify("+6 days");
-    $w["end"] = $week->format("Y-m-d");
+    $w['end'] = $week->format("Y-m-d");
     return $w;
 }
 
