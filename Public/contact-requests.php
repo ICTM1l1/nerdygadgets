@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
@@ -170,5 +170,5 @@ if (isset($_POST['delete_contact_request'])) {
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
