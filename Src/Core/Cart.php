@@ -239,14 +239,14 @@ class Cart {
  *   The cart.
  */
 function saveCart(Cart $cart) {
-    session_save('cart', serialize($cart), true);
+    sessionSave('cart', serialize($cart), true);
 }
 
 /**
  * Resets and saves the cart into the session.
  */
 function resetCart() {
-    session_save('cart', serialize(new Cart()), true);
+    sessionSave('cart', serialize(new Cart()), true);
 }
 
 /**

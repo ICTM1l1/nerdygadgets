@@ -25,7 +25,7 @@ function initiatePayment(string $price, int $order_nr) {
         'webhookUrl'  => '',
     ]);
 
-    session_save('paymentId', $payment->id, true);
+    sessionSave('paymentId', $payment->id, true);
     redirect($payment->getCheckoutUrl());
 }
 

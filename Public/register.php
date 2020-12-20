@@ -53,8 +53,8 @@ if (!empty($_POST)) {
 
             $account = getPeopleByEmail($email);
 
-            session_save('LoggedIn', true, true);
-            session_save('personID', $account['PersonID'] ?? 0, true);
+            sessionSave('LoggedIn', true, true);
+            sessionSave('personID', $account['PersonID'] ?? 0, true);
 
             add_user_message('Je bent succesvol ingelogd.');
             redirect(get_url('account.php'));

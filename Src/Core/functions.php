@@ -79,7 +79,7 @@ function requestFromSuperGlobals(array $global, string $key, $default = '') {
  * @param bool $overwrite
  *   May the value of the key be overwritten?
  */
-function session_save(string $key, $value = '', bool $overwrite = false) {
+function sessionSave(string $key, $value = '', bool $overwrite = false) {
     if ($overwrite) {
         $_SESSION[$key] = $value;
     }
