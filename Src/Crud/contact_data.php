@@ -16,11 +16,11 @@
  *   The contact request ID.
  */
 function createContactRequest(string $name, string $email, string $subject, string $message){
-    return insert("contact_requests", [
-        "ContactRequestName" => $name,
-        "ContactRequestEmail" => $email,
-        "ContactRequestSubject" => $subject,
-        "ContactRequestMessage" => $message
+    return insert('contact_requests', [
+        'ContactRequestName' => $name,
+        'ContactRequestEmail' => $email,
+        'ContactRequestSubject' => $subject,
+        'ContactRequestMessage' => $message
     ]);
 }
 
@@ -31,12 +31,12 @@ function createContactRequest(string $name, string $email, string $subject, stri
  *   The retrieved contact requests.
  */
 function getContactRequests(){
-    return select("
+    return select('
         SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
         DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests
         ORDER BY ContactRequestID DESC
-    ");
+    ');
 }
 
 /**
@@ -49,12 +49,12 @@ function getContactRequests(){
  *   The retrieved contact request.
  */
 function getContactRequestByID(int $id){
-    return selectFirst("
+    return selectFirst('
         SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
         DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests 
         WHERE ContactRequestID = :id
-    ", ["id" => $id]);
+    ', ['id' => $id]);
 }
 
 /**
@@ -67,12 +67,12 @@ function getContactRequestByID(int $id){
  *   An array of the requests filed on the specified date.
  */
 function getContactRequestsByDate(string $date){
-    return select("
+    return select('
         SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
         DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests 
         WHERE DATE(ContactRequestDate) = :date
-    ", ["date" => $date]);
+    ', ['date' => $date]);
 }
 
 /**
@@ -88,13 +88,13 @@ function getContactRequestsByDate(string $date){
 function getContactRequestsInWeekByDate(DateTime $date){
     $week = get_week_boundaries_from_date($date);
 
-    return select("
+    return select('
         SELECT ContactRequestID, ContactRequestName, ContactRequestSubject, ContactRequestMessage,
         DATE(ContactRequestDate) ContactRequestDate, ContactRequestEmail
         FROM contact_requests
         WHERE DATE(ContactRequestDate) >= :start
         AND DATE(ContactRequestDate) <= :end
-    ", $week);
+    ', $week);
 }
 /**
  * Remove contact request based on ID.
@@ -106,5 +106,5 @@ function getContactRequestsInWeekByDate(DateTime $date){
  *   The result of the query.
  */
 function removeContactRequest(int $id){
-    return delete("contact_requests", ["ContactRequestID" => $id]);
+    return delete('contact_requests', ['ContactRequestID' => $id]);
 }
