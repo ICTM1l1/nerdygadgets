@@ -1,32 +1,32 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
-$text = get_form_data_post("review-text");
-$score = (int)get_form_data_post("score-value", "0");
+$text = get_form_data_post('review-text');
+$score = (int)get_form_data_post('score-value', '0');
 
-if(isset($_POST["review"])){
+if(isset($_POST['review'])){
     $valid = true;
-    if (!(bool)session_get("LoggedIn", false)) {
-        add_user_error("U moet ingelogd zijn om een review achter te kunnen laten.");
+    if (!(bool)session_get('LoggedIn', false)) {
+        add_user_error('U moet ingelogd zijn om een review achter te kunnen laten.');
         $valid = false;
     }
 
-    $id = (int)get_form_data_post("itemid", "0");
-    $pid = (int)session_get("personID", 0);
+    $id = (int)get_form_data_post('itemid', '0');
+    $pid = (int)session_get('personID', 0);
     $orders = getOrdersByCustomer($pid);
 
     if (productWasReviewedByCustomer($id, $pid)) {
-        add_user_error("U kan een product maar 1 keer reviewen.");
+        add_user_error('U kan een product maar 1 keer reviewen.');
         $valid = false;
     }
 
     $ordered = false;
     foreach($orders as $order){
-        $lines = getOrderLinesByOrder($order["OrderID"] ?? 0);
+        $lines = getOrderLinesByOrder($order['OrderID'] ?? 0);
         foreach($lines as $line){
-            if ((int) ($line["StockItemID"] ?? "0") == $id) {
+            if ((int) ($line['StockItemID'] ?? '0') == $id) {
                 $ordered = true;
                 break;
             }
@@ -37,17 +37,17 @@ if(isset($_POST["review"])){
         }
     }
     if (!$ordered){
-        add_user_error("U moet het product besteld hebben voordat u een review achter kan laten.");
+        add_user_error('U moet het product besteld hebben voordat u een review achter kan laten.');
         $valid = false;
     }
 
     if (strlen($text) > 250) {
-        add_user_error("De tekst van een review kan niet langer zijn dan 250 tekens.");
+        add_user_error('De tekst van een review kan niet langer zijn dan 250 tekens.');
         $valid = false;
     }
 
     if (empty($score) || (1 > $score && $score > 5)) {
-        add_user_error("Uw beoordeling moet tussen de 1 en de 5 sterren vallen.");
+        add_user_error('Uw beoordeling moet tussen de 1 en de 5 sterren vallen.');
         $valid = false;
     }
 
@@ -56,13 +56,13 @@ if(isset($_POST["review"])){
     }
     redirect(get_current_url());
 }
-elseif(isset($_POST["Delete_Review"])){
-    if (!(bool)session_get("LoggedIn", false)) {
-        add_user_error("U moet ingelogd zijn om uw review te kunnen verwijderen.");
+elseif(isset($_POST['Delete_Review'])){
+    if (!(bool)session_get('LoggedIn', false)) {
+        add_user_error('U moet ingelogd zijn om uw review te kunnen verwijderen.');
     }
     else {
-        $id = (int)get_form_data_post("id", "0");
-        $pid = (int)session_get("personID", 0);
+        $id = (int)get_form_data_post('id', '0');
+        $pid = (int)session_get('personID', 0);
         deleteReview($id, $pid);
     }
     redirect(get_current_url());
@@ -75,7 +75,7 @@ $product = getProduct($product_id);
 $images = getProductImages($product_id);
 $categories = getCategoryIdForProduct($product_id);
 $reviews = getLimitedReviewsForItem($product_id);
-$productReview = getProductReviewByCustomer($product_id, (int)session_get("personID", 0));
+$productReview = getProductReviewByCustomer($product_id, (int)session_get('personID', 0));
 
 $relatedProductIds = [];
 $relatedProductImages = [];
@@ -102,26 +102,26 @@ if (!empty($productCustomFields)) {
 }
 
 $productInCart = $cart->getItemCount($product_id) > 0;
-if ($id = get_form_data_post("Add_Cart", NULL)) {
+if ($id = get_form_data_post('Add_Cart', NULL)) {
     $cart->addItem($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post("Min_Cart", NULL)) {
+elseif ($id = get_form_data_post('Min_Cart', NULL)) {
     $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post("Increase_Cart", NULL)) {
+elseif ($id = get_form_data_post('Increase_Cart', NULL)) {
     $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post("Del_Cart", NULL)) {
+elseif ($id = get_form_data_post('Del_Cart', NULL)) {
     $cart->removeItem($id);
     redirect(get_current_url());
 }
 
 $temperature = getTemperature();
 if (!empty($temperature)) {
-    $temperature = "Temperatuur: " . ($temperature["Temperature"] ?? 0) . "℃";
+    $temperature = 'Temperatuur: ' . ($temperature['Temperature'] ?? 0) . '℃';
 }
 
 include __DIR__ . '/../Src/Html/alert.php'; ?>
@@ -174,12 +174,12 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                          style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
                 <?php endif; ?>
 
-                <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>
+                <h1 class="StockItemID">Artikelnummer: <?= $product['StockItemID'] ?? 0 ?></h1>
                 <h2 class="StockItemNameViewSize StockItemName">
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product["StockItemID"]));
+                $averageScore = round(getReviewAverageByID($product['StockItemID']));
                 if($averageScore > 0) : ?>
                     <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
@@ -224,7 +224,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
 
                                         <button class="btn btn-outline-danger float-right w-75 mt-2"
                                                 type="submit" name="Del_Cart" value="<?= $product_id ?>"
-                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?">
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? '') ?>` wilt verwijderen?">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php else : ?>
@@ -307,13 +307,13 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
         <div class="container-fluid">
             <div class="row mt-4 mb-4">
                 <div class="col-sm-12 text-left">
-                    <?php if ((bool) session_get( "LoggedIn", false)) : ?>
+                    <?php if ((bool) session_get( 'LoggedIn', false)) : ?>
                         <div class="row">
                             <div class="col-sm-6">
                                 <h2 class="text-white float-left">Schrijf een review</h2>
                             </div>
                             <div class="col-sm-6">
-                                <a href="<?= get_url("reviews.php?id=" . $product_id)?>"
+                                <a href="<?= get_url('reviews.php?id=' . $product_id)?>"
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
@@ -332,21 +332,21 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>
-                                                            <?= getCustomerByPeople($productReview["PersonID"] ?? 0 )["PreferredName"] ?? '' ?>
+                                                            <?= getCustomerByPeople($productReview['PersonID'] ?? 0 )['PreferredName'] ?? '' ?>
                                                         </h3>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6" style="color: goldenrod">
-                                                        <?= getRatingStars((int) ($productReview["Score"] ?? 0))?>
+                                                        <?= getRatingStars((int) ($productReview['Score'] ?? 0))?>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <?= dateTimeFormatShort($productReview["ReviewDate"] ?? '')?>
+                                                        <?= dateTimeFormatShort($productReview['ReviewDate'] ?? '')?>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                        <p><?= $review['Review'] ?? '' ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -400,7 +400,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>
-                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["PreferredName"] ?? '' ?>
+                                                            <?= getCustomerByPeople($review['PersonID'] ?? '' )['PreferredName'] ?? '' ?>
                                                         </h3>
                                                     </div>
                                                 </div>
@@ -414,7 +414,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                        <p><?= $review['Review'] ?? '' ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -431,7 +431,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <h2 class="text-white float-left">Log in of registreer om een review achter te laten</h2>
                             </div>
                             <div class="col-sm-2">
-                                <a href="<?= get_url("reviews.php?id=" . $product_id)?>"
+                                <a href="<?= get_url('reviews.php?id=' . $product_id)?>"
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
@@ -447,21 +447,21 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <h3>
-                                                            <?= getCustomerByPeople($review["PersonID"] ?? '' )["PreferredName"] ?? '' ?>
+                                                            <?= getCustomerByPeople($review['PersonID'] ?? '' )['PreferredName'] ?? '' ?>
                                                         </h3>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6" style="color: goldenrod">
-                                                        <?= getRatingStars((int)$review["Score"])?>
+                                                        <?= getRatingStars((int)$review['Score'])?>
                                                     </div>
                                                     <div class="col-sm-6 text-right">
-                                                        <?= dateTimeFormatShort($review["ReviewDate"])?>
+                                                        <?= dateTimeFormatShort($review['ReviewDate'])?>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <p><?= $review["Review"] ?? '' ?></p>
+                                                        <p><?= $review['Review'] ?? '' ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -484,5 +484,5 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
 
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
