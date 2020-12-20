@@ -10,7 +10,7 @@ $message = get_form_data_post("message");
 
 if (!empty($_POST)) {
     $values_valid = true;
-    if(empty($email) || empty($name) || empty($subject) || empty($message)){
+    if(empty($email) || empty($name) || empty($subject) || empty($message)) {
         add_user_error("Niet alle verplichte velden met een * zijn ingevuld.");
         $values_valid = false;
     }
@@ -20,22 +20,22 @@ if (!empty($_POST)) {
         $values_valid = false;
     }
 
-    if(strlen($message) > 100){
+    if(strlen($message) > 100) {
         add_user_error("Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)");
         $values_valid = false;
     }
 
-    if(strlen($email) > 100){
+    if(strlen($email) > 100) {
         add_user_error("Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)");
         $values_valid = false;
     }
 
-    if(strlen($subject) > 100){
+    if(strlen($subject) > 100) {
         add_user_error("Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).");
         $values_valid = false;
     }
 
-    if(strlen($message) > 2000){
+    if(strlen($message) > 2000) {
         add_user_error("Uw bericht is langer dan toegestaan.");
         $values_valid = false;
     }
