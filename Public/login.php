@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
 $loggedIn = (bool) session_get('LoggedIn', false);
 if ($loggedIn) {
-    redirect(get_url("index.php"));
+    redirect(get_url('index.php'));
 }
 
 $password = get_form_data_post('password');
@@ -25,7 +25,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    $accountIsPermittedToLogon = $account["IsPermittedToLogon"] ?? 0;
+    $accountIsPermittedToLogon = $account['IsPermittedToLogon'] ?? 0;
     if ($valuesValid && $accountIsPermittedToLogon === 0) {
         add_user_error('Je account is geblokkeerd.');
         $valuesValid = false;
@@ -37,7 +37,7 @@ if (!empty($_POST)) {
             session_save('personID', $account['PersonID'] ?? 0, true);
 
             add_user_message('Je bent succesvol ingelogd.');
-            redirect(get_url("account.php"));
+            redirect(get_url('account.php'));
         }
 
         add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
@@ -82,5 +82,5 @@ if (!empty($_POST)) {
     </div>
 
 <?php
-require_once __DIR__."/../Src/footer.php";
+require_once __DIR__.'/../Src/footer.php';
 ?>
