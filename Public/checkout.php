@@ -3,7 +3,7 @@ require_once __DIR__ . "/../Src/header.php";
 
 csrf_validate(get_current_url());
 
-$cart = get_cart();
+$cart = getCart();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {

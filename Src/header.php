@@ -14,7 +14,7 @@ securityHeaders();
 session_start();
 secureSession();
 
-$cart = get_cart();
+$cart = getCart();
 $loggedIn = session_get('LoggedIn');
 
 $categories = getCategories();

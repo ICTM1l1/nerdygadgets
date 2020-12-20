@@ -68,7 +68,7 @@ elseif(isset($_POST['Delete_Review'])){
     redirect(get_current_url());
 }
 
-$cart = get_cart();
+$cart = getCart();
 
 $product_id = (int) get_form_data_get('id');
 $product = getProduct($product_id);

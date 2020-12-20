@@ -3,7 +3,7 @@ require_once __DIR__ . "/../Src/header.php";
 
 csrf_validate(get_current_url());
 
-$cart = get_cart();
+$cart = getCart();
 
 $searchString = get_form_data_get('search_string');
 $categoryID = (int) get_form_data_get('category_id');

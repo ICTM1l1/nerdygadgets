@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-$cart = get_cart();
+$cart = getCart();
 $products = $cart->getItems();
 $price = $cart->getTotalPrice();
 

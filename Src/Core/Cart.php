@@ -255,7 +255,7 @@ function resetCart() {
  * @return Cart
  *   The cart.
  */
-function get_cart() {
+function getCart() {
     $cart = $_SESSION['cart'] ?? null;
     if (!$cart) {
         $cart = new Cart();
