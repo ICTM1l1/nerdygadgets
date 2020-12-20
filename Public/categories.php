@@ -1,16 +1,16 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 $categories = getCategories();
 ?>
 <div id="Wrap">
     <?php if (!empty($categories)) : ?>
         <?php foreach($categories as $key => $category) : $key++; ?>
-            <a href="<?= get_url('browse.php?category_id=' . $category["StockGroupID"] ?? 0) ?>">
+            <a href="<?= get_url('browse.php?category_id=' . $category['StockGroupID'] ?? 0) ?>">
                 <div id="StockGroup<?= $key ?>"
-                     style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $category["ImagePath"] ?? '') ?>')"
+                     style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $category['ImagePath'] ?? '') ?>')"
                      class="StockGroups">
-                    <h1><?= $category["StockGroupName"] ?? '' ?></h1>
+                    <h1><?= $category['StockGroupName'] ?? '' ?></h1>
                 </div>
             </a>
         <?php endforeach; ?>
@@ -20,5 +20,5 @@ $categories = getCategories();
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
