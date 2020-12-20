@@ -9,7 +9,7 @@
  *   String to check repetitions in.
  * @return string
  *   String containing character repetitions.*/
-function check_repetition(int $rep, string $password){
+function checkRepetition(int $rep, string $password){
     $result = '';
     //$repeated = false;
     $l = strlen($password);
@@ -57,7 +57,7 @@ function score_password(string $password, int $minlen){
 
     $score += strlen($password) * 4;
     for($x = 1; $x <= 4; $x++){
-        $score += strlen(check_repetition($x, $password)) - strlen($password);
+        $score += strlen(checkRepetition($x, $password)) - strlen($password);
     }
 
     //has three numbers
