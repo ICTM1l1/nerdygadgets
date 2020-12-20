@@ -23,7 +23,7 @@ if (isset($_POST['delete_contact_request'])) {
     }
 
     removeContactRequest($contact_request_id);
-    add_user_message('Contact aanvraag is succesvol verwijderd.');
+    addUserMessage('Contact aanvraag is succesvol verwijderd.');
     redirect('contact-requests.php');
 }
 ?>

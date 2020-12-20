@@ -86,7 +86,7 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product aantal is succesvol bijgewerkt.');
+            addUserMessage('Product aantal is succesvol bijgewerkt.');
         }
 
         saveCart($this);
@@ -107,7 +107,7 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product aantal is succesvol bijgewerkt.');
+            addUserMessage('Product aantal is succesvol bijgewerkt.');
         }
 
         saveCart($this);
@@ -161,7 +161,7 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product ' . ($product['StockItemName'] ?? '') . ' is toegevoegd aan de winkelwagen.');
+            addUserMessage('Product ' . ($product['StockItemName'] ?? '') . ' is toegevoegd aan de winkelwagen.');
         }
 
         saveCart($this);
@@ -180,7 +180,7 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
+            addUserMessage('Product is succesvol verwijderd uit de winkelwagen.');
         }
 
         saveCart($this);

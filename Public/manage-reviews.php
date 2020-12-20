@@ -23,7 +23,7 @@ if (isset($_POST['delete_review'])) {
     }
 
     deleteReviewByID($review_id);
-    add_user_message('Review is succesvol verwijderd.');
+    addUserMessage('Review is succesvol verwijderd.');
     redirect(get_current_url());
 }
 ?>

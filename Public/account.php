@@ -46,7 +46,7 @@ if (isset($_POST['update'])) {
     updatePeople($account['PersonID'] ?? 0, $name, $phoneNumber);
     updateCustomer($account['PersonID'] ?? 0, $name, $address, $postalCode, $phoneNumber, $city);
 
-    add_user_message('Account is succesvol bijgewerkt.');
+    addUserMessage('Account is succesvol bijgewerkt.');
     redirect('account.php');
 }
 ?>

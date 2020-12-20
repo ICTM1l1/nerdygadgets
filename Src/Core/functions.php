@@ -118,7 +118,7 @@ function getUserErrors() {
  * @param string $message
  *   The message.
  */
-function add_user_message(string $message) {
+function addUserMessage(string $message) {
     $_SESSION['messages'][] = $message;
 }
 

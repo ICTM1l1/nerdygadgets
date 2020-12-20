@@ -45,7 +45,7 @@ if ($orderSuccessful) {
         commitTransaction($connection);
 
         resetCart();
-        add_user_message('De bestelling is succesvol geplaatst.');
+        addUserMessage('De bestelling is succesvol geplaatst.');
     } catch (Exception $exception) {
         $orderSuccessful = false;
         addUserError('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');

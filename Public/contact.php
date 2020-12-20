@@ -43,7 +43,7 @@ if (!empty($_POST)) {
     if ($values_valid) {
         if (validateRecaptcha()) {
             createContactRequest($name, $email, $subject, $message);
-            add_user_message('Uw bericht is verstuurd.');
+            addUserMessage('Uw bericht is verstuurd.');
             redirect(get_current_url());
         }
 
