@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 $cart = get_cart();
 $price = $cart->getTotalPrice();
@@ -11,4 +11,4 @@ if (empty($price) || empty($cart->getItems())) {
 
 initiatePayment(number_format($price, 2, '.', ''), random_int(1,9999));
 
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
