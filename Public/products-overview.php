@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 $cart = get_cart();
 $products = $cart->getItems();
@@ -21,12 +21,12 @@ if (empty($price) || empty($cart->getItems())) {
                 $priceTotal = 0;
 
                 foreach ($products as $product) :
-                    $productId = (int) ($product["id"] ?? 0);
+                    $productId = (int) ($product['id'] ?? 0);
                     $productFromDb = getProduct($productId);
                     $image = getProductImage($productId);
 
                     $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
-                    $productQuantity = (int) ($product["amount"] ?? 0);
+                    $productQuantity = (int) ($product['amount'] ?? 0);
                     $productPriceTotal = $pricePerPiece * $productQuantity;
                     $priceTotal += $productPriceTotal;
                     ?>
@@ -83,5 +83,5 @@ if (empty($price) || empty($cart->getItems())) {
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
