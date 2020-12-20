@@ -95,7 +95,7 @@ function sessionSave(string $key, $value = '', bool $overwrite = false) {
  * @param string $value
  *   The value.
  */
-function add_user_error(string $value) {
+function addUserError(string $value) {
     $_SESSION['errors'][] = $value;
 }
 

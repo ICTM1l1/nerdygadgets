@@ -63,7 +63,7 @@ function csrfValidate($destination = ''){
         if(hash_equals($csrf_token, $_POST['token'] ?? '')){
             return true;
         }
-        add_user_error('Er is iets fout gegaan. Probeer het opnieuw.');
+        addUserError('Er is iets fout gegaan. Probeer het opnieuw.');
         if($destination != ''){
             redirect($destination);
         }

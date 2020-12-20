@@ -7,7 +7,7 @@ $cart = getCart();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
+    addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
     redirect(get_url('shoppingcart.php'));
 }
 
@@ -25,11 +25,11 @@ if (isset($_POST['checkout'])) {
     $values_valid = true;
     if (empty($name) || empty($postalCode) || empty($address) || empty($city) || empty($phoneNumber)) {
         $values_valid = false;
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet all verplichte velden met een * zijn ingevuld.');
     }
 
     if ($values_valid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
-        add_user_error('Ongeldige postcode opgegeven.');
+        addUserError('Ongeldige postcode opgegeven.');
         $values_valid = false;
     }
 

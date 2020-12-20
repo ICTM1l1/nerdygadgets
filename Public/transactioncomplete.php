@@ -5,7 +5,7 @@ $cart = getCart();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
+    addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
     redirect(get_url('shoppingcart.php'));
 }
 
@@ -48,7 +48,7 @@ if ($orderSuccessful) {
         add_user_message('De bestelling is succesvol geplaatst.');
     } catch (Exception $exception) {
         $orderSuccessful = false;
-        add_user_error('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
+        addUserError('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
         rollbackTransaction($connection);
     }
 } elseif (!empty($customerId) && !$loggedIn) {

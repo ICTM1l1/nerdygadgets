@@ -22,24 +22,24 @@ $phoneNumber = getFormDataPost('phonenumber', $account['PhoneNumber'] ?? '');
 
 if (isset($_POST['update'])) {
     if (empty($name) || empty($password) || empty($email) || empty($address) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet all verplichte velden met een * zijn ingevuld.');
         redirect(get_url('account.php'));
     }
 
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
     if (!password_verify($password, $account_password)) {
-        add_user_error('Wachtwoord incorrect.');
+        addUserError('Wachtwoord incorrect.');
         redirect(get_url('account.php'));
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldig email address.');
+        addUserError('Ongeldig email address.');
         redirect(get_url('account.php'));
     }
 
     if (!preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
-        add_user_error('Ongeldige postcode opgegeven.');
+        addUserError('Ongeldige postcode opgegeven.');
         redirect(get_url('account.php'));
     }
 

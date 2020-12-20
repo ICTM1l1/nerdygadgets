@@ -9,7 +9,7 @@ $score = (int)getFormDataPost('score-value', '0');
 if(isset($_POST['review'])){
     $valid = true;
     if (!(bool)sessionGet('LoggedIn', false)) {
-        add_user_error('U moet ingelogd zijn om een review achter te kunnen laten.');
+        addUserError('U moet ingelogd zijn om een review achter te kunnen laten.');
         $valid = false;
     }
 
@@ -18,7 +18,7 @@ if(isset($_POST['review'])){
     $orders = getOrdersByCustomer($pid);
 
     if (productWasReviewedByCustomer($id, $pid)) {
-        add_user_error('U kan een product maar 1 keer reviewen.');
+        addUserError('U kan een product maar 1 keer reviewen.');
         $valid = false;
     }
 
@@ -37,17 +37,17 @@ if(isset($_POST['review'])){
         }
     }
     if (!$ordered){
-        add_user_error('U moet het product besteld hebben voordat u een review achter kan laten.');
+        addUserError('U moet het product besteld hebben voordat u een review achter kan laten.');
         $valid = false;
     }
 
     if (strlen($text) > 250) {
-        add_user_error('De tekst van een review kan niet langer zijn dan 250 tekens.');
+        addUserError('De tekst van een review kan niet langer zijn dan 250 tekens.');
         $valid = false;
     }
 
     if (empty($score) || (1 > $score && $score > 5)) {
-        add_user_error('Uw beoordeling moet tussen de 1 en de 5 sterren vallen.');
+        addUserError('Uw beoordeling moet tussen de 1 en de 5 sterren vallen.');
         $valid = false;
     }
 
@@ -58,7 +58,7 @@ if(isset($_POST['review'])){
 }
 elseif(isset($_POST['Delete_Review'])){
     if (!(bool)sessionGet('LoggedIn', false)) {
-        add_user_error('U moet ingelogd zijn om uw review te kunnen verwijderen.');
+        addUserError('U moet ingelogd zijn om uw review te kunnen verwijderen.');
     }
     else {
         $id = (int)getFormDataPost('id', '0');

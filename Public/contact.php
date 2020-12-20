@@ -11,32 +11,32 @@ $message = getFormDataPost('message');
 if (!empty($_POST)) {
     $values_valid = true;
     if(empty($email) || empty($name) || empty($subject) || empty($message)) {
-        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet alle verplichte velden met een * zijn ingevuld.');
         $values_valid = false;
     }
 
     if ($values_valid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldige email opgegeven.');
+        addUserError('Ongeldige email opgegeven.');
         $values_valid = false;
     }
 
     if(strlen($message) > 100) {
-        add_user_error('Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)');
+        addUserError('Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)');
         $values_valid = false;
     }
 
     if(strlen($email) > 100) {
-        add_user_error('Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)');
+        addUserError('Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)');
         $values_valid = false;
     }
 
     if(strlen($subject) > 100) {
-        add_user_error('Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).');
+        addUserError('Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).');
         $values_valid = false;
     }
 
     if(strlen($message) > 2000) {
-        add_user_error('Uw bericht is langer dan toegestaan.');
+        addUserError('Uw bericht is langer dan toegestaan.');
         $values_valid = false;
     }
 
@@ -47,7 +47,7 @@ if (!empty($_POST)) {
             redirect(get_current_url());
         }
 
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 

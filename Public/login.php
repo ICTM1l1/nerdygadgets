@@ -14,20 +14,20 @@ $email = getFormDataPost('email');
 if (!empty($_POST)) {
     $valuesValid = true;
     if (empty($password) || empty($email)) {
-        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet alle verplichte velden met een * zijn ingevuld.');
         $valuesValid = false;
     }
 
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
     if ($valuesValid && (empty($account) || !password_verify($password, $account_password))) {
-        add_user_error('Email of wachtwoord fout.');
+        addUserError('Email of wachtwoord fout.');
         $valuesValid = false;
     }
 
     $accountIsPermittedToLogon = $account['IsPermittedToLogon'] ?? 0;
     if ($valuesValid && $accountIsPermittedToLogon === 0) {
-        add_user_error('Je account is geblokkeerd.');
+        addUserError('Je account is geblokkeerd.');
         $valuesValid = false;
     }
 
@@ -40,7 +40,7 @@ if (!empty($_POST)) {
             redirect(get_url('account.php'));
         }
 
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 ?>

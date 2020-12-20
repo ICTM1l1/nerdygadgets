@@ -18,7 +18,7 @@ $amountContactRequests = count($contactRequests);
 if (isset($_POST['delete_contact_request'])) {
     $contact_request_id = getFormDataPost('contact_request_id');
     if (empty($contact_request_id)) {
-        add_user_error('Contact aanvraag kon niet worden verwijderd.');
+        addUserError('Contact aanvraag kon niet worden verwijderd.');
         redirect('contact-requests.php');
     }
 

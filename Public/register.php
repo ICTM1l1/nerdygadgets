@@ -15,33 +15,33 @@ $phoneNumber = getFormDataPost('phonenumber');
 if (!empty($_POST)) {
     $valuesValid = true;
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
-        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet alle verplichte velden met een * zijn ingevuld.');
         $valuesValid = false;
     }
 
     if ($valuesValid && !($password === $password2)) {
-        add_user_error('Wachtwoorden komen niet overeen.');
+        addUserError('Wachtwoorden komen niet overeen.');
         $valuesValid = false;
     }
 
     if ($valuesValid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldige email opgegeven.');
+        addUserError('Ongeldige email opgegeven.');
         $valuesValid = false;
     }
 
     if ($valuesValid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
-        add_user_error('Ongeldige postcode opgegeven.');
+        addUserError('Ongeldige postcode opgegeven.');
         $valuesValid = false;
     }
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
-        add_user_error('Email wordt al gebruikt.');
+        addUserError('Email wordt al gebruikt.');
         $valuesValid = false;
     }
 
     if(score_password($password, 8) < 75) {
-        add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
+        addUserError('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
 
@@ -60,7 +60,7 @@ if (!empty($_POST)) {
             redirect(get_url('account.php'));
         }
 
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 ?>

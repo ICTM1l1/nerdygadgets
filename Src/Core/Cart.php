@@ -75,7 +75,7 @@ class Cart {
         $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
         $count = $this->items[$id] ?? 1;
         if (($current_quantity - $count - 1) < 0) {
-            add_user_error('Product ' . ($product['StockItemName'] ?? '') . ' is na verhoging van het aantal niet meer op voorraad');
+            addUserError('Product ' . ($product['StockItemName'] ?? '') . ' is na verhoging van het aantal niet meer op voorraad');
             $this->updated = false;
             return;
         }
@@ -150,7 +150,7 @@ class Cart {
         $product = getProduct($id);
         $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
         if (($current_quantity - $count) < 0) {
-            add_user_error('Product ' . ($product['StockItemName'] ?? '') . ' is niet op voorraad');
+            addUserError('Product ' . ($product['StockItemName'] ?? '') . ' is niet op voorraad');
             $this->updated = false;
             return;
         }
