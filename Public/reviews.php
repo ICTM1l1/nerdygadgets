@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
@@ -18,19 +18,19 @@ if (!empty($productCustomFields)) {
 }
 
 $productInCart = $cart->getItemCount($product_id) > 0;
-if ($id = get_form_data_post("Add_Cart", NULL)) {
+if ($id = get_form_data_post('Add_Cart', NULL)) {
     $cart->addItem($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post("Min_Cart", NULL)) {
+elseif ($id = get_form_data_post('Min_Cart', NULL)) {
     $cart->decreaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post("Increase_Cart", NULL)) {
+elseif ($id = get_form_data_post('Increase_Cart', NULL)) {
     $cart->increaseItemCount($id);
     redirect(get_current_url());
 }
-elseif ($id = get_form_data_post("Del_Cart", NULL)) {
+elseif ($id = get_form_data_post('Del_Cart', NULL)) {
     $cart->removeItem($id);
     redirect(get_current_url());
 }
@@ -83,14 +83,13 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                          style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
                 <?php endif; ?>
 
-                <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>
+                <h1 class="StockItemID">Artikelnummer: <?= $product['StockItemID'] ?? 0 ?></h1>
                 <h2 class="StockItemNameViewSize StockItemName">
-                    <a class="text-white" href="<?= get_url("view.php?id=" . $product["StockItemID"])?>"><?= $product['StockItemName'] ?? '' ?></a>
+                    <a class="text-white" href="<?= get_url('view.php?id=' . $product['StockItemID'])?>"><?= $product['StockItemName'] ?? '' ?></a>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product["StockItemID"] ?? 0));
+                $averageScore = round(getReviewAverageByID($product['StockItemID'] ?? 0));
                 if($averageScore > 0) : ?>
-                    <!--<h3 style="color: goldenrod;"><?=round(getReviewAverageByID($product["StockItemID"])) ?: "Geen reviews."?></h3>-->
                     <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
                     <h3 class="text-white">Geen reviews.</h3>
@@ -125,7 +124,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 
                                         <button class="btn btn-outline-danger float-right w-75 mt-2"
                                                 type="submit" name="Del_Cart" value="<?= $product_id ?>"
-                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?">
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? '') ?>` wilt verwijderen?">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php else : ?>
@@ -166,19 +165,19 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                             <div class="row d-flex justify-content-center">
                                 <?php foreach($reviews as $review):?>
                                     <div class="col-sm-3 border border-white ml-2 mr-2 mt-3">
-                                        <h4><?= getCustomerByPeople($review["PersonID"] ?? '' )["PreferredName"] ?? '' ?></h4>
+                                        <h4><?= getCustomerByPeople($review['PersonID'] ?? '' )['PreferredName'] ?? '' ?></h4>
                                         <div class="row">
                                             <div class="col-sm-6" style="color: goldenrod">
-                                                <?= getRatingStars((int)$review["Score"])?>
+                                                <?= getRatingStars((int)$review['Score'])?>
                                             </div>
                                             <div class="col-sm-6 text-right">
-                                                <?= dateTimeFormatShort($review["ReviewDate"])?>
+                                                <?= dateTimeFormatShort($review['ReviewDate'])?>
                                             </div>
                                         </div>
                                         <?php if (isset($review['Review'])) : ?>
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <p><?= $review["Review"] ?></p>
+                                                    <p><?= $review['Review'] ?></p>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
@@ -197,5 +196,5 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
