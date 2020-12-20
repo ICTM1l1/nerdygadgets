@@ -55,11 +55,11 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                         <div class="col-sm-3 pl-0 pb-2">
                             <?php if (isset($image['ImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 220px; height: 220px; background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                                     style="width: 220px; height: 220px; background-image: url('<?= getAssetUrl('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
                                              background-size: 190px; background-repeat: no-repeat; background-position: center;"></div>
                             <?php elseif (isset($productFromDb['BackupImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 220px; height: 220px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
+                                     style="width: 220px; height: 220px; background-image: url('<?= getAssetUrl('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
                                              background-size: cover;"></div>
                             <?php endif; ?>
                         </div>
@@ -162,11 +162,11 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                     <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
                         <?php if (!empty($imagePath)) : ?>
                             <div class="ImgFrame"
-                                style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
+                                style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $imagePath) ?>');
                                         background-size: 175px; width: 170px; height: 170px; background-repeat: no-repeat;  margin-bottom: 20%; margin-top: 10%; background-position: center;"></div>
                         <?php elseif (!empty($backupImagePath)) : ?>
                             <div class="ImgFrame"
-                                style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
+                                style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $backupImagePath) ?>');
                                         background-size: cover; width: 170px; height: 170px; margin-top: 10%; "></div>
                         <?php endif; ?>
                     <?php endif; ?>

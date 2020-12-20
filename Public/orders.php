@@ -128,11 +128,11 @@ $amountOrders = count($orders);
                                                                                     <div class="col-sm-2">
                                                                                         <?php if (isset($orderLine['ImagePath'])) : ?>
                                                                                             <div class="ImgFrame"
-                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
+                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= getAssetUrl('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
                                                                                                          background-size: 75px; background-repeat: no-repeat; background-position: center;"></div>
                                                                                         <?php elseif (isset($orderLine['BackupImagePath'])) : ?>
                                                                                             <div class="ImgFrame"
-                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
+                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= getAssetUrl('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
                                                                                                          background-size: cover;"></div>
                                                                                         <?php else : ?>
                                                                                             <div class="ImgFrame" style="width: 100px; height: 100px;"></div>

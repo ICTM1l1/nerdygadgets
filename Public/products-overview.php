@@ -34,11 +34,11 @@ if (empty($price) || empty($cart->getItems())) {
                         <div class="col-sm-3 pl-0">
                             <?php if (isset($image['ImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                                     style="width: 150px; height: 150px; background-image: url('<?= getAssetUrl('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
                                              background-size: 125px; background-repeat: no-repeat; background-position: center;"></div>
                             <?php elseif (isset($productFromDb['BackupImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
+                                     style="width: 150px; height: 150px; background-image: url('<?= getAssetUrl('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
                                              background-size: cover;"></div>
                             <?php endif; ?>
                         </div>

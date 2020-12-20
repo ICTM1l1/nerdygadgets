@@ -25,7 +25,7 @@ $products = getRandomProducts(10);
                                 </ul>
                         </div>
 
-                        <div style="background-image: url('<?= get_asset_url('StockItemIMG/' . $images[0]['ImagePath'] ?? '') ?>'); background-size: 100% 100%; width: 477px; height: 477px; background-repeat: no-repeat; margin-left: 55%; margin-top: -30%;"></div>
+                        <div style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $images[0]['ImagePath'] ?? '') ?>'); background-size: 100% 100%; width: 477px; height: 477px; background-repeat: no-repeat; margin-left: 55%; margin-top: -30%;"></div>
                     </a>
                 <?php endif; ?>
             <?php endforeach; ?>

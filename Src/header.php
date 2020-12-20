@@ -37,31 +37,31 @@ $countedCategories = count($categories);
         form-action 'self' https://www.mollie.com/;
         frame-src 'self' https://www.google.com https://www.youtube.com/;
     ">
-    <link rel="manifest" href="<?= get_asset_url('/Favicon/manifest.json') ?>">
+    <link rel="manifest" href="<?= getAssetUrl('/Favicon/manifest.json') ?>">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="<?= get_asset_url('Favicon/ms-icon-144x144.png') ?>">
+    <meta name="msapplication-TileImage" content="<?= getAssetUrl('Favicon/ms-icon-144x144.png') ?>">
     <meta name="theme-color" content="#ffffff">
 
     <title>NerdyGadgets</title>
 
-    <link rel="stylesheet" href="<?= get_asset_url('CSS/Style.css') ?>" type="text/css">
-    <link rel="stylesheet" href="<?= get_asset_url('CSS/bootstrap.min.css') ?>" type="text/css">
-    <link rel="stylesheet" href="<?= get_asset_url('CSS/fonts.css') ?>" type="text/css">
-    <link rel="stylesheet" href="<?= get_asset_url('vendor/password-strength-meter/password.min.css') ?>" type="text/css">
+    <link rel="stylesheet" href="<?= getAssetUrl('CSS/Style.css') ?>" type="text/css">
+    <link rel="stylesheet" href="<?= getAssetUrl('CSS/bootstrap.min.css') ?>" type="text/css">
+    <link rel="stylesheet" href="<?= getAssetUrl('CSS/fonts.css') ?>" type="text/css">
+    <link rel="stylesheet" href="<?= getAssetUrl('vendor/password-strength-meter/password.min.css') ?>" type="text/css">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="<?= get_asset_url('Favicon/apple-icon-57x57.png') ?>">
-    <link rel="apple-touch-icon" sizes="60x60" href="<?= get_asset_url('Favicon/apple-icon-60x60.png') ?>">
-    <link rel="apple-touch-icon" sizes="72x72" href="<?= get_asset_url('Favicon/apple-icon-72x72.png') ?>">
-    <link rel="apple-touch-icon" sizes="76x76" href="<?= get_asset_url('Favicon/apple-icon-76x76.png') ?>">
-    <link rel="apple-touch-icon" sizes="114x114" href="<?= get_asset_url('Favicon/apple-icon-114x114.png') ?>">
-    <link rel="apple-touch-icon" sizes="120x120" href="<?= get_asset_url('Favicon/apple-icon-120x120.png') ?>">
-    <link rel="apple-touch-icon" sizes="144x144" href="<?= get_asset_url('Favicon/apple-icon-144x144.png') ?>">
-    <link rel="apple-touch-icon" sizes="152x152" href="<?= get_asset_url('Favicon/apple-icon-152x152.png') ?>">
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= get_asset_url('Favicon/apple-icon-180x180.png') ?>">
-    <link rel="icon" type="image/png" sizes="192x192" href="<?= get_asset_url('Favicon/android-icon-192x192.png') ?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= get_asset_url('Favicon/favicon-32x32.png') ?>">
-    <link rel="icon" type="image/png" sizes="96x96" href="<?= get_asset_url('Favicon/favicon-96x96.png') ?>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= get_asset_url('Favicon/favicon-16x16.png') ?>">
+    <link rel="apple-touch-icon" sizes="57x57" href="<?= getAssetUrl('Favicon/apple-icon-57x57.png') ?>">
+    <link rel="apple-touch-icon" sizes="60x60" href="<?= getAssetUrl('Favicon/apple-icon-60x60.png') ?>">
+    <link rel="apple-touch-icon" sizes="72x72" href="<?= getAssetUrl('Favicon/apple-icon-72x72.png') ?>">
+    <link rel="apple-touch-icon" sizes="76x76" href="<?= getAssetUrl('Favicon/apple-icon-76x76.png') ?>">
+    <link rel="apple-touch-icon" sizes="114x114" href="<?= getAssetUrl('Favicon/apple-icon-114x114.png') ?>">
+    <link rel="apple-touch-icon" sizes="120x120" href="<?= getAssetUrl('Favicon/apple-icon-120x120.png') ?>">
+    <link rel="apple-touch-icon" sizes="144x144" href="<?= getAssetUrl('Favicon/apple-icon-144x144.png') ?>">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?= getAssetUrl('Favicon/apple-icon-152x152.png') ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= getAssetUrl('Favicon/apple-icon-180x180.png') ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?= getAssetUrl('Favicon/android-icon-192x192.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= getAssetUrl('Favicon/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?= getAssetUrl('Favicon/favicon-96x96.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= getAssetUrl('Favicon/favicon-16x16.png') ?>">
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>

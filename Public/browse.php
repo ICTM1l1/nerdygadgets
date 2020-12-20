@@ -153,10 +153,10 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= get_asset_url('StockItemIMG/' . $product['ImagePath'] ?? '') ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
+                                 style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $product['ImagePath'] ?? '') ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
                         <?php elseif (isset($product['BackupImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
+                                 style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
                         <?php endif; ?>
 
                         <div id="StockItemFrameRight">

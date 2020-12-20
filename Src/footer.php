@@ -10,12 +10,12 @@
 
 </body>
 
-<script src="<?= get_asset_url('JS/fontawesome.js') ?>" crossorigin="anonymous"></script>
-<script src="<?= get_asset_url('JS/jquery.min.js') ?>"></script>
-<script src="<?= get_asset_url('JS/popper.min.js') ?>"></script>
-<script src="<?= get_asset_url('JS/jquery-3.4.1.js') ?>"></script>
-<script src="<?= get_asset_url('JS/bootstrap.min.js') ?>"></script>
-<script src="<?= get_asset_url('JS/Resizer.js') ?>"></script>
-<script src="<?= get_asset_url('vendor/password-strength-meter/password.min.js') ?>"></script>
-<script src="<?= get_asset_url('JS/functions.js') ?>"></script>
+<script src="<?= getAssetUrl('JS/fontawesome.js') ?>" crossorigin="anonymous"></script>
+<script src="<?= getAssetUrl('JS/jquery.min.js') ?>"></script>
+<script src="<?= getAssetUrl('JS/popper.min.js') ?>"></script>
+<script src="<?= getAssetUrl('JS/jquery-3.4.1.js') ?>"></script>
+<script src="<?= getAssetUrl('JS/bootstrap.min.js') ?>"></script>
+<script src="<?= getAssetUrl('JS/Resizer.js') ?>"></script>
+<script src="<?= getAssetUrl('vendor/password-strength-meter/password.min.js') ?>"></script>
+<script src="<?= getAssetUrl('JS/functions.js') ?>"></script>
 </html>

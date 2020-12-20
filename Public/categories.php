@@ -8,7 +8,7 @@ $categories = getCategories();
         <?php foreach($categories as $key => $category) : $key++; ?>
             <a href="<?= get_url('browse.php?category_id=' . $category['StockGroupID'] ?? 0) ?>">
                 <div id="StockGroup<?= $key ?>"
-                     style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $category['ImagePath'] ?? '') ?>')"
+                     style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $category['ImagePath'] ?? '') ?>')"
                      class="StockGroups">
                     <h1><?= $category['StockGroupName'] ?? '' ?></h1>
                 </div>

@@ -138,7 +138,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 <?php if (!empty($images)) : ?>
                     <?php if (count($images) === 1) : ?>
                         <div id="ImageFrame"
-                             style="background-image: url('<?= get_asset_url('StockItemIMG/' . $images[0]['ImagePath'] ?? '') ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
+                             style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $images[0]['ImagePath'] ?? '') ?>'); background-size: 300px; background-repeat: no-repeat; background-position: center;"></div>
                     <?php else : ?>
                         <div id="ImageFrame">
                             <div id="ImageCarousel" class="carousel slide" data-interval="false">
@@ -154,7 +154,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <div class="carousel-inner">
                                     <?php foreach ($images as $key => $image) : $key++; ?>
                                         <div class="carousel-item <?= ($key === 1) ? 'active' : '' ?>">
-                                            <img alt="Product foto" src="<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>">
+                                            <img alt="Product foto" src="<?= getAssetUrl('StockItemIMG/' . $image['ImagePath'] ?? '') ?>">
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -171,7 +171,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <?php endif; ?>
                 <?php else : ?>
                     <div id="ImageFrame"
-                         style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
+                         style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
                 <?php endif; ?>
 
                 <h1 class="StockItemID">Artikelnummer: <?= $product['StockItemID'] ?? 0 ?></h1>
@@ -292,11 +292,11 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
                     <?php if (!empty($imagePath)) : ?>
                         <div class="ImgFrame"
-                             style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
+                             style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $imagePath) ?>');
                                      background-size: 175px; width: 159px; height: 159px; background-repeat: no-repeat;  margin-bottom: 20%; background-position: center;"></div>
                     <?php elseif (!empty($backupImagePath)) : ?>
                         <div class="ImgFrame"
-                             style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
+                             style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $backupImagePath) ?>');
                                      background-size: cover; width: 159px; height: 159px; "></div>
                     <?php endif; ?>
                 </a>

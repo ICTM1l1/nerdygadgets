@@ -183,7 +183,7 @@ function getBaseUrl() {
  * @return string
  *   The asset url.
  */
-function get_asset_url(string $asset_url) {
+function getAssetUrl(string $asset_url) {
     $base_url = getBaseUrl();
 
     return "{$base_url}/Assets/{$asset_url}";
