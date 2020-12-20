@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 csrf_validate(get_current_url());
 
@@ -148,7 +148,7 @@ if (isset($_POST['delete_review'])) {
                                                                             <input type="hidden" name="review_id" value="<?= $productReview['ReviewID'] ?? 0 ?>">
 
                                                                             <button type="submit" class="btn btn-outline-danger"
-                                                                                    data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review['ReviewID'])['FullName'] ?? "" ?> wilt verwijderen?"
+                                                                                    data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review['ReviewID'])['FullName'] ?? '' ?> wilt verwijderen?"
                                                                                     name="delete_review">
                                                                                 <i class="fas fa-trash"></i>
                                                                             </button>
@@ -174,5 +174,5 @@ if (isset($_POST['delete_review'])) {
     </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
