@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(get_current_url());
 
 $text = get_form_data_post('review-text');
 $score = (int)get_form_data_post('score-value', '0');

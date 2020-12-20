@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(get_current_url());
 
 $loggedIn = (bool) session_get('LoggedIn', false);
 if ($loggedIn) {

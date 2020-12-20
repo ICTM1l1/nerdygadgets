@@ -54,7 +54,7 @@ function csrfGetToken(){
  * @throws Exception
  *   Thrown when there is no adequate randomness source for private key.
  */
-function csrf_validate($destination = ''){
+function csrfValidate($destination = ''){
     $csrf_token = csrfGetToken();
     session_key_unset('ptoken');
     session_key_unset('pexpiry');
