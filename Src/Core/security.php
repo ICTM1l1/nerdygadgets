@@ -25,7 +25,7 @@ function preventXSS(string $value) {
  *   Whether the recaptcha challenge was successful or not.
  */
 function validateRecaptcha() {
-    $secretKey = config_get('recaptcha_private_key');
+    $secretKey = configGet('recaptcha_private_key');
     $captcha = getFormDataPost('g-recaptcha-response');
 
     $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secretKey) .  '&response=' . urlencode($captcha);

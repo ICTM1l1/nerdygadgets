@@ -71,7 +71,7 @@ if (!empty($_POST)) {
                         </div>
                         <div class="form-group">
                             <button class="g-recaptcha btn btn-success my-4" type="submit" name="login"
-                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
+                                    data-sitekey="<?= configGet('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Inloggen
                             </button>
                         </div>

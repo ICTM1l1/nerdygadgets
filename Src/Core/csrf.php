@@ -36,7 +36,7 @@ function csrfGetToken(){
     }
 
     sessionSave('ptoken', csrfGetTokenPrivate(), $overwrite);
-    sessionSave('pexpiry', time() + config_get('csrf_token_lifetime', 300), $overwrite);
+    sessionSave('pexpiry', time() + configGet('csrf_token_lifetime', 300), $overwrite);
 
     return hash_hmac('sha256', $_SERVER['SCRIPT_NAME'], $_SESSION['ptoken']) ?? '';
 }

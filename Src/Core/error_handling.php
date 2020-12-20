@@ -1,6 +1,6 @@
 <?php
 
-$debug = (bool) config_get('debug', false);
+$debug = (bool) configGet('debug', false);
 
 ini_set('display_errors', (int) $debug);
 ini_set('display_startup_errors', (int) $debug);
@@ -28,7 +28,7 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
         ob_end_clean();
     }
 
-    $debug = (bool) config_get('debug', false);
+    $debug = (bool) configGet('debug', false);
     if (!$debug) {
         require_once __DIR__ . '/../../Public/Errors/500.php';
         die();
@@ -55,7 +55,7 @@ function errorException($exception) {
         ob_end_clean();
     }
 
-    $debug = (bool) config_get('debug', false);
+    $debug = (bool) configGet('debug', false);
     if (!$debug) {
         require_once __DIR__ . '/../../Public/Errors/500.php';
         die();

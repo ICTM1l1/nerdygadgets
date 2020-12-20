@@ -158,7 +158,7 @@ function sessionKeyUnset(string $key) {
  * @return mixed|string
  *   The data from the config data.
  */
-function config_get(string $key, $default = '') {
+function configGet(string $key, $default = '') {
     global $config;
 
     return $config[$key] ?? $default;
@@ -171,7 +171,7 @@ function config_get(string $key, $default = '') {
  *   The base url.
  */
 function get_base_url() {
-    return config_get('base_url');
+    return configGet('base_url');
 }
 
 /**

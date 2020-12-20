@@ -106,7 +106,7 @@ include __DIR__ . '/../Src/Html/alert.php';
 
                         <div class="form-group">
                             <button class="g-recaptcha btn btn-success float-right my-4" type="submit" name="contact"
-                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
+                                    data-sitekey="<?= configGet('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Indienen
                             </button>
                         </div>

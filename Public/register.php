@@ -129,7 +129,7 @@ if (!empty($_POST)) {
                             </a>
 
                             <button class="g-recaptcha btn btn-success float-right my-4" id="registerSubmit" type="submit" name="register"
-                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
+                                    data-sitekey="<?= configGet('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Registreren
                             </button>
                         </div>

@@ -20,7 +20,7 @@ sessionKeyUnset('customer_id');
 sessionKeyUnset('paymentId');
 
 if ($orderSuccessful) {
-    $connection = getDatabaseConnection(config_get('database_user_create_or_update'), config_get('database_password_create_or_update'));
+    $connection = getDatabaseConnection(configGet('database_user_create_or_update'), configGet('database_password_create_or_update'));
     beginTransaction($connection);
 
     try {
