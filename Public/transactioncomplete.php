@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 $cart = get_cart();
 $price = $cart->getTotalPrice();
@@ -35,8 +35,8 @@ if ($orderSuccessful) {
         $orderId = createOrder($customerId, $currentDate, $deliveryDate, $connection);
 
         foreach ($products as $product) {
-            $productId = (int) ($product["id"] ?? 0);
-            $productAmount = (int) ($product["amount"] ?? 0);
+            $productId = (int) ($product['id'] ?? 0);
+            $productAmount = (int) ($product['amount'] ?? 0);
             $productFromDB = getProduct($productId);
 
             createOrderLine($orderId, $productFromDB, $productAmount, $currentDate, $connection);
@@ -108,5 +108,5 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
