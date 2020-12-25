@@ -10,28 +10,15 @@
  * @return string
  *   String containing character repetitions.*/
 function checkRepetition(int $rep, string $password){
-    $result = '';
-    //$repeated = false;
-    $l = strlen($password);
+    $split = str_split($password, $rep);
+    $accumulator = array();
 
-    for($i = 0; $i < $l; $i++){
-        $repeated = true;
-        $j = 0;
-        for(; $j < $rep && ($j + $i + $rep) < $l; $j++){
-            $repeated = $repeated && ($password[$j + $i] === $password[$j + $i + $rep]);
-        }
-        if($j < $rep){
-            $repeated = false;
-        }
-        if($repeated){
-            $i += $rep - 1;
-            $repeated = false;
-        }
-        else {
-            $result .= $password[$i];
+    foreach($split as $s){
+        if(end($accumulator) !== $s){
+            $accumulator[] = $s;
         }
     }
-    return $result;
+    return implode("", $accumulator);
 }
 
 /**
