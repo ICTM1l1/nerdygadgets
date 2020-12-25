@@ -78,14 +78,14 @@ function getOrderLinesByOrder(int $order_id) {
  *   The id of the order.
  */
 function createOrder(int $customerId, string $currentDate, string $deliveryDate, PDO $connection = null) {
-    return insert("orders", [
-        "CustomerId" => $customerId,
-        "SalespersonPersonID" => "2",
-        "ContactPersonID" => "3032",
-        "OrderDate" => $currentDate,
-        "ExpectedDeliveryDate" => $deliveryDate,
-        "IsUndersupplyBackordered" => 0,
-        "LastEditedBy" => 7
+    return insert('orders', [
+        'CustomerId' => $customerId,
+        'SalespersonPersonID' => '2',
+        'ContactPersonID' => '3032',
+        'OrderDate' => $currentDate,
+        'ExpectedDeliveryDate' => $deliveryDate,
+        'IsUndersupplyBackordered' => 0,
+        'LastEditedBy' => 7
     ], $connection);
 }
 
@@ -104,24 +104,24 @@ function createOrder(int $customerId, string $currentDate, string $deliveryDate,
  *   The connection.
  */
 function createOrderLine(int $orderId, array $product, int $productAmount, string $currentDate, PDO $connection = null) {
-    $currentQuantity = (int) ($product["QuantityOnHandRaw"] ?? 0);
+    $currentQuantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
 
-    insert("orderlines", [
-        "OrderID" => $orderId,
-        "StockItemID" => $product['StockItemID'] ?? null,
-        "Description" => $product["StockItemName"] ?? null,
-        "PackageTypeID" => '7',
-        "Quantity" => $productAmount,
-        "UnitPrice" => $product["SellPrice"] ?? null,
-        "TaxRate" => '15',
-        "PickedQuantity" => $productAmount,
-        "PickingCompletedWhen" => $currentDate,
-        "LastEditedBy" => "4"
+    insert('orderlines', [
+        'OrderID' => $orderId,
+        'StockItemID' => $product['StockItemID'] ?? null,
+        'Description' => $product['StockItemName'] ?? null,
+        'PackageTypeID' => '7',
+        'Quantity' => $productAmount,
+        'UnitPrice' => $product['SellPrice'] ?? null,
+        'TaxRate' => '15',
+        'PickedQuantity' => $productAmount,
+        'PickingCompletedWhen' => $currentDate,
+        'LastEditedBy' => '4'
     ], $connection);
 
-    update("stockitemholdings", [
-        "QuantityOnHand" => $currentQuantity - $productAmount,
+    update('stockitemholdings', [
+        'QuantityOnHand' => $currentQuantity - $productAmount,
     ], [
-        "StockItemId" => $product['StockItemID'] ?? null,
+        'StockItemId' => $product['StockItemID'] ?? null,
     ], $connection);
 }

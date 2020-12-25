@@ -1,23 +1,23 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
-$cart = get_cart();
+$cart = getCart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
-if($id = get_form_data_post("Add_Product", NULL)){
+if($id = getFormDataPost('Add_Product', NULL)){
     $cart->increaseItemCount($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
-elseif($id = get_form_data_post("Min_Product", NULL)){
+elseif($id = getFormDataPost('Min_Product', NULL)){
     $cart->decreaseItemCount($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
-elseif($id = get_form_data_post("Del_Product", NULL)){
+elseif($id = getFormDataPost('Del_Product', NULL)){
     $cart->removeItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 ?>
 
@@ -41,13 +41,13 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
 
                 if ($amountCartItems > 0) :
                     foreach ($cartItems as $cartItem) :
-                        $productId = (int) ($cartItem["id"] ?? 0);
+                        $productId = (int) ($cartItem['id'] ?? 0);
                         $productFromDb = getProduct($productId);
                         $image = getProductImage($productId);
 
                         $quantityOnHandRaw = (int) ($productFromDb['QuantityOnHandRaw'] ?? 0);
                         $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
-                        $productQuantity = (int) ($cartItem["amount"] ?? 0);
+                        $productQuantity = (int) ($cartItem['amount'] ?? 0);
                         $productPriceTotal = $pricePerPiece * $productQuantity;
                         $priceTotal += $productPriceTotal;
                 ?>
@@ -55,18 +55,18 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                         <div class="col-sm-3 pl-0 pb-2">
                             <?php if (isset($image['ImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 220px; height: 220px; background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                                     style="width: 220px; height: 220px; background-image: url('<?= getAssetUrl('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
                                              background-size: 190px; background-repeat: no-repeat; background-position: center;"></div>
                             <?php elseif (isset($productFromDb['BackupImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 220px; height: 220px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
+                                     style="width: 220px; height: 220px; background-image: url('<?= getAssetUrl('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
                                              background-size: cover;"></div>
                             <?php endif; ?>
                         </div>
                         <div class="col-sm-9 pt-2">
                             <div class="row">
                                 <div class="col-sm-9">
-                                    <a class="ListItem text-white" href='<?= get_url('view.php?id=' . $productId) ?>'>
+                                    <a class="ListItem text-white" href='<?= getUrl('view.php?id=' . $productId) ?>'>
                                         <h5>#<?= $productId ?></h5>
                                         <h4><?= $productFromDb['StockItemName'] ?? '' ?></h4>
                                     </a>
@@ -83,10 +83,10 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                                             <p class="h4 font-weight-bold float-right"><?= $cartItem["amount"] ?? 0 ?>x</p>
                                         </div>
 
-                                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
 
                                         <button class="btn btn-outline-danger float-right w-100"
-                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? "") ?>` wilt verwijderen?"
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($productFromDb['StockItemName'] ?? '') ?>` wilt verwijderen?"
                                                 type="submit" name="Del_Product" value="<?= $productId ?>">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -104,7 +104,7 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                                     <?php endif; ?>
                                 </div>
                                 <div class="col-sm-3 mt-2 text-right">
-                                    <h4>&euro; <?= price_format($productPriceTotal) ?></h4>
+                                    <h4>&euro; <?= priceFormat($productPriceTotal) ?></h4>
                                     <h6>Inclusief BTW</h6>
                                 </div>
                             </div>
@@ -121,10 +121,10 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
         <div class="row mt-5">
             <div class="col-sm-12">
                 <p class="h4 pt-1 float-left">
-                    Totale kosten: &euro; <?= price_format($priceTotal) ?>
+                    Totale kosten: &euro; <?= priceFormat($priceTotal) ?>
                 </p>
 
-                <a class="btn btn-success float-right" href="<?= get_url('products-overview.php') ?>">
+                <a class="btn btn-success float-right" href="<?= getUrl('products-overview.php') ?>">
                     Koop producten
                 </a>
             </div>
@@ -159,14 +159,14 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
                         $imagePath = $relatedImage['ImagePath'] ?? '';
                         $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
                     ?>
-                    <a href="<?= get_url("view.php?id={$relatedProductIds[$key]}") ?>">
+                    <a href="<?= getUrl("view.php?id={$relatedProductIds[$key]}") ?>">
                         <?php if (!empty($imagePath)) : ?>
                             <div class="ImgFrame"
-                                style="background-image: url('<?= get_asset_url('StockItemIMG/' . $imagePath) ?>');
+                                style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $imagePath) ?>');
                                         background-size: 175px; width: 170px; height: 170px; background-repeat: no-repeat;  margin-bottom: 20%; margin-top: 10%; background-position: center;"></div>
                         <?php elseif (!empty($backupImagePath)) : ?>
                             <div class="ImgFrame"
-                                style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $backupImagePath) ?>');
+                                style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $backupImagePath) ?>');
                                         background-size: cover; width: 170px; height: 170px; margin-top: 10%; "></div>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -180,5 +180,5 @@ elseif($id = get_form_data_post("Del_Product", NULL)){
 
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

@@ -1,14 +1,14 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 if (!authorizeAdmin()) {
     redirect('Config');
 }
 
 $contactRequests = getContactRequests();
-$input_date = get_form_data_get('date');
+$input_date = getFormDataGet('date');
 if (!empty($input_date)) {
     $contactRequests = getContactRequestsByDate($input_date);
 }
@@ -16,14 +16,14 @@ if (!empty($input_date)) {
 $amountContactRequests = count($contactRequests);
 
 if (isset($_POST['delete_contact_request'])) {
-    $contact_request_id = get_form_data_post('contact_request_id');
+    $contact_request_id = getFormDataPost('contact_request_id');
     if (empty($contact_request_id)) {
-        add_user_error('Contact aanvraag kon niet worden verwijderd.');
+        addUserError('Contact aanvraag kon niet worden verwijderd.');
         redirect('contact-requests.php');
     }
 
     removeContactRequest($contact_request_id);
-    add_user_message('Contact aanvraag is succesvol verwijderd.');
+    addUserMessage('Contact aanvraag is succesvol verwijderd.');
     redirect('contact-requests.php');
 }
 ?>
@@ -46,7 +46,7 @@ if (isset($_POST['delete_contact_request'])) {
                                             <?= $amountContactRequests ?> contact aanvragen
                                         <?php endif; ?>
                                     </div>
-                                    <form class="form-inline float-right" method="get" action="<?= get_url('contact-requests.php') ?>">
+                                    <form class="form-inline float-right" method="get" action="<?= getUrl('contact-requests.php') ?>">
                                         <div class="form-group">
                                             <label for="date" class="d-none">Datum</label>
                                             <input type="date" id="date" class="form-control submit-form-on-change" name="date"
@@ -113,7 +113,7 @@ if (isset($_POST['delete_contact_request'])) {
                                                         </div>
                                                         <div class="col-sm-1">
                                                             <form class="text-right" method="post">
-                                                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                                                <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                                                 <input type="hidden" name="contact_request_id"
                                                                        value="<?= $contactRequest['ContactRequestID'] ?? 0 ?>">
 
@@ -170,5 +170,5 @@ if (isset($_POST['delete_contact_request'])) {
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

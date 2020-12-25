@@ -1,47 +1,47 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
-$name = get_form_data_post('name');
-$password = get_form_data_post('password');
-$password2 = get_form_data_post('password2');
-$email = get_form_data_post('email');
-$postalCode = get_form_data_post('postalcode');
-$address = get_form_data_post('address');
-$city = get_form_data_post('city');
-$phoneNumber = get_form_data_post('phonenumber');
+$name = getFormDataPost('name');
+$password = getFormDataPost('password');
+$password2 = getFormDataPost('password2');
+$email = getFormDataPost('email');
+$postalCode = getFormDataPost('postalcode');
+$address = getFormDataPost('address');
+$city = getFormDataPost('city');
+$phoneNumber = getFormDataPost('phonenumber');
 
 if (!empty($_POST)) {
     $valuesValid = true;
     if (empty($name) || empty($password) || empty($password2) || empty($email) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
-        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet alle verplichte velden met een * zijn ingevuld.');
         $valuesValid = false;
     }
 
     if ($valuesValid && !($password === $password2)) {
-        add_user_error('Wachtwoorden komen niet overeen.');
+        addUserError('Wachtwoorden komen niet overeen.');
         $valuesValid = false;
     }
 
     if ($valuesValid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldige email opgegeven.');
+        addUserError('Ongeldige email opgegeven.');
         $valuesValid = false;
     }
 
     if ($valuesValid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
-        add_user_error('Ongeldige postcode opgegeven.');
+        addUserError('Ongeldige postcode opgegeven.');
         $valuesValid = false;
     }
 
     $foundPeople = getPeopleByEmail($email);
     if (!empty($foundPeople)) {
-        add_user_error('Email wordt al gebruikt.');
+        addUserError('Email wordt al gebruikt.');
         $valuesValid = false;
     }
 
-    if(score_password($password, 8) < 75){
-        add_user_error('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
+    if(scorePassword($password, 8) < 75) {
+        addUserError('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
 
@@ -53,14 +53,14 @@ if (!empty($_POST)) {
 
             $account = getPeopleByEmail($email);
 
-            session_save('LoggedIn', true, true);
-            session_save('personID', $account['PersonID'] ?? 0, true);
+            sessionSave('LoggedIn', true, true);
+            sessionSave('personID', $account['PersonID'] ?? 0, true);
 
-            add_user_message('Je bent succesvol ingelogd.');
-            redirect(get_url("account.php"));
+            addUserMessage('Je bent succesvol ingelogd.');
+            redirect(getUrl('account.php'));
         }
 
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 ?>
@@ -70,8 +70,8 @@ if (!empty($_POST)) {
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('register.php') ?>" method="post">
-                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                    <form class="text-center w-100" id="recaptcha-form" action="<?= getUrl('register.php') ?>" method="post">
+                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
@@ -124,12 +124,12 @@ if (!empty($_POST)) {
                         </div>
 
                         <div class="form-group">
-                            <a href="<?= get_url('login.php') ?>" class="btn btn-danger my-4 float-left">
+                            <a href="<?= getUrl('login.php') ?>" class="btn btn-danger my-4 float-left">
                                 Terug
                             </a>
 
                             <button class="g-recaptcha btn btn-success float-right my-4" id="registerSubmit" type="submit" name="register"
-                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
+                                    data-sitekey="<?= configGet('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Registreren
                             </button>
                         </div>
@@ -140,5 +140,5 @@ if (!empty($_POST)) {
     </div>
 
 <?php
-require_once __DIR__."/../Src/footer.php";
+require_once __DIR__.'/../Src/footer.php';
 ?>

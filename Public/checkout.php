@@ -1,35 +1,35 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
-$cart = get_cart();
+$cart = getCart();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
+    redirect(getUrl('shoppingcart.php'));
 }
 
-$loggedIn = (bool) session_get('LoggedIn', false);
-$personID = session_get('personID', 0);
+$loggedIn = (bool) sessionGet('LoggedIn', false);
+$personID = sessionGet('personID', 0);
 $account = getCustomerByPeople($personID);
 
-$name = get_form_data_post('name', $account['PrivateCustomerName'] ?? '');
-$postalCode = get_form_data_post('postalcode', $account['DeliveryPostalCode'] ?? '');
-$address = get_form_data_post('address', $account['DeliveryAddressLine1'] ?? '');
-$city = get_form_data_post('city', $account['CityName'] ?? '');
-$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'] ?? '');
+$name = getFormDataPost('name', $account['PrivateCustomerName'] ?? '');
+$postalCode = getFormDataPost('postalcode', $account['DeliveryPostalCode'] ?? '');
+$address = getFormDataPost('address', $account['DeliveryAddressLine1'] ?? '');
+$city = getFormDataPost('city', $account['CityName'] ?? '');
+$phoneNumber = getFormDataPost('phonenumber', $account['PhoneNumber'] ?? '');
 
 if (isset($_POST['checkout'])) {
     $values_valid = true;
     if (empty($name) || empty($postalCode) || empty($address) || empty($city) || empty($phoneNumber)) {
         $values_valid = false;
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet all verplichte velden met een * zijn ingevuld.');
     }
 
     if ($values_valid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
-        add_user_error('Ongeldige postcode opgegeven.');
+        addUserError('Ongeldige postcode opgegeven.');
         $values_valid = false;
     }
 
@@ -40,7 +40,7 @@ if (isset($_POST['checkout'])) {
         }
 
         if (!empty($customer_id)) {
-            session_save('customer_id', $customer_id, true);
+            sessionSave('customer_id', $customer_id, true);
             redirect('payment.php');
         }
     }
@@ -55,8 +55,8 @@ if (isset($_POST['checkout'])) {
 
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" action="<?= get_url('checkout.php') ?>" method="post">
-                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                    <form class="text-center w-100" action="<?= getUrl('checkout.php') ?>" method="post">
+                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                         <div class="form-group form-row">
                             <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" class="form-control col-sm-9"
@@ -88,7 +88,7 @@ if (isset($_POST['checkout'])) {
                         </div>
 
                         <div class="form-group">
-                            <a href="<?= get_url('products-overview.php') ?>" class="btn btn-danger float-left my-4" type="button">
+                            <a href="<?= getUrl('products-overview.php') ?>" class="btn btn-danger float-left my-4" type="button">
                                 Terug naar overzicht
                             </a>
                             <button class="btn btn-success float-right my-4" type="submit" name="checkout">

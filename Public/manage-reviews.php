@@ -1,14 +1,14 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 if (!authorizeAdmin()) {
     redirect('Config');
 }
 
 $reviews = getReviewedProducts();
-$input_date = get_form_data_get('date');
+$input_date = getFormDataGet('date');
 if (!empty($input_date)) {
     $reviews = getReviewedProductsByDate($input_date);
 }
@@ -16,15 +16,15 @@ if (!empty($input_date)) {
 $amountReviews = count($reviews);
 
 if (isset($_POST['delete_review'])) {
-    $review_id = get_form_data_post('review_id');
+    $review_id = getFormDataPost('review_id');
     if (empty($review_id)) {
-        add_user_error('Review kon niet worden verwijderd.');
-        redirect(get_current_url());
+        addUserError('Review kon niet worden verwijderd.');
+        redirect(getCurrentUrl());
     }
 
     deleteReviewByID($review_id);
-    add_user_message('Review is succesvol verwijderd.');
-    redirect(get_current_url());
+    addUserMessage('Review is succesvol verwijderd.');
+    redirect(getCurrentUrl());
 }
 ?>
 
@@ -46,7 +46,7 @@ if (isset($_POST['delete_review'])) {
                                                 <?= $amountReviews ?> gereviewde producten
                                             <?php endif; ?>
                                         </div>
-                                        <form class="form-inline float-right" method="get" action="<?= get_url('manage-reviews.php') ?>">
+                                        <form class="form-inline float-right" method="get" action="<?= getUrl('manage-reviews.php') ?>">
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
                                                 <input type="date" id="date" class="form-control submit-form-on-change" name="date"
@@ -128,13 +128,13 @@ if (isset($_POST['delete_review'])) {
                                                                     <th scope="row" width="25px;">
                                                                         <?= $productReview['ReviewID'] ?? 0 ?>
                                                                     </th>
-                                                                    <td><?= getReviewAuthor($productReview["ReviewID"])["PreferredName"] ?? '' ?></td>
+                                                                    <td><?= getReviewAuthor($productReview['ReviewID'])['PreferredName'] ?? '' ?></td>
                                                                     <td style="color: goldenrod;">
-                                                                        <?= getRatingStars($productReview["Score"]) ?? '' ?>
+                                                                        <?= getRatingStars($productReview['Score']) ?? '' ?>
                                                                     </td>
                                                                     <td>
                                                                         <?php if (!empty($productReview['Review'])) : ?>
-                                                                            <?= $productReview["Review"] ?? '' ?>
+                                                                            <?= $productReview['Review'] ?? '' ?>
                                                                         <?php else : ?>
                                                                             Geen review geschreven
                                                                         <?php endif; ?>
@@ -143,12 +143,12 @@ if (isset($_POST['delete_review'])) {
                                                                         <?= dateTimeFormatShort($productReview['ReviewDate'] ?? '') ?>
                                                                     </td>
                                                                     <td>
-                                                                        <form class="text-right" method="post" action="<?= get_current_url()?>">
-                                                                            <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                                                        <form class="text-right" method="post" action="<?= getCurrentUrl()?>">
+                                                                            <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                                                             <input type="hidden" name="review_id" value="<?= $productReview['ReviewID'] ?? 0 ?>">
 
                                                                             <button type="submit" class="btn btn-outline-danger"
-                                                                                    data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review["ReviewID"])["FullName"] ?? "" ?> wilt verwijderen?"
+                                                                                    data-confirm="Weet u zeker dat u de review van <?= getReviewAuthor($review['ReviewID'])['FullName'] ?? '' ?> wilt verwijderen?"
                                                                                     name="delete_review">
                                                                                 <i class="fas fa-trash"></i>
                                                                             </button>
@@ -174,5 +174,5 @@ if (isset($_POST['delete_review'])) {
     </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

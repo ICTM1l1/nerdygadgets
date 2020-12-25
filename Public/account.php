@@ -1,52 +1,52 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
 authorizeUser();
 
-$personID = session_get('personID', 0);
+$personID = sessionGet('personID', 0);
 $account = getCustomerByPeople($personID);
 $adminAccount = null;
 if (empty($account) && authorizeAdmin()) {
     $adminAccount = getPeople($personID);
 }
 
-$name = get_form_data_post('name', $account['PrivateCustomerName'] ?? '');
-$password = get_form_data_post('password');
-$email = get_form_data_post('email', $account['LogonName'] ?? '');
-$postalCode = get_form_data_post('postalcode', $account['DeliveryPostalCode'] ?? '');
-$address = get_form_data_post('address', $account['DeliveryAddressLine1'] ?? '');
-$city = get_form_data_post('city', $account['CityName'] ?? '');
-$phoneNumber = get_form_data_post('phonenumber', $account['PhoneNumber'] ?? '');
+$name = getFormDataPost('name', $account['PrivateCustomerName'] ?? '');
+$password = getFormDataPost('password');
+$email = getFormDataPost('email', $account['LogonName'] ?? '');
+$postalCode = getFormDataPost('postalcode', $account['DeliveryPostalCode'] ?? '');
+$address = getFormDataPost('address', $account['DeliveryAddressLine1'] ?? '');
+$city = getFormDataPost('city', $account['CityName'] ?? '');
+$phoneNumber = getFormDataPost('phonenumber', $account['PhoneNumber'] ?? '');
 
-if (isset($_POST["update"])) {
+if (isset($_POST['update'])) {
     if (empty($name) || empty($password) || empty($email) || empty($address) || empty($postalCode)  || empty($city) || empty($phoneNumber)) {
-        add_user_error('Niet all verplichte velden met een * zijn ingevuld.');
-        redirect(get_url("account.php"));
+        addUserError('Niet all verplichte velden met een * zijn ingevuld.');
+        redirect(getUrl('account.php'));
     }
 
     $account = getPeopleByEmail($email);
-    $account_password = $account["HashedPassword"] ?? '';
+    $account_password = $account['HashedPassword'] ?? '';
     if (!password_verify($password, $account_password)) {
-        add_user_error('Wachtwoord incorrect.');
-        redirect(get_url("account.php"));
+        addUserError('Wachtwoord incorrect.');
+        redirect(getUrl('account.php'));
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        add_user_error('Ongeldig email address.');
-        redirect(get_url("account.php"));
+        addUserError('Ongeldig email address.');
+        redirect(getUrl('account.php'));
     }
 
     if (!preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
-        add_user_error('Ongeldige postcode opgegeven.');
-        redirect(get_url("account.php"));
+        addUserError('Ongeldige postcode opgegeven.');
+        redirect(getUrl('account.php'));
     }
 
     updatePeople($account['PersonID'] ?? 0, $name, $phoneNumber);
     updateCustomer($account['PersonID'] ?? 0, $name, $address, $postalCode, $phoneNumber, $city);
 
-    add_user_message('Account is succesvol bijgewerkt.');
+    addUserMessage('Account is succesvol bijgewerkt.');
     redirect('account.php');
 }
 ?>
@@ -64,8 +64,8 @@ if (isset($_POST["update"])) {
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <form class="text-center" action="<?= get_url('account.php') ?>" method="post">
-                                <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                            <form class="text-center" action="<?= getUrl('account.php') ?>" method="post">
+                                <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 <div class="form-group form-row">
                                     <label for="name" class="col-sm-3 text-left">Naam <span class="text-danger">*</span></label>
                                     <input type="text" id="name" name="name" class="form-control col-sm-9"

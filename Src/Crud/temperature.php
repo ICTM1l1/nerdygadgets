@@ -7,11 +7,11 @@
  *   The temperature.
  */
 function getTemperature() {
-    return selectFirst("
+    return selectFirst('
         SELECT ColdRoomTemperatureID, Temperature 
         FROM coldroomtemperatures
         WHERE ColdRoomTemperatureID = 1;
-    ");
+    ');
 }
 
 function createOrUpdateTemperatureMeasurement(int $temperature) {
@@ -34,12 +34,12 @@ function createOrUpdateTemperatureMeasurement(int $temperature) {
  *   The id of the measurement.
  */
 function createTemperatureMeasurement(int $temperature) {
-    return insert("coldroomtemperatures", [
-        "Temperature" => $temperature,
-        "ColdRoomSensorNumber" => 1,
-        "RecordedWhen" => date("Y-m-d G:i:s"),
-        "ValidFrom" => date("Y-m-d G:i:s"),
-        "ValidTo" => "9999-12-31 23:59:59"
+    return insert('coldroomtemperatures', [
+        'Temperature' => $temperature,
+        'ColdRoomSensorNumber' => 1,
+        'RecordedWhen' => date('Y-m-d G:i:s'),
+        'ValidFrom' => date('Y-m-d G:i:s'),
+        'ValidTo' => '9999-12-31 23:59:59'
     ]);
 }
 
@@ -55,9 +55,9 @@ function createTemperatureMeasurement(int $temperature) {
  *   Whether the measurement was updated or not.
  */
 function updateTemperatureMeasurement(int $temperature, int $id) {
-    return update("coldroomtemperatures", [
-        "Temperature" => $temperature
+    return update('coldroomtemperatures', [
+        'Temperature' => $temperature
     ], [
-        "ColdRoomTemperatureID" => $id
+        'ColdRoomTemperatureID' => $id
     ]);
 }

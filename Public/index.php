@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 $products = getRandomProducts(10);
 ?>
@@ -9,23 +9,23 @@ $products = getRandomProducts(10);
             <?php foreach($products as $key => $product) : ?>
                 <?php if (!empty($product)) : ?>
                     <?php
-                    $product_id = $product["StockItemID"] ?? 0;
+                    $product_id = $product['StockItemID'] ?? 0;
                     $images = getProductImages($product_id);
                     ?>
 
-                    <a href="<?= get_url("view.php?id={$product_id}") ?>">
+                    <a href="<?= getUrl("view.php?id={$product_id}") ?>">
                         <div class="TextPrice">
                                 <div class="TextMain">
                                     <?= $product['StockItemName'] ?? '' ?>
                                 </div>
                                 <ul id="ul-class-price">
                                     <li class="HomePagePrice">
-                                        &euro; <?= price_format($product['SellPrice'] ?? 0) ?>
+                                        &euro; <?= priceFormat($product['SellPrice'] ?? 0) ?>
                                     </li>
                                 </ul>
                         </div>
 
-                        <div style="background-image: url('<?= get_asset_url('StockItemIMG/' . $images[0]['ImagePath'] ?? '') ?>'); background-size: 100% 100%; width: 477px; height: 477px; background-repeat: no-repeat; margin-left: 55%; margin-top: -30%;"></div>
+                        <div style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $images[0]['ImagePath'] ?? '') ?>'); background-size: 100% 100%; width: 477px; height: 477px; background-repeat: no-repeat; margin-left: 55%; margin-top: -30%;"></div>
                     </a>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -35,6 +35,6 @@ $products = getRandomProducts(10);
     </div>
 </div>
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>
 

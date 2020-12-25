@@ -61,7 +61,7 @@ class Cart {
             $this->updated = true;
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -75,7 +75,7 @@ class Cart {
         $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
         $count = $this->items[$id] ?? 1;
         if (($current_quantity - $count - 1) < 0) {
-            add_user_error('Product ' . ($product['StockItemName'] ?? "") . ' is na verhoging van het aantal niet meer op voorraad');
+            addUserError('Product ' . ($product['StockItemName'] ?? '') . ' is na verhoging van het aantal niet meer op voorraad');
             $this->updated = false;
             return;
         }
@@ -86,10 +86,10 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product aantal is succesvol bijgewerkt.');
+            addUserMessage('Product aantal is succesvol bijgewerkt.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -107,10 +107,10 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product aantal is succesvol bijgewerkt.');
+            addUserMessage('Product aantal is succesvol bijgewerkt.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -122,7 +122,7 @@ class Cart {
     public function getItems(): array {
         $items = array();
         foreach($this->items as $id => $count){
-            $items[] = array("id" => $id, "amount" => $count);
+            $items[] = array('id' => $id, 'amount' => $count);
         }
 
         return $items;
@@ -150,7 +150,7 @@ class Cart {
         $product = getProduct($id);
         $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
         if (($current_quantity - $count) < 0) {
-            add_user_error('Product ' . ($product['StockItemName'] ?? "") . ' is niet op voorraad');
+            addUserError('Product ' . ($product['StockItemName'] ?? '') . ' is niet op voorraad');
             $this->updated = false;
             return;
         }
@@ -161,10 +161,10 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product ' . ($product['StockItemName'] ?? "") . ' is toegevoegd aan de winkelwagen.');
+            addUserMessage('Product ' . ($product['StockItemName'] ?? '') . ' is toegevoegd aan de winkelwagen.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -180,10 +180,10 @@ class Cart {
         }
 
         if ($this->isUpdated()) {
-            add_user_message('Product is succesvol verwijderd uit de winkelwagen.');
+            addUserMessage('Product is succesvol verwijderd uit de winkelwagen.');
         }
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -193,7 +193,7 @@ class Cart {
         $this->items = array();
         $this->updated = true;
 
-        save_cart($this);
+        saveCart($this);
     }
 
     /**
@@ -216,7 +216,7 @@ class Cart {
 
         $this->updated = false;
         $this->cost = $total;
-        save_cart($this);
+        saveCart($this);
 
         return $total;
     }
@@ -238,15 +238,15 @@ class Cart {
  * @param Cart $cart
  *   The cart.
  */
-function save_cart(Cart $cart) {
-    session_save('cart', serialize($cart), true);
+function saveCart(Cart $cart) {
+    sessionSave('cart', serialize($cart), true);
 }
 
 /**
  * Resets and saves the cart into the session.
  */
-function reset_cart() {
-    session_save('cart', serialize(new Cart()), true);
+function resetCart() {
+    sessionSave('cart', serialize(new Cart()), true);
 }
 
 /**
@@ -255,11 +255,11 @@ function reset_cart() {
  * @return Cart
  *   The cart.
  */
-function get_cart() {
+function getCart() {
     $cart = $_SESSION['cart'] ?? null;
     if (!$cart) {
         $cart = new Cart();
-        save_cart($cart);
+        saveCart($cart);
         $cart = serialize($cart);
     }
 

@@ -1,46 +1,46 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
-$loggedIn = (bool) session_get('LoggedIn', false);
+$loggedIn = (bool) sessionGet('LoggedIn', false);
 if ($loggedIn) {
-    redirect(get_url("index.php"));
+    redirect(getUrl('index.php'));
 }
 
-$password = get_form_data_post('password');
-$email = get_form_data_post('email');
+$password = getFormDataPost('password');
+$email = getFormDataPost('email');
 
 if (!empty($_POST)) {
     $valuesValid = true;
     if (empty($password) || empty($email)) {
-        add_user_error('Niet alle verplichte velden met een * zijn ingevuld.');
+        addUserError('Niet alle verplichte velden met een * zijn ingevuld.');
         $valuesValid = false;
     }
 
     $account = getPeopleByEmail($email);
     $account_password = $account['HashedPassword'] ?? '';
     if ($valuesValid && (empty($account) || !password_verify($password, $account_password))) {
-        add_user_error('Email of wachtwoord fout.');
+        addUserError('Email of wachtwoord fout.');
         $valuesValid = false;
     }
 
-    $accountIsPermittedToLogon = $account["IsPermittedToLogon"] ?? 0;
+    $accountIsPermittedToLogon = $account['IsPermittedToLogon'] ?? 0;
     if ($valuesValid && $accountIsPermittedToLogon === 0) {
-        add_user_error('Je account is geblokkeerd.');
+        addUserError('Je account is geblokkeerd.');
         $valuesValid = false;
     }
 
     if ($valuesValid) {
         if (validateRecaptcha()) {
-            session_save('LoggedIn', true, true);
-            session_save('personID', $account['PersonID'] ?? 0, true);
+            sessionSave('LoggedIn', true, true);
+            sessionSave('personID', $account['PersonID'] ?? 0, true);
 
-            add_user_message('Je bent succesvol ingelogd.');
-            redirect(get_url("account.php"));
+            addUserMessage('Je bent succesvol ingelogd.');
+            redirect(getUrl('account.php'));
         }
 
-        add_user_error('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
+        addUserError('Recaptcha is niet goed uitgevoerd. Probeer het opnieuw.');
     }
 }
 ?>
@@ -50,8 +50,8 @@ if (!empty($_POST)) {
         <div class="products-overview w-50 ml-auto mr-auto mt-5 mb-5">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="text-center w-100" id="recaptcha-form" action="<?= get_url('login.php') ?>" method="post">
-                        <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                    <form class="text-center w-100" id="recaptcha-form" action="<?= getUrl('login.php') ?>" method="post">
+                        <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                         <h1 class="mb-lg-5">Inloggen</h1>
                         <div class="form-group form-row">
                             <label for="email" class="col-sm-3 text-left">Email <span class="text-danger">*</span></label>
@@ -67,11 +67,11 @@ if (!empty($_POST)) {
 
                         <div class="d-flex justify-content-center links">
                             Geen account?&#8287
-                            <a href="<?= get_url('register.php') ?>">Maak een account</a>
+                            <a href="<?= getUrl('register.php') ?>">Maak een account</a>
                         </div>
                         <div class="form-group">
                             <button class="g-recaptcha btn btn-success my-4" type="submit" name="login"
-                                    data-sitekey="<?= config_get('recaptcha_site_key') ?>" data-callback='onSubmit'>
+                                    data-sitekey="<?= configGet('recaptcha_site_key') ?>" data-callback='onSubmit'>
                                 Inloggen
                             </button>
                         </div>
@@ -82,5 +82,5 @@ if (!empty($_POST)) {
     </div>
 
 <?php
-require_once __DIR__."/../Src/footer.php";
+require_once __DIR__.'/../Src/footer.php';
 ?>

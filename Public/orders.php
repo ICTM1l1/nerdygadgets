@@ -1,13 +1,13 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
 authorizeUser();
 
-$personID = session_get('personID', 0);
+$personID = sessionGet('personID', 0);
 $account = getCustomerByPeople($personID);
 
 $orders = getOrdersByCustomer($personID);
-if ($date = get_form_data_get('date')) {
+if ($date = getFormDataGet('date')) {
     $orders = getOrdersByCustomerByDate($personID, $date);
 }
 
@@ -32,11 +32,11 @@ $amountOrders = count($orders);
                                                 <?= $amountOrders ?> geplaatste bestellingen
                                             <?php endif; ?>
                                         </div>
-                                        <form class="form-inline float-right" method="get" action="<?= get_url('orders.php') ?>">
+                                        <form class="form-inline float-right" method="get" action="<?= getUrl('orders.php') ?>">
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
                                                 <input type="date" id="date" class="form-control submit-form-on-change" name="date"
-                                                       value="<?= get_form_data_get('date') ?>">
+                                                       value="<?= getFormDataGet('date') ?>">
                                             </div>
                                         </form>
                                     </div>
@@ -118,21 +118,21 @@ $amountOrders = count($orders);
                                                                 <?php else : ?>
                                                                     <?php foreach ($orderLines as $orderLine) :
                                                                         $pricePerPiece = (float) ($orderLine['SoldPrice'] ?? 0);
-                                                                        $productQuantity = (int) ($orderLine["Quantity"] ?? 0);
+                                                                        $productQuantity = (int) ($orderLine['Quantity'] ?? 0);
                                                                         $productPriceTotal = $pricePerPiece * $productQuantity;
                                                                         $priceTotal += $productPriceTotal;
                                                                         ?>
                                                                         <a class="ListItem orderListItem"
-                                                                           href='<?= get_url('view.php?id=' . $orderLine['StockItemID'] ?? 0) ?>'>
+                                                                           href='<?= getUrl('view.php?id=' . $orderLine['StockItemID'] ?? 0) ?>'>
                                                                             <div class="row border-bottom border-white pb-2">
                                                                                     <div class="col-sm-2">
                                                                                         <?php if (isset($orderLine['ImagePath'])) : ?>
                                                                                             <div class="ImgFrame"
-                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
+                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= getAssetUrl('StockItemIMG/' . $orderLine['ImagePath'] ?? '') ?>');
                                                                                                          background-size: 75px; background-repeat: no-repeat; background-position: center;"></div>
                                                                                         <?php elseif (isset($orderLine['BackupImagePath'])) : ?>
                                                                                             <div class="ImgFrame"
-                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
+                                                                                                 style="width: 100px; height: 100px; background-image: url('<?= getAssetUrl('StockGroupIMG/' . $orderLine['BackupImagePath'] ?? '') ?>');
                                                                                                          background-size: cover;"></div>
                                                                                         <?php else : ?>
                                                                                             <div class="ImgFrame" style="width: 100px; height: 100px;"></div>
@@ -148,7 +148,7 @@ $amountOrders = count($orders);
                                                                                                     <p class="h4"><?= $orderLine['Description'] ?? '' ?></p>
                                                                                                 </div>
                                                                                                 <div class="col-sm-3">
-                                                                                                    <p class="h4">&euro; <?= price_format($productPriceTotal) ?></p>
+                                                                                                    <p class="h4">&euro; <?= priceFormat($productPriceTotal) ?></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -160,7 +160,7 @@ $amountOrders = count($orders);
                                                             </div>
 
                                                             <div class="col-md-12 mt-3">
-                                                                <p class="h4 pl-2">Totaal kosten: &euro; <?= price_format($priceTotal) ?></p>
+                                                                <p class="h4 pl-2">Totaal kosten: &euro; <?= priceFormat($priceTotal) ?></p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -179,5 +179,5 @@ $amountOrders = count($orders);
     </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

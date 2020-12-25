@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . "/../src/header.php";
+require_once __DIR__ . '/../src/header.php';
 
 restartSession();
-reset_cart();
+resetCart();
 
-add_user_message('Je bent succesvol uitgelogd.');
+addUserMessage('Je bent succesvol uitgelogd.');
 redirect('login.php');
 
-require_once __DIR__ . "/../src/footer.php";
+require_once __DIR__ . '/../src/footer.php';

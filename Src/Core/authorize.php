@@ -4,9 +4,9 @@
  * Authorizes an user.
  */
 function authorizeUser() {
-    $loggedIn = (bool) session_get('LoggedIn', false);
+    $loggedIn = (bool) sessionGet('LoggedIn', false);
     if (!$loggedIn) {
-        redirect(get_url("login.php"));
+        redirect(getUrl('login.php'));
     }
 }
 
@@ -15,7 +15,7 @@ function authorizeUser() {
  */
 function authorizeAdmin() {
     authorizeUser();
-    $personID = session_get('personID', 0);
+    $personID = sessionGet('personID', 0);
     $account = getPeople($personID);
     
     // If the user is an employee, he is automatically an admin.

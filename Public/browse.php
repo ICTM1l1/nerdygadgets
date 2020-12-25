@@ -1,54 +1,54 @@
 <?php
 require_once __DIR__ . "/../Src/header.php";
 
-csrf_validate(get_current_url());
+csrfValidate(getCurrentUrl());
 
-$cart = get_cart();
+$cart = getCart();
 
-$searchString = get_form_data_get('search_string');
-$categoryID = (int) get_form_data_get('category_id');
+$searchString = getFormDataGet('search_string');
+$categoryID = (int) getFormDataGet('category_id');
 $products = null;
 
-$sortOnPage = get_form_data_get('sort', 'price_low_high');
-$productsOnPage = (int) get_form_data_get('products_on_page', '25');
-$pageNumber = (int) get_form_data_get('page_number');
+$sortOnPage = getFormDataGet('sort', 'price_low_high');
+$productsOnPage = (int) getFormDataGet('products_on_page', '25');
+$pageNumber = (int) getFormDataGet('page_number');
 
 $queryBuildResult = "";
 switch ($sortOnPage) {
-    case "price_high_low":
-        $sort = "SellPrice DESC";
-        $sortName = "price_high_low";
+    case 'price_high_low':
+        $sort = 'SellPrice DESC';
+        $sortName = 'price_high_low';
         break;
-    case "name_low_high":
-        $sort = "StockItemName";
-        $sortName = "name_low_high";
+    case 'name_low_high':
+        $sort = 'StockItemName';
+        $sortName = 'name_low_high';
         break;
-    case "name_high_low";
-        $sort = "StockItemName DESC";
-        $sortName = "name_high_low";
+    case 'name_high_low';
+        $sort = 'StockItemName DESC';
+        $sortName = 'name_high_low';
         break;
-    case "price_low_high":
-        $sort = "SellPrice";
-        $sortName = "price_low_high";
+    case 'price_low_high':
+        $sort = 'SellPrice';
+        $sortName = 'price_low_high';
         break;
     default:
-        $sort = "SellPrice";
-        $sortName = "price_low_high";
+        $sort = 'SellPrice';
+        $sortName = 'price_low_high';
 }
 
-$searchValues = explode(" ", $searchString);
+$searchValues = explode(' ', $searchString);
 
 $queryBuildResult = '';
 if ($searchString !== '') {
     $countedSearchValues = count($searchValues);
     for ($i = 0; $i < $countedSearchValues; $i++) {
         if ($i !== 0) {
-            $queryBuildResult .= "AND ";
+            $queryBuildResult .= 'AND ';
         }
-        $queryBuildResult .= "SI.SearchDetails LIKE '%$searchValues[$i]%' ";
+        $queryBuildResult .= 'SI.SearchDetails LIKE '%$searchValues[$i]%' ';
     }
-    if ($queryBuildResult !== "") {
-        $queryBuildResult .= " OR ";
+    if ($queryBuildResult !== '') {
+        $queryBuildResult .= ' OR ';
     }
 
     if (!empty($searchString)) {
@@ -61,14 +61,14 @@ $offset = $pageNumber * $productsOnPage;
 $showStockLevel = 1000;
 if (empty($categoryID)) {
     if ($queryBuildResult !== '') {
-        $queryBuildResult = "WHERE {$queryBuildResult}";
+        $queryBuildResult = 'WHERE {$queryBuildResult}';
     }
 
     $products = getProducts($queryBuildResult, $sort, $showStockLevel, $productsOnPage, $offset);
     $amountProducts = getProductsAmount($queryBuildResult);
 } else {
     if ($queryBuildResult !== '') {
-        $queryBuildResult .= " AND ";
+        $queryBuildResult .= ' AND ';
     }
 
     $products = getProductsForCategoryWithFilter($queryBuildResult, $sort, $showStockLevel, $categoryID, $productsOnPage, $offset);
@@ -80,17 +80,17 @@ if ($amountProducts !== 0) {
     $amountOfPages = ceil($amountProducts / $productsOnPage);
 }
 
-if ($id = get_form_data_post("Add_Cart", NULL)) {
+if ($id = getFormDataPost('Add_Cart', NULL)) {
     $cart->addItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
-elseif ($id = get_form_data_post("Del_Cart", NULL)) {
+elseif ($id = getFormDataPost('Del_Cart', NULL)) {
     $cart->removeItem($id);
-    redirect(get_current_url());
+    redirect(getCurrentUrl());
 }
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
-    <form method="get" action="<?= get_current_url() ?>">
+    <form method="get" action="<?= getCurrentUrl() ?>">
         <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
 
         <div id="FilterOptions">
@@ -115,23 +115,23 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
             <div class="form-group">
                 <label for="sort" class="h4 FilterTopMargin"><i class="fas fa-sort"></i> Sorteren</label>
                 <select class="submit-form-on-change" name="sort" id="sort">
-                    <option value="price_low_high" <?= $sortName === "price_low_high" ? 'selected' : '' ?>>
+                    <option value="price_low_high" <?= $sortName === 'price_low_high' ? 'selected' : '' ?>>
                         Prijs oplopend
                     </option>
-                    <option value="price_high_low" <?= $sortName === "price_high_low" ? 'selected' : '' ?>>
+                    <option value="price_high_low" <?= $sortName === 'price_high_low' ? 'selected' : '' ?>>
                         Prijs aflopend
                     </option>
-                    <option value="name_low_high" <?= $sortName === "name_low_high" ? 'selected' : '' ?>>
+                    <option value="name_low_high" <?= $sortName === 'name_low_high' ? 'selected' : '' ?>>
                         Naam oplopend
                     </option>
-                    <option value="name_high_low" <?= $sortName === "name_high_low" ? 'selected' : '' ?>>
+                    <option value="name_high_low" <?= $sortName === 'name_high_low' ? 'selected' : '' ?>>
                         Naam aflopend
                     </option>
                 </select>
             </div>
 
             <div class="form-group mt-4">
-                <a type="button" href="<?= get_url('browse.php?category_id=' . $categoryID) ?>" class="button button-danger float-left">
+                <a type="button" href="<?= getUrl('browse.php?category_id=' . $categoryID) ?>" class="button button-danger float-left">
                     Reset
                 </a>
 
@@ -149,46 +149,46 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
                 $productInCart = $cart->getItemCount($product['StockItemID' ?? 0]) > 0;
                 $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
                 ?>
-                <a class="ListItem" href='<?= get_url('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
+                <a class="ListItem" href='<?= getUrl('view.php?id=' . $product['StockItemID'] ?? 0) ?>'>
                     <div id="ProductFrame">
                         <?php if (isset($product['ImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= get_asset_url('StockItemIMG/' . $product['ImagePath'] ?? '') ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
+                                 style="background-image: url('<?= getAssetUrl('StockItemIMG/' . $product['ImagePath'] ?? '') ?>'); background-size: 230px; background-repeat: no-repeat; background-position: center;"></div>
                         <?php elseif (isset($product['BackupImagePath'])) : ?>
                             <div class="ImgFrame"
-                                 style="background-image: url('<?= get_asset_url('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
+                                 style="background-image: url('<?= getAssetUrl('StockGroupIMG/' . $product['BackupImagePath'] ?? '') ?>'); background-size: cover;"></div>
                         <?php endif; ?>
 
                         <div id="StockItemFrameRight">
                             <div class="CenterPriceLeftChild">
-                                <form class="text-center" style="margin-top: 65px;" method="post" action="<?= get_current_url() ?>">
+                                <form class="text-center" style="margin-top: 65px;" method="post" action="<?= getCurrentUrl() ?>">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger w-100"
-                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? "") ?>` wilt verwijderen?"
-                                                name="Del_Cart" value="<?= $product["StockItemID"] ?? 0 ?>">
+                                                data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? '') ?>` wilt verwijderen?"
+                                                name="Del_Cart" value="<?= $product['StockItemID'] ?? 0 ?>">
                                             <i class="fas fa-shopping-cart h1">-</i>
                                             <i class="far fa-trash-alt h1"></i>
                                         </button>
                                     <?php else : ?>
                                         <button type="submit" class="btn btn-outline-success w-100"
-                                                name="Add_Cart" value="<?= $product["StockItemID"] ?? 0 ?>"
+                                                name="Add_Cart" value="<?= $product['StockItemID'] ?? 0 ?>"
                                             <?= $quantityOnHandRaw <= 0 ? 'disabled' : '' ?>>
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
                                     <?php endif; ?>
-                                    <input type="hidden" name="token" value="<?=csrf_get_token()?>"/>
+                                    <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
                                 </form>
                                 <h1 class="StockItemPriceText">
-                                    &euro; <?= price_format($product["SellPrice"] ?? 0) ?>
+                                    &euro; <?= priceFormat($product['SellPrice'] ?? 0) ?>
                                 </h1>
                                 <h6>Inclusief BTW </h6>
                             </div>
                         </div>
-                        <h1 class="StockItemID">Artikelnummer: <?= $product["StockItemID"] ?? 0 ?></h1>
-                        <p class="StockItemName"><?= $product["StockItemName"] ?? '' ?></p>
-                        <p class="StockItemComments"><?= $product["MarketingComments"] ?? '' ?></p>
+                        <h1 class="StockItemID">Artikelnummer: <?= $product['StockItemID'] ?? 0 ?></h1>
+                        <p class="StockItemName"><?= $product['StockItemName'] ?? '' ?></p>
+                        <p class="StockItemComments"><?= $product['MarketingComments'] ?? '' ?></p>
                         <?php
-                        $averageScore = round(getReviewAverageByID($product["StockItemID"]));
+                        $averageScore = round(getReviewAverageByID($product['StockItemID']));
                         if($averageScore > 0) : ?>
                             <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                         <?php endif; ?>
@@ -205,7 +205,7 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
         </div>
 
         <div class="pagination-container">
-            <form id="PageSelector" method="get" action="<?= get_current_url() ?>">
+            <form id="PageSelector" method="get" action="<?= getCurrentUrl() ?>">
                 <input type="hidden" name="search_string" id="search_string" value="<?= $searchString ?>">
                 <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
                 <input type="hidden" name="result_page_numbers" id="result_page_numbers" value="<?= $amountOfPages ?>">
@@ -235,5 +235,5 @@ elseif ($id = get_form_data_post("Del_Cart", NULL)) {
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

@@ -63,11 +63,11 @@ function getProductWithImage(int $product_id) {
  *   The found product images.
  */
 function getProductImages(int $product_id) {
-    return select("
+    return select('
         SELECT ImagePath
         FROM stockitemimages 
         WHERE StockItemID = :stockitemid
-    ", ['stockitemid' => $product_id]);
+    ', ['stockitemid' => $product_id]);
 }
 
 /**
@@ -80,11 +80,11 @@ function getProductImages(int $product_id) {
  *   The found product image.
  */
 function getProductImage(int $product_id) {
-    return selectFirst("
+    return selectFirst('
         SELECT ImagePath
         FROM stockitemimages 
         WHERE StockItemID = :stockitemid
-    ", ['stockitemid' => $product_id]);
+    ', ['stockitemid' => $product_id]);
 }
 
 /**
@@ -138,7 +138,7 @@ function getProductsAmount(string $queryBuildResult = '') {
         {$queryBuildResult}
     ");
 
-    return $productsAmount["count(*)"] ?? 0;
+    return $productsAmount['count(*)'] ?? 0;
 }
 
 /**
@@ -208,11 +208,11 @@ function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $c
  *   The randomly found product IDs from category.
  */
 function getProductIdsForCategory(int $categoryID) {
-    return select("
+    return select('
         SELECT SI.StockItemID
         FROM stockitems SI 
         WHERE :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)
-    ", ['categoryId' => $categoryID]);
+    ', ['categoryId' => $categoryID]);
 }
 
 /**
@@ -230,7 +230,7 @@ function getRandomProductForCategory(int $categoryID){
         $selectedProduct = $productIds[array_rand($productIds)];
     }
 
-    return $selectedProduct["StockItemID"] ?? 0;
+    return $selectedProduct['StockItemID'] ?? 0;
 }
 
 /**
@@ -243,7 +243,7 @@ function getRandomProductForCategory(int $categoryID){
  *   The randomly found products.
  */
 function getRandomProducts(int $amountOfProducts) {
-    $productPlaceholders = "";
+    $productPlaceholders = '';
     $productIds = [];
     for ($category_id = 1; $category_id <= $amountOfProducts; $category_id++) {
         $productIds["product_$category_id"] = getRandomProductForCategory($category_id);
@@ -278,10 +278,10 @@ function getRandomProducts(int $amountOfProducts) {
  *   The array of catogory ids the product is in
  */
 function getCategoryIdForProduct(int $product_id){
-    return select("
+    return select('
                 SELECT StockGroupID 
                 FROM stockitemstockgroups 
-                WHERE StockItemID = :stockitemid", ['stockitemid' => $product_id]);
+                WHERE StockItemID = :stockitemid', ['stockitemid' => $product_id]);
 }
 
 /**
@@ -294,11 +294,11 @@ function getCategoryIdForProduct(int $product_id){
  *   The found product image.
  */
 function getBackupProductImage(int $product_id) {
-    return selectFirst("
+    return selectFirst('
                 SELECT ImagePath as BackupImagePath
                 FROM stockgroups 
                 JOIN stockitemstockgroups USING(StockGroupID) 
                 WHERE StockItemID = :StockItemID 
                 LIMIT 1
-                ", ['StockItemID' => $product_id]);
+                ', ['StockItemID' => $product_id]);
 }

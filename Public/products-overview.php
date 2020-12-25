@@ -1,13 +1,13 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-$cart = get_cart();
+$cart = getCart();
 $products = $cart->getItems();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
+    redirect(getUrl('shoppingcart.php'));
 }
 ?>
 
@@ -21,12 +21,12 @@ if (empty($price) || empty($cart->getItems())) {
                 $priceTotal = 0;
 
                 foreach ($products as $product) :
-                    $productId = (int) ($product["id"] ?? 0);
+                    $productId = (int) ($product['id'] ?? 0);
                     $productFromDb = getProduct($productId);
                     $image = getProductImage($productId);
 
                     $pricePerPiece = (float) ($productFromDb['SellPrice'] ?? 0);
-                    $productQuantity = (int) ($product["amount"] ?? 0);
+                    $productQuantity = (int) ($product['amount'] ?? 0);
                     $productPriceTotal = $pricePerPiece * $productQuantity;
                     $priceTotal += $productPriceTotal;
                     ?>
@@ -34,11 +34,11 @@ if (empty($price) || empty($cart->getItems())) {
                         <div class="col-sm-3 pl-0">
                             <?php if (isset($image['ImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
+                                     style="width: 150px; height: 150px; background-image: url('<?= getAssetUrl('StockItemIMG/' . $image['ImagePath'] ?? '') ?>');
                                              background-size: 125px; background-repeat: no-repeat; background-position: center;"></div>
                             <?php elseif (isset($productFromDb['BackupImagePath'])) : ?>
                                 <div class="ImgFrame"
-                                     style="width: 150px; height: 150px; background-image: url('<?= get_asset_url('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
+                                     style="width: 150px; height: 150px; background-image: url('<?= getAssetUrl('StockGroupIMG/' . $productFromDb['BackupImagePath'] ?? '') ?>');
                                              background-size: cover;"></div>
                             <?php endif; ?>
                         </div>
@@ -52,7 +52,7 @@ if (empty($price) || empty($cart->getItems())) {
                                         <p class="h4"><?= $productFromDb['StockItemName'] ?? '' ?></p>
                                     </div>
                                     <div class="col-sm-3">
-                                        <p class="h4">&euro; <?= price_format($productPriceTotal) ?></p>
+                                        <p class="h4">&euro; <?= priceFormat($productPriceTotal) ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -64,17 +64,17 @@ if (empty($price) || empty($cart->getItems())) {
 
         <div class="row mt-3">
             <div class="col-sm-12">
-                <p class="h4">Totaal prijs: &euro; <?= price_format($priceTotal) ?></p>
+                <p class="h4">Totaal prijs: &euro; <?= priceFormat($priceTotal) ?></p>
             </div>
         </div>
 
         <div class="row mt-5">
             <div class="col-sm-12">
-                <a class="btn btn-primary float-left" href="<?= get_url('shoppingcart.php') ?>">
+                <a class="btn btn-primary float-left" href="<?= getUrl('shoppingcart.php') ?>">
                     Terug naar winkelwagen
                 </a>
 
-                <a class="btn btn-success float-right" href="<?= get_url('checkout.php') ?>">
+                <a class="btn btn-success float-right" href="<?= getUrl('checkout.php') ?>">
                     Afrekenen
                 </a>
             </div>
@@ -83,5 +83,5 @@ if (empty($price) || empty($cart->getItems())) {
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

@@ -1,26 +1,26 @@
 <?php
-require_once __DIR__ . "/../Src/header.php";
+require_once __DIR__ . '/../Src/header.php';
 
-$cart = get_cart();
+$cart = getCart();
 $price = $cart->getTotalPrice();
 
 if (empty($price) || empty($cart->getItems())) {
-    add_user_error('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
-    redirect(get_url('shoppingcart.php'));
+    addUserError('Er zijn geen producten in de winkelwagen gevonden om af te rekenen.');
+    redirect(getUrl('shoppingcart.php'));
 }
 
-$orderSuccessful = checkPayment(session_get('paymentId'));
+$orderSuccessful = checkPayment(sessionGet('paymentId'));
 
-$customerId = (int) session_get('customer_id', 0);
-$loggedIn = (bool) session_get('LoggedIn', false);
+$customerId = (int) sessionGet('customer_id', 0);
+$loggedIn = (bool) sessionGet('LoggedIn', false);
 $customer = getCustomer($customerId);
 
 // Always clear the payment process in order to be able to start a new payment.
-session_key_unset('customer_id');
-session_key_unset('paymentId');
+sessionKeyUnset('customer_id');
+sessionKeyUnset('paymentId');
 
 if ($orderSuccessful) {
-    $connection = getDatabaseConnection(config_get('database_user_create_or_update'), config_get('database_password_create_or_update'));
+    $connection = getDatabaseConnection(configGet('database_user_create_or_update'), configGet('database_password_create_or_update'));
     beginTransaction($connection);
 
     try {
@@ -35,8 +35,8 @@ if ($orderSuccessful) {
         $orderId = createOrder($customerId, $currentDate, $deliveryDate, $connection);
 
         foreach ($products as $product) {
-            $productId = (int) ($product["id"] ?? 0);
-            $productAmount = (int) ($product["amount"] ?? 0);
+            $productId = (int) ($product['id'] ?? 0);
+            $productAmount = (int) ($product['amount'] ?? 0);
             $productFromDB = getProduct($productId);
 
             createOrderLine($orderId, $productFromDB, $productAmount, $currentDate, $connection);
@@ -44,11 +44,11 @@ if ($orderSuccessful) {
 
         commitTransaction($connection);
 
-        reset_cart();
-        add_user_message('De bestelling is succesvol geplaatst.');
+        resetCart();
+        addUserMessage('De bestelling is succesvol geplaatst.');
     } catch (Exception $exception) {
         $orderSuccessful = false;
-        add_user_error('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
+        addUserError('Bestelling kon niet worden geplaatst. Probeer het opnieuw of neem contact op met NerdyGadgets.');
         rollbackTransaction($connection);
     }
 } elseif (!empty($customerId) && !$loggedIn) {
@@ -89,7 +89,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     </ul>
 
                     <div class="form-group mt-5 text-center">
-                        <a class="btn btn-success my-4" href="<?= get_url('index.php') ?>">
+                        <a class="btn btn-success my-4" href="<?= getUrl('index.php') ?>">
                             3. Afronden
                         </a>
                     </div>
@@ -97,7 +97,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <h1 class="text-danger text-center">Producten afrekenen is mislukt</h1>
 
                     <div class="form-group mt-5 text-center">
-                        <a href="<?= get_url('checkout.php') ?>" class="btn btn-success my-4">
+                        <a href="<?= getUrl('checkout.php') ?>" class="btn btn-success my-4">
                             Opnieuw afrekenen
                         </a>
                     </div>
@@ -108,5 +108,5 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
 </div>
 
 <?php
-require_once __DIR__ . "/../Src/footer.php";
+require_once __DIR__ . '/../Src/footer.php';
 ?>

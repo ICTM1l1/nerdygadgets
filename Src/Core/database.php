@@ -12,10 +12,10 @@
  *   The database connection.
  */
 function getDatabaseConnection(string $username, string $password) {
-    $dsn = config_get('database_server') . ';';
-    $dsn .= 'dbname=' . config_get('database_name') . ';';
-    $dsn .= 'charset=' .  config_get('database_charset') . ';';
-    $dsn .= 'port=' . config_get('database_port') . ';';
+    $dsn = configGet('database_server') . ';';
+    $dsn .= 'dbname=' . configGet('database_name') . ';';
+    $dsn .= 'charset=' .  configGet('database_charset') . ';';
+    $dsn .= 'port=' . configGet('database_port') . ';';
 
     /**
      * With PDO_MYSQL you need to remember about the PDO::ATTR_EMULATE_PREPARES option.
@@ -32,7 +32,7 @@ function getDatabaseConnection(string $username, string $password) {
         PDO::ATTR_EMULATE_PREPARES => false,
     ];
 
-    $debug = config_get('debug', false);
+    $debug = configGet('debug', false);
     if ($debug) {
         $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
     }
@@ -123,7 +123,7 @@ function executeQuery(string $query, array $parameters = [], PDO $connection = n
  *   The selected data.
  */
 function select(string $query, array $parameters = []) {
-    $statement = executeQuery($query, $parameters, null, config_get('database_user_read'), config_get('database_password_read'));
+    $statement = executeQuery($query, $parameters, null, configGet('database_user_read'), configGet('database_password_read'));
 
     return $statement->fetchAll(PDO::FETCH_NAMED);
 }
@@ -140,7 +140,7 @@ function select(string $query, array $parameters = []) {
  *   The selected data.
  */
 function selectFirst(string $query, array $parameters = []) {
-    $statement = executeQuery($query, $parameters, null, config_get('database_user_read'), config_get('database_password_read'));
+    $statement = executeQuery($query, $parameters, null, configGet('database_user_read'), configGet('database_password_read'));
 
     $values = $statement->fetch(PDO::FETCH_NAMED);
     return !empty($values) ? $values : [];
@@ -173,7 +173,7 @@ function insert(string $table, array $parameters = [], PDO $connection = null) {
 
     try {
         if (!$connection) {
-            $connection = getDatabaseConnection(config_get('database_user_create'), config_get('database_password_create'));
+            $connection = getDatabaseConnection(configGet('database_user_create'), configGet('database_password_create'));
         }
 
         $statement = $connection->prepare($query);
@@ -222,7 +222,7 @@ function update(string $table, array $parameters = [], array $conditions = [], P
     $query = "UPDATE {$table} SET {$query_values} WHERE {$query_conditions}";
 
     $query_values = array_merge($parameters, $conditions);
-    $statement = executeQuery($query, $query_values, $connection, config_get('database_user_update'), config_get('database_password_update'));
+    $statement = executeQuery($query, $query_values, $connection, configGet('database_user_update'), configGet('database_password_update'));
 
     // Checks if the query has been executed successfully.
     return empty($statement->errorInfo());
@@ -247,7 +247,7 @@ function delete(string $table, array $conditions = []) {
     }
 
     $query = "DELETE FROM {$table} WHERE {$query_conditions}";
-    $statement = executeQuery($query, $conditions, null, config_get('database_user_delete'), config_get('database_password_delete'));
+    $statement = executeQuery($query, $conditions, null, configGet('database_user_delete'), configGet('database_password_delete'));
 
     return empty($statement->errorInfo());
 }

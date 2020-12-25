@@ -13,8 +13,8 @@ $config = require __DIR__ . '/../../Config/config.php';
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function get_form_data_get(string $key, $default = '') {
-    return request_from_super_globals($_GET, $key, $default);
+function getFormDataGet(string $key, $default = '') {
+    return requestFromSuperGlobals($_GET, $key, $default);
 }
 
 /**
@@ -28,8 +28,8 @@ function get_form_data_get(string $key, $default = '') {
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function get_form_data_post(string $key, $default = '') {
-    return request_from_super_globals($_POST, $key, $default);
+function getFormDataPost(string $key, $default = '') {
+    return requestFromSuperGlobals($_POST, $key, $default);
 }
 
 /**
@@ -43,8 +43,8 @@ function get_form_data_post(string $key, $default = '') {
  * @return mixed|string
  *   The data from the submitted form data.
  */
-function session_get(string $key, $default = '') {
-    return request_from_super_globals($_SESSION, $key, $default);
+function sessionGet(string $key, $default = '') {
+    return requestFromSuperGlobals($_SESSION, $key, $default);
 }
 
 /**
@@ -60,7 +60,7 @@ function session_get(string $key, $default = '') {
  * @return string
  *   The sanitized string.
  */
-function request_from_super_globals(array $global, string $key, $default = '') {
+function requestFromSuperGlobals(array $global, string $key, $default = '') {
     $value = $global[$key] ?? $default;
     if (is_string($value)) {
         return preventXSS($value);
@@ -79,7 +79,7 @@ function request_from_super_globals(array $global, string $key, $default = '') {
  * @param bool $overwrite
  *   May the value of the key be overwritten?
  */
-function session_save(string $key, $value = '', bool $overwrite = false) {
+function sessionSave(string $key, $value = '', bool $overwrite = false) {
     if ($overwrite) {
         $_SESSION[$key] = $value;
     }
@@ -95,7 +95,7 @@ function session_save(string $key, $value = '', bool $overwrite = false) {
  * @param string $value
  *   The value.
  */
-function add_user_error(string $value) {
+function addUserError(string $value) {
     $_SESSION['errors'][] = $value;
 }
 
@@ -105,9 +105,9 @@ function add_user_error(string $value) {
  * @return array
  *   The found user errors.
  */
-function get_user_errors() {
-    $errors = session_get('errors', []);
-    session_key_unset('errors');
+function getUserErrors() {
+    $errors = sessionGet('errors', []);
+    sessionKeyUnset('errors');
 
     return $errors;
 }
@@ -118,7 +118,7 @@ function get_user_errors() {
  * @param string $message
  *   The message.
  */
-function add_user_message(string $message) {
+function addUserMessage(string $message) {
     $_SESSION['messages'][] = $message;
 }
 
@@ -128,9 +128,9 @@ function add_user_message(string $message) {
  * @return array
  *   The found user message.
  */
-function get_user_messages() {
-    $messages = session_get('messages', []);
-    session_key_unset('messages');
+function getUserMessages() {
+    $messages = sessionGet('messages', []);
+    sessionKeyUnset('messages');
 
     return $messages;
 }
@@ -141,7 +141,7 @@ function get_user_messages() {
  * @param string $key
  *   The key to be destroyed.
  */
-function session_key_unset(string $key) {
+function sessionKeyUnset(string $key) {
     if (isset($_SESSION[$key])) {
         unset($_SESSION[$key]);
     }
@@ -158,7 +158,7 @@ function session_key_unset(string $key) {
  * @return mixed|string
  *   The data from the config data.
  */
-function config_get(string $key, $default = '') {
+function configGet(string $key, $default = '') {
     global $config;
 
     return $config[$key] ?? $default;
@@ -170,8 +170,8 @@ function config_get(string $key, $default = '') {
  * @return string
  *   The base url.
  */
-function get_base_url() {
-    return config_get('base_url');
+function getBaseUrl() {
+    return configGet('base_url');
 }
 
 /**
@@ -183,8 +183,8 @@ function get_base_url() {
  * @return string
  *   The asset url.
  */
-function get_asset_url(string $asset_url) {
-    $base_url = get_base_url();
+function getAssetUrl(string $asset_url) {
+    $base_url = getBaseUrl();
 
     return "{$base_url}/Assets/{$asset_url}";
 }
@@ -198,8 +198,8 @@ function get_asset_url(string $asset_url) {
  * @return string
  *   The url.
  */
-function get_url(string $url) {
-    $base_url = get_base_url();
+function getUrl(string $url) {
+    $base_url = getBaseUrl();
 
     return "{$base_url}/{$url}";
 }
@@ -210,7 +210,7 @@ function get_url(string $url) {
  * @return string
  *   The current url.
  */
-function get_current_url() {
+function getCurrentUrl() {
     $prefix = 'http://';
     if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
         $prefix = 'https://';
@@ -352,15 +352,15 @@ function dd(...$variables) {
  *   Associative array containing the start date at index "start" and the end date at index "end".
  * @throws Exception
  */
-function get_week_boundaries_from_date(DateTime $date){
+function getWeekBoundariesFromDate(DateTime $date){
     $w = array();
     $year = (int)$date->format("Y");
     $weekN = (int)$date->format("W");
     $week = new DateTime();
     $week->setISODate($year, $weekN);
-    $w["start"] = $week->format("Y-m-d");
+    $w['start'] = $week->format("Y-m-d");
     $week->modify("+6 days");
-    $w["end"] = $week->format("Y-m-d");
+    $w['end'] = $week->format("Y-m-d");
     return $w;
 }
 
@@ -399,6 +399,6 @@ function replaceQuotesForWhiteSpaces(string $string) {
  * @return string
  *   The formatted price.
  */
-function price_format(float $price) {
+function priceFormat(float $price) {
     return number_format($price, 2, ",", ".");
 }
