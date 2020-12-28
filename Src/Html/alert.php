@@ -1,24 +1,24 @@
 <?php
 $errors = getUserErrors();
-$error_message = '';
+$errorMessage = '';
 foreach ($errors as $error) {
-    $error_message .= "{$error} <br>";
+    $errorMessage .= "{$error} <br>";
 }
 
 $messages = getUserMessages();
-$success_message = '';
+$successMessage = '';
 foreach ($messages as $message) {
-    $success_message .= "{$message} <br>";
+    $successMessage .= "{$message} <br>";
 }
 
-if ($error_message !== '') : ?>
+if ($errorMessage !== '') : ?>
     <div class="alert alert-danger w-50 ml-auto mr-auto mt-2 mb-2" role="alert">
-        <?= $error_message ?>
+        <?= $errorMessage ?>
     </div>
 <?php endif; ?>
 
-<?php if ($success_message !== '') : ?>
+<?php if ($successMessage !== '') : ?>
     <div class="alert alert-success w-50 ml-auto mr-auto mt-2 mb-2" role="alert">
-        <?= $success_message ?>
+        <?= $successMessage ?>
     </div>
 <?php endif; ?>

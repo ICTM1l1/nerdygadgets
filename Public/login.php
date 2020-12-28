@@ -19,8 +19,8 @@ if (!empty($_POST)) {
     }
 
     $account = getPeopleByEmail($email);
-    $account_password = $account['HashedPassword'] ?? '';
-    if ($valuesValid && (empty($account) || !password_verify($password, $account_password))) {
+    $accountPassword = $account['HashedPassword'] ?? '';
+    if ($valuesValid && (empty($account) || !password_verify($password, $accountPassword))) {
         addUserError('Email of wachtwoord fout.');
         $valuesValid = false;
     }

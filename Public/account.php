@@ -5,11 +5,11 @@ csrfValidate(getCurrentUrl());
 
 authorizeUser();
 
-$personID = sessionGet('personID', 0);
-$account = getCustomerByPeople($personID);
+$personId = sessionGet('personID', 0);
+$account = getCustomerByPeople($personId);
 $adminAccount = null;
 if (empty($account) && authorizeAdmin()) {
-    $adminAccount = getPeople($personID);
+    $adminAccount = getPeople($personId);
 }
 
 $name = getFormDataPost('name', $account['PrivateCustomerName'] ?? '');

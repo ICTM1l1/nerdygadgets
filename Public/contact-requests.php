@@ -8,21 +8,21 @@ if (!authorizeAdmin()) {
 }
 
 $contactRequests = getContactRequests();
-$input_date = getFormDataGet('date');
-if (!empty($input_date)) {
-    $contactRequests = getContactRequestsByDate($input_date);
+$inputDate = getFormDataGet('date');
+if (!empty($inputDate)) {
+    $contactRequests = getContactRequestsByDate($inputDate);
 }
 
 $amountContactRequests = count($contactRequests);
 
 if (isset($_POST['delete_contact_request'])) {
-    $contact_request_id = getFormDataPost('contact_request_id');
-    if (empty($contact_request_id)) {
+    $contactRequestId = getFormDataPost('contact_request_id');
+    if (empty($contactRequestId)) {
         addUserError('Contact aanvraag kon niet worden verwijderd.');
         redirect('contact-requests.php');
     }
 
-    removeContactRequest($contact_request_id);
+    removeContactRequest($contactRequestId);
     addUserMessage('Contact aanvraag is succesvol verwijderd.');
     redirect('contact-requests.php');
 }
@@ -50,7 +50,7 @@ if (isset($_POST['delete_contact_request'])) {
                                         <div class="form-group">
                                             <label for="date" class="d-none">Datum</label>
                                             <input type="date" id="date" class="form-control submit-form-on-change" name="date"
-                                                   value="<?= $input_date ?>">
+                                                   value="<?= $inputDate ?>">
                                         </div>
                                     </form>
                                 </div>
@@ -102,7 +102,7 @@ if (isset($_POST['delete_contact_request'])) {
                                         <div class="tab-content text-white" id="nav-tabContent">
                                             <?php $active = 'active';
                                             foreach ($contactRequests as $key => $contactRequest) :
-                                                $requestID = $contactRequest['ContactRequestID'] ?? 0;
+                                                $requestId = $contactRequest['ContactRequestID'] ?? 0;
                                                 ?>
                                                 <div class="tab-pane fade show <?= $active ?>"
                                                      id="list-<?= $key ?>" role="tabpanel"

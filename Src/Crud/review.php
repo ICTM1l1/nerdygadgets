@@ -63,9 +63,8 @@ function getReviewAuthor(int $id){
     return selectFirst('
         SELECT * FROM people JOIN review
         ON people.personid = review.personid
-        WHERE reviewid = :id', [
-            'id' => $id
-    ]);
+        WHERE reviewid = :id
+    ', ['id' => $id]);
 }
 
 /**
@@ -103,8 +102,8 @@ function getLimitedReviewsForItem(int $id, int $limit = 3){
         SELECT * FROM review
         WHERE StockItemID = :id
         ORDER BY ReviewID DESC
-        LIMIT :limit',
-        ['id' => $id, 'limit' => $limit]);
+        LIMIT :limit
+    ', ['id' => $id, 'limit' => $limit]);
 }
 
 /**
@@ -118,8 +117,8 @@ function getLimitedReviewsForItem(int $id, int $limit = 3){
 function getReviewAverageByID(int $id){
     return selectFirst('
         SELECT Average FROM average_score
-        WHERE StockItemID = :id',
-    ['id' => $id])['Average'] ?? 0;
+        WHERE StockItemID = :id
+    ', ['id' => $id])['Average'] ?? 0;
 }
 
 /**
@@ -134,15 +133,16 @@ function updateAverageByID(int $id){
     $reviews = getAllReviewsForItem($id);
 
     $sum = 0;
-    foreach($reviews as $review){
+    foreach ($reviews as $review) {
         $sum += (int) ($review['Score'] ?? 0);
     }
 
     $amountReviews = count($reviews);
-    if($amountReviews === 0){
+    if ($amountReviews === 0) {
         delete('average_score', ['StockItemID' => $id]);
         return 0;
     }
+
     $avg = $sum / $amountReviews;
 
     delete('average_score', ['StockItemID' => $id]);
@@ -195,11 +195,9 @@ function createReview(int $sid, int $pid, int $score, string $review){
 function productWasReviewedByCustomer(int $itemid, int $personid){
     $reviews = select('
         SELECT * FROM review
-        WHERE StockItemID = :sid
-        AND PersonID = :pid',[
-            'sid' => $itemid,
-            'pid' => $personid
-    ]);
+        WHERE StockItemID = :stockItemId
+        AND PersonID = :personId
+    ',['stockItemId' => $itemid, 'personId' => $personid]);
 
     return !(count($reviews) === 0);
 }
@@ -218,11 +216,9 @@ function productWasReviewedByCustomer(int $itemid, int $personid){
 function getProductReviewByCustomer(int $itemid, int $personid){
     return selectFirst('
         SELECT * FROM review
-        WHERE StockItemID = :sid
-        AND PersonID = :pid',[
-        'sid' => $itemid,
-        'pid' => $personid
-    ]);
+        WHERE StockItemID = :stockItemId
+        AND PersonID = :personId
+    ',['stockItemId' => $itemid, 'personId' => $personid]);
 }
 
 /**
@@ -253,11 +249,10 @@ function deleteReview(int $itemid, int $personid){
 function deleteReviewByID(int $id){
     $itemid = selectFirst('
         SELECT StockItemID FROM review
-        WHERE ReviewID = :id', [
-            'id' => $id
-    ])['StockItemID'];
+        WHERE ReviewID = :id
+    ', ['id' => $id])['StockItemID'];
 
     return !delete('review',[
-            'ReviewID' => $id
+        'ReviewID' => $id
     ]) && updateAverageByID($itemid);
 }

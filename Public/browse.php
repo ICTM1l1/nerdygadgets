@@ -6,7 +6,7 @@ csrfValidate(getCurrentUrl());
 $cart = getCart();
 
 $searchString = getFormDataGet('search_string');
-$categoryID = (int) getFormDataGet('category_id');
+$categoryId = (int) getFormDataGet('category_id');
 $products = null;
 
 $sortOnPage = getFormDataGet('sort', 'price_low_high');
@@ -59,7 +59,7 @@ if ($searchString !== '') {
 $offset = $pageNumber * $productsOnPage;
 
 $showStockLevel = 1000;
-if (empty($categoryID)) {
+if (empty($categoryId)) {
     if ($queryBuildResult !== '') {
         $queryBuildResult = 'WHERE {$queryBuildResult}';
     }
@@ -71,8 +71,8 @@ if (empty($categoryID)) {
         $queryBuildResult .= ' AND ';
     }
 
-    $products = getProductsForCategoryWithFilter($queryBuildResult, $sort, $showStockLevel, $categoryID, $productsOnPage, $offset);
-    $amountProducts = getProductsAmountForCategoryWithFilter($queryBuildResult, $categoryID);
+    $products = getProductsForCategoryWithFilter($queryBuildResult, $sort, $showStockLevel, $categoryId, $productsOnPage, $offset);
+    $amountProducts = getProductsAmountForCategoryWithFilter($queryBuildResult, $categoryId);
 }
 
 $amountOfPages = 0;
@@ -91,7 +91,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
 ?>
 <div id="FilterFrame"><h2 class="FilterText"><i class="fas fa-filter"></i> Filteren </h2>
     <form method="get" action="<?= getCurrentUrl() ?>">
-        <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
+        <input type="hidden" name="category_id" id="category_id" value="<?= $categoryId ?>">
 
         <div id="FilterOptions">
             <div class="form-group">
@@ -131,7 +131,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
             </div>
 
             <div class="form-group mt-4">
-                <a type="button" href="<?= getUrl('browse.php?category_id=' . $categoryID) ?>" class="button button-danger float-left">
+                <a type="button" href="<?= getUrl('browse.php?category_id=' . $categoryId) ?>" class="button button-danger float-left">
                     Reset
                 </a>
 
@@ -207,7 +207,7 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
         <div class="pagination-container">
             <form id="PageSelector" method="get" action="<?= getCurrentUrl() ?>">
                 <input type="hidden" name="search_string" id="search_string" value="<?= $searchString ?>">
-                <input type="hidden" name="category_id" id="category_id" value="<?= $categoryID ?>">
+                <input type="hidden" name="category_id" id="category_id" value="<?= $categoryId ?>">
                 <input type="hidden" name="result_page_numbers" id="result_page_numbers" value="<?= $amountOfPages ?>">
                 <input type="hidden" name="products_on_page" id="products_on_page" value="<?= $productsOnPage ?>">
                 <input type="hidden" name="sort" id="sort" value="<?= $sort ?>">

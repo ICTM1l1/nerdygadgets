@@ -100,7 +100,7 @@ function executeQuery(string $query, array $parameters = [], PDO $connection = n
         $statement = $connection->prepare($query);
 
         foreach ($parameters as $column => $value) {
-            $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
+            $statement->bindValue(":{$column}", $value);
         }
 
         $statement->execute();
@@ -163,10 +163,10 @@ function insert(string $table, array $parameters = [], PDO $connection = null) {
     $columns = '';
     $values = '';
 
-    $last_column = array_key_last($parameters);
+    $lastColumn = array_key_last($parameters);
     foreach ($parameters as $column => $value) {
-        $columns .= $column === $last_column ? $column : "{$column}, ";
-        $values .= $column === $last_column ? ":{$column}" : ":{$column}, ";
+        $columns .= $column === $lastColumn ? $column : "{$column}, ";
+        $values .= $column === $lastColumn ? ":{$column}" : ":{$column}, ";
     }
 
     $query = "INSERT INTO {$table} ({$columns}) VALUES ({$values})";
@@ -178,7 +178,7 @@ function insert(string $table, array $parameters = [], PDO $connection = null) {
 
         $statement = $connection->prepare($query);
         foreach ($parameters as $column => $value) {
-            $statement->bindValue(":{$column}", $value, PDO::PARAM_STR);
+            $statement->bindValue(":{$column}", $value);
         }
 
         $statement->execute();
@@ -207,22 +207,22 @@ function insert(string $table, array $parameters = [], PDO $connection = null) {
  *   The result of executing the query.
  */
 function update(string $table, array $parameters = [], array $conditions = [], PDO $connection = null) {
-    $query_values = '';
-    $last_param_column = array_key_last($parameters);
-    foreach ($parameters as $param_column => $value) {
-        $query_values .= $param_column === $last_param_column ? "{$param_column} = :{$param_column}" : "{$param_column} = :{$param_column}, ";
+    $queryValues = '';
+    $lastParamColumn = array_key_last($parameters);
+    foreach ($parameters as $paramColumn => $value) {
+        $queryValues .= $paramColumn === $lastParamColumn ? "{$paramColumn} = :{$paramColumn}" : "{$paramColumn} = :{$paramColumn}, ";
     }
 
-    $query_conditions = '';
-    $last_condition_column = array_key_last($conditions);
-    foreach ($conditions as $condition_column => $condition) {
-        $query_conditions .= $condition_column === $last_condition_column ? "{$condition_column} = :{$condition_column}" : "{$condition_column} = :{$condition_column} AND ";
+    $queryConditions = '';
+    $lastConditionColumn = array_key_last($conditions);
+    foreach ($conditions as $conditionColumn => $condition) {
+        $queryConditions .= $conditionColumn === $lastConditionColumn ? "{$conditionColumn} = :{$conditionColumn}" : "{$conditionColumn} = :{$conditionColumn} AND ";
     }
 
-    $query = "UPDATE {$table} SET {$query_values} WHERE {$query_conditions}";
+    $query = "UPDATE {$table} SET {$queryValues} WHERE {$queryConditions}";
 
-    $query_values = array_merge($parameters, $conditions);
-    $statement = executeQuery($query, $query_values, $connection, configGet('database_user_update'), configGet('database_password_update'));
+    $queryValues = array_merge($parameters, $conditions);
+    $statement = executeQuery($query, $queryValues, $connection, configGet('database_user_update'), configGet('database_password_update'));
 
     // Checks if the query has been executed successfully.
     return empty($statement->errorInfo());
@@ -240,13 +240,13 @@ function update(string $table, array $parameters = [], array $conditions = [], P
  *   The result of executing the query.
  */
 function delete(string $table, array $conditions = []) {
-    $query_conditions = '';
-    $last_condition_column = array_key_last($conditions);
-    foreach ($conditions as $condition_column => $condition) {
-        $query_conditions .= $condition_column === $last_condition_column ? "{$condition_column} = :{$condition_column}" : "{$condition_column} = :{$condition_column} AND ";
+    $queryConditions = '';
+    $lastConditionColumn = array_key_last($conditions);
+    foreach ($conditions as $conditionColumn => $condition) {
+        $queryConditions .= $conditionColumn === $lastConditionColumn ? "{$conditionColumn} = :{$conditionColumn}" : "{$conditionColumn} = :{$conditionColumn} AND ";
     }
 
-    $query = "DELETE FROM {$table} WHERE {$query_conditions}";
+    $query = "DELETE FROM {$table} WHERE {$queryConditions}";
     $statement = executeQuery($query, $conditions, null, configGet('database_user_delete'), configGet('database_password_delete'));
 
     return empty($statement->errorInfo());

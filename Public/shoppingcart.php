@@ -137,8 +137,8 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                 <h3>Gerelateerde Producten</h3>
             </div>
                 <?php
-                $product_id = $cartItems[array_key_first($cartItems)]['id'] ?? 0;
-                $categories = getCategoryIdForProduct($product_id);
+                $firstProductId = $cartItems[array_key_first($cartItems)]['id'] ?? 0;
+                $categories = getCategoryIdForProduct($firstProductId);
 
                 $relatedProductIds = [];
                 $relatedProductImages = [];
@@ -155,10 +155,11 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                 <?php foreach($relatedProductIds as $key => $productId) : ?>
                 <div class="col-sm-3">
                     <?php if (isset($relatedProductImages[$key])) : ?>
-                        <?php $relatedImage = $relatedProductImages[$key];
+                        <?php
+                        $relatedImage = $relatedProductImages[$key];
                         $imagePath = $relatedImage['ImagePath'] ?? '';
                         $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
-                    ?>
+                        ?>
                     <a href="<?= getUrl("view.php?id={$relatedProductIds[$key]}") ?>">
                         <?php if (!empty($imagePath)) : ?>
                             <div class="ImgFrame"

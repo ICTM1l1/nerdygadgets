@@ -8,21 +8,21 @@ if (!authorizeAdmin()) {
 }
 
 $reviews = getReviewedProducts();
-$input_date = getFormDataGet('date');
-if (!empty($input_date)) {
-    $reviews = getReviewedProductsByDate($input_date);
+$inputDate = getFormDataGet('date');
+if (!empty($inputDate)) {
+    $reviews = getReviewedProductsByDate($inputDate);
 }
 
 $amountReviews = count($reviews);
 
 if (isset($_POST['delete_review'])) {
-    $review_id = getFormDataPost('review_id');
-    if (empty($review_id)) {
+    $reviewId = getFormDataPost('review_id');
+    if (empty($reviewId)) {
         addUserError('Review kon niet worden verwijderd.');
         redirect(getCurrentUrl());
     }
 
-    deleteReviewByID($review_id);
+    deleteReviewByID($reviewId);
     addUserMessage('Review is succesvol verwijderd.');
     redirect(getCurrentUrl());
 }
@@ -50,7 +50,7 @@ if (isset($_POST['delete_review'])) {
                                             <div class="form-group">
                                                 <label for="date" class="d-none">Datum</label>
                                                 <input type="date" id="date" class="form-control submit-form-on-change" name="date"
-                                                       value="<?= $input_date ?>">
+                                                       value="<?= $inputDate ?>">
                                             </div>
                                         </form>
                                     </div>
@@ -98,8 +98,8 @@ if (isset($_POST['delete_review'])) {
                                                 <?php $active = 'active';
                                                 foreach ($reviews as $key => $review) :
                                                     $productReviews = getAllReviewsForItem($review['StockItemID'][0] ?? 0);
-                                                    if (!empty($input_date)) {
-                                                        $productReviews = getAllReviewsForItemByDate($review['StockItemID'][0] ?? 0, $input_date);
+                                                    if (!empty($inputDate)) {
+                                                        $productReviews = getAllReviewsForItemByDate($review['StockItemID'][0] ?? 0, $inputDate);
                                                     }
                                                     ?>
                                                     <div class="tab-pane fade show <?= $active ?>"

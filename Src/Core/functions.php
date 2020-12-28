@@ -177,16 +177,16 @@ function getBaseUrl() {
 /**
  * Gets the asset url.
  *
- * @param string $asset_url
+ * @param string $assetUrl
  *   The path to the asset.
  *
  * @return string
  *   The asset url.
  */
-function getAssetUrl(string $asset_url) {
-    $base_url = getBaseUrl();
+function getAssetUrl(string $assetUrl) {
+    $baseUrl = getBaseUrl();
 
-    return "{$base_url}/Assets/{$asset_url}";
+    return "{$baseUrl}/Assets/{$assetUrl}";
 }
 
 /**
@@ -199,9 +199,9 @@ function getAssetUrl(string $asset_url) {
  *   The url.
  */
 function getUrl(string $url) {
-    $base_url = getBaseUrl();
+    $baseUrl = getBaseUrl();
 
-    return "{$base_url}/{$url}";
+    return "{$baseUrl}/{$url}";
 }
 
 /**

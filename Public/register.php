@@ -48,8 +48,8 @@ if (!empty($_POST)) {
     if ($valuesValid) {
         if (validateRecaptcha()) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
-            createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
+            $personId = createPeople($name, $email, $hashedPassword, $phoneNumber);
+            createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personId);
 
             $account = getPeopleByEmail($email);
 

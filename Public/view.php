@@ -4,7 +4,9 @@ require_once __DIR__ . '/../Src/header.php';
 csrfValidate(getCurrentUrl());
 
 $text = getFormDataPost('review-text');
-$score = (int)getFormDataPost('score-value', '0');
+$score = (int) getFormDataPost('score-value', '0');
+$itemId = (int) getFormDataPost('itemid', 0);
+$personId = (int) sessionGet('personID', 0);
 
 if(isset($_POST['review'])){
     $valid = true;
@@ -13,20 +15,18 @@ if(isset($_POST['review'])){
         $valid = false;
     }
 
-    $id = (int)getFormDataPost('itemid', '0');
-    $pid = (int)sessionGet('personID', 0);
-    $orders = getOrdersByCustomer($pid);
+    $orders = getOrdersByCustomer($personId);
 
-    if (productWasReviewedByCustomer($id, $pid)) {
+    if (productWasReviewedByCustomer($itemId, $personId)) {
         addUserError('U kan een product maar 1 keer reviewen.');
         $valid = false;
     }
 
     $ordered = false;
     foreach($orders as $order){
-        $lines = getOrderLinesByOrder($order['OrderID'] ?? 0);
-        foreach($lines as $line){
-            if ((int) ($line['StockItemID'] ?? '0') == $id) {
+        $orderLines = getOrderLinesByOrder($order['OrderID'] ?? 0);
+        foreach($orderLines as $orderLine){
+            if ((int) ($orderLine['StockItemID'] ?? '0') == $itemId) {
                 $ordered = true;
                 break;
             }
@@ -52,30 +52,27 @@ if(isset($_POST['review'])){
     }
 
     if ($valid) {
-        createReview($id, $pid, $score, $text);
+        createReview($itemId, $personId, $score, $text);
     }
     redirect(getCurrentUrl());
 }
 elseif(isset($_POST['Delete_Review'])){
-    if (!(bool)sessionGet('LoggedIn', false)) {
+    if (!(bool) sessionGet('LoggedIn', false)) {
         addUserError('U moet ingelogd zijn om uw review te kunnen verwijderen.');
+        redirect(getCurrentUrl());
     }
-    else {
-        $id = (int)getFormDataPost('id', '0');
-        $pid = (int)sessionGet('personID', 0);
-        deleteReview($id, $pid);
-    }
-    redirect(getCurrentUrl());
+
+    deleteReview($itemId, $personId);
 }
 
 $cart = getCart();
 
-$product_id = (int) getFormDataGet('id');
-$product = getProduct($product_id);
-$images = getProductImages($product_id);
-$categories = getCategoryIdForProduct($product_id);
-$reviews = getLimitedReviewsForItem($product_id);
-$productReview = getProductReviewByCustomer($product_id, (int)sessionGet('personID', 0));
+$productId = (int) getFormDataGet('id');
+$product = getProduct($productId);
+$images = getProductImages($productId);
+$categories = getCategoryIdForProduct($productId);
+$reviews = getLimitedReviewsForItem($productId);
+$productReview = getProductReviewByCustomer($productId, (int) sessionGet('personID', 0));
 
 $relatedProductIds = [];
 $relatedProductImages = [];
@@ -101,21 +98,21 @@ if (!empty($productCustomFields)) {
     $customFields = json_decode($productCustomFields, true, 512, JSON_THROW_ON_ERROR);
 }
 
-$productInCart = $cart->getItemCount($product_id) > 0;
-if ($id = getFormDataPost('Add_Cart', NULL)) {
-    $cart->addItem($id);
+$productInCart = $cart->getItemCount($productId) > 0;
+if ($itemId = getFormDataPost('Add_Cart', NULL)) {
+    $cart->addItem($itemId);
     redirect(getCurrentUrl());
 }
-elseif ($id = getFormDataPost('Min_Cart', NULL)) {
-    $cart->decreaseItemCount($id);
+elseif ($itemId = getFormDataPost('Min_Cart', NULL)) {
+    $cart->decreaseItemCount($itemId);
     redirect(getCurrentUrl());
 }
-elseif ($id = getFormDataPost('Increase_Cart', NULL)) {
-    $cart->increaseItemCount($id);
+elseif ($itemId = getFormDataPost('Increase_Cart', NULL)) {
+    $cart->increaseItemCount($itemId);
     redirect(getCurrentUrl());
 }
-elseif ($id = getFormDataPost('Del_Cart', NULL)) {
-    $cart->removeItem($id);
+elseif ($itemId = getFormDataPost('Del_Cart', NULL)) {
+    $cart->removeItem($itemId);
     redirect(getCurrentUrl());
 }
 
@@ -180,8 +177,8 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 </h2>
                 <?php
                 $averageScore = round(getReviewAverageByID($product['StockItemID']));
-                if($averageScore > 0) : ?>
-                    <h3 class="mt-3" style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
+                if ($averageScore > 0) : ?>
+                    <h3 class="mt-3" style="color: goldenrod;"><?= getRatingStars($averageScore) ?></h3>
                 <?php else : ?>
                     <h3 class="text-white mt-3">Geen reviews</h3>
                 <?php endif; ?>
@@ -210,26 +207,26 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <div class="edit-actions w-100 mb-2">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger mr-2"
-                                                name="Min_Cart" value="<?= $product_id ?>">
+                                                name="Min_Cart" value="<?= $productId ?>">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                         <button type="submit" class="btn btn-outline-success mr-2"
-                                                name="Increase_Cart" value="<?= $product_id ?>">
+                                                name="Increase_Cart" value="<?= $productId ?>">
                                             <i class="fas fa-plus"></i>
                                         </button>
 
                                         <p class="h4 font-weight-bold float-right">
-                                            <?= $cart->getItemCount($product_id) ?>x
+                                            <?= $cart->getItemCount($productId) ?>x
                                         </p>
 
                                         <button class="btn btn-outline-danger float-right w-75 mt-2"
-                                                type="submit" name="Del_Cart" value="<?= $product_id ?>"
+                                                type="submit" name="Del_Cart" value="<?= $productId ?>"
                                                 data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? '') ?>` wilt verwijderen?">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php else : ?>
                                         <button type="submit" class="btn btn-outline-success w-100"
-                                                name="Add_Cart" value="<?= $product_id ?>"
+                                                name="Add_Cart" value="<?= $productId ?>"
                                             <?= $quantityOnHandRaw <= 0 ? 'disabled' : '' ?>>
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
@@ -282,13 +279,14 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 <?php endif; ?>
             </div>
         <div class="row" id="RelatedProducts">
-            <?php foreach($relatedProductIds as $key => $productId) : ?>
+            <?php foreach($relatedProductIds as $key => $relatedProductId) : ?>
             <div class="col-sm-2">
                 <?php if (isset($relatedProductImages[$key])) : ?>
-                    <?php $relatedImage = $relatedProductImages[$key];
+                    <?php
+                    $relatedImage = $relatedProductImages[$key];
                     $imagePath = $relatedImage['ImagePath'] ?? '';
                     $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
-                ?>
+                    ?>
                 <a href="<?= getUrl("view.php?id={$relatedProductIds[$key]}") ?>">
                     <?php if (!empty($imagePath)) : ?>
                         <div class="ImgFrame"
@@ -313,7 +311,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <h2 class="text-white float-left">Schrijf een review</h2>
                             </div>
                             <div class="col-sm-6">
-                                <a href="<?= getUrl('reviews.php?id=' . $product_id)?>"
+                                <a href="<?= getUrl('reviews.php?id=' . $productId)?>"
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
@@ -324,7 +322,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <?php if (!empty($productReview)) : ?>
                                     <form action="<?= getCurrentUrl()?>" class="text-center w-100" method="post">
                                         <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
-                                        <input type="hidden" name="id" value="<?=$product_id?>"/>
+                                        <input type="hidden" name="id" value="<?=$productId?>"/>
 
                                         <h4>U heeft een review geplaatst</h4>
                                         <div class="form-group form-row">
@@ -360,7 +358,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <?php else : ?>
                                     <form class="text-center w-100" method="post" action="<?=getCurrentUrl()?>">
                                         <input type="hidden" name="token" value="<?=csrfGetToken()?>"/>
-                                        <input type="hidden" name="itemid" value="<?=$product_id?>">
+                                        <input type="hidden" name="itemid" value="<?=$productId?>">
 
                                         <div class="form-group form-row">
                                             <label for="score-input" class="col-sm-3 pt-2 mt-1">Score</label>
@@ -406,7 +404,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6" style="color: goldenrod">
-                                                        <?= getRatingStars((int)$review["Score"])?>
+                                                        <?= getRatingStars((int) ($review["Score"] ?? 0)) ?>
                                                     </div>
                                                     <div class="col-sm-6 text-right">
                                                         <?= dateTimeFormatShort($review["ReviewDate"])?>
@@ -431,7 +429,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                 <h2 class="text-white float-left">Log in of registreer om een review achter te laten</h2>
                             </div>
                             <div class="col-sm-2">
-                                <a href="<?= getUrl('reviews.php?id=' . $product_id)?>"
+                                <a href="<?= getUrl('reviews.php?id=' . $productId)?>"
                                    class="float-right btn btn-success">
                                     Bekijk reviews
                                 </a>
@@ -453,7 +451,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6" style="color: goldenrod">
-                                                        <?= getRatingStars((int)$review['Score'])?>
+                                                        <?= getRatingStars((int) ($review['Score'] ?? 0))?>
                                                     </div>
                                                     <div class="col-sm-6 text-right">
                                                         <?= dateTimeFormatShort($review['ReviewDate'])?>

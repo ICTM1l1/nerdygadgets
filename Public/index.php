@@ -9,11 +9,11 @@ $products = getRandomProducts(10);
             <?php foreach($products as $key => $product) : ?>
                 <?php if (!empty($product)) : ?>
                     <?php
-                    $product_id = $product['StockItemID'] ?? 0;
-                    $images = getProductImages($product_id);
+                    $productId = $product['StockItemID'] ?? 0;
+                    $images = getProductImages($productId);
                     ?>
 
-                    <a href="<?= getUrl("view.php?id={$product_id}") ?>">
+                    <a href="<?= getUrl("view.php?id={$productId}") ?>">
                         <div class="TextPrice">
                                 <div class="TextMain">
                                     <?= $product['StockItemName'] ?? '' ?>

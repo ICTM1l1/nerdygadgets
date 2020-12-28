@@ -12,8 +12,8 @@ if (empty($price) || empty($cart->getItems())) {
 }
 
 $loggedIn = (bool) sessionGet('LoggedIn', false);
-$personID = sessionGet('personID', 0);
-$account = getCustomerByPeople($personID);
+$personId = sessionGet('personID', 0);
+$account = getCustomerByPeople($personId);
 
 $name = getFormDataPost('name', $account['PrivateCustomerName'] ?? '');
 $postalCode = getFormDataPost('postalcode', $account['DeliveryPostalCode'] ?? '');
@@ -22,25 +22,25 @@ $city = getFormDataPost('city', $account['CityName'] ?? '');
 $phoneNumber = getFormDataPost('phonenumber', $account['PhoneNumber'] ?? '');
 
 if (isset($_POST['checkout'])) {
-    $values_valid = true;
+    $valuesValid = true;
     if (empty($name) || empty($postalCode) || empty($address) || empty($city) || empty($phoneNumber)) {
-        $values_valid = false;
+        $valuesValid = false;
         addUserError('Niet all verplichte velden met een * zijn ingevuld.');
     }
 
-    if ($values_valid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
+    if ($valuesValid && !preg_match('/^[1-9][0-9]{3}?(?!sa|sd|ss)[a-z]{2}$/i', $postalCode)) {
         addUserError('Ongeldige postcode opgegeven.');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if ($values_valid) {
-        $customer_id = $account['PrivateCustomerID'] ?? 0;
-        if (empty($customer_id)) {
-            $customer_id = createCustomer($name, $phoneNumber, $address, $postalCode, $city);
+    if ($valuesValid) {
+        $customerId = $account['PrivateCustomerID'] ?? 0;
+        if (empty($customerId)) {
+            $customerId = createCustomer($name, $phoneNumber, $address, $postalCode, $city);
         }
 
-        if (!empty($customer_id)) {
-            sessionSave('customer_id', $customer_id, true);
+        if (!empty($customerId)) {
+            sessionSave('customer_id', $customerId, true);
             redirect('payment.php');
         }
     }

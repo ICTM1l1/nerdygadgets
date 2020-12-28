@@ -11,10 +11,10 @@
  */
 function getCity(string $city) {
     return selectFirst('
-                SELECT CityID, CityName
-                FROM cities 
-                WHERE CityName = :cityName
-                ', ['cityName' => $city,]);
+        SELECT CityID, CityName
+        FROM cities 
+        WHERE CityName = :cityName
+    ', ['cityName' => $city,]);
 }
 
 /**
@@ -25,10 +25,10 @@ function getCity(string $city) {
  */
 function getLastCityId() {
     return selectFirst('
-                SELECT CityID, CityName
-                FROM cities 
-                ORDER BY CityID DESC
-                ')['CityID'] ?? 0;
+        SELECT CityID, CityName
+        FROM cities 
+        ORDER BY CityID DESC
+    ')['CityID'] ?? 0;
 }
 
 /**
