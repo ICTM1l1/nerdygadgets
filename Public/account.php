@@ -27,8 +27,8 @@ if (isset($_POST['update'])) {
     }
 
     $account = getPeopleByEmail($email);
-    $account_password = $account['HashedPassword'] ?? '';
-    if (!password_verify($password, $account_password)) {
+    $accountPassword = $account['HashedPassword'] ?? '';
+    if (!password_verify($password, $accountPassword)) {
         addUserError('Wachtwoord incorrect.');
         redirect(getUrl('account.php'));
     }

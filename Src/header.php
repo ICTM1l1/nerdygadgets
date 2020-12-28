@@ -74,11 +74,11 @@ $countedCategories = count($categories);
         <div class="col-6" id="CategoriesBar">
             <ul id="ul-class">
                 <?php for ($x = 0; $x < $countedCategories && $x < 4; $x++) :
-                    $category_id = $categories[$x]['StockGroupID'] ?? '';
+                    $categoryId = $categories[$x]['StockGroupID'] ?? '';
                     ?>
                     <li>
-                        <a href="<?= getUrl("browse.php?category_id={$category_id}") ?>"
-                           class="HrefDecoration <?= strpos(getCurrentUrl(), "category_id={$category_id}") !== false ? 'active' : '' ?>">
+                        <a href="<?= getUrl("browse.php?category_id={$categoryId}") ?>"
+                           class="HrefDecoration <?= strpos(getCurrentUrl(), "category_id={$categoryId}") !== false ? 'active' : '' ?>">
                             <?= $categories[$x]['StockGroupName'] ?? '' ?>
                         </a>
                     </li>
