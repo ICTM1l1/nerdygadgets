@@ -8,7 +8,7 @@ $score = (int) getFormDataPost('score-value', '0');
 $itemId = (int) getFormDataPost('itemid', 0);
 $personId = (int) sessionGet('personID', 0);
 
-if(isset($_POST['review'])){
+if (isset($_POST['review'])){
     $valid = true;
     if (!(bool)sessionGet('LoggedIn', false)) {
         addUserError('U moet ingelogd zijn om een review achter te kunnen laten.');
@@ -23,9 +23,9 @@ if(isset($_POST['review'])){
     }
 
     $ordered = false;
-    foreach($orders as $order){
+    foreach ($orders as $order){
         $orderLines = getOrderLinesByOrder($order['OrderID'] ?? 0);
-        foreach($orderLines as $orderLine){
+        foreach ($orderLines as $orderLine){
             if ((int) ($orderLine['StockItemID'] ?? '0') == $itemId) {
                 $ordered = true;
                 break;
@@ -52,11 +52,11 @@ if(isset($_POST['review'])){
     }
 
     if ($valid) {
-        createReview($itemId, $personId, $score, $text);
+        createReviewForProduct($itemId, $personId, $score, $text);
     }
     redirect(getCurrentUrl());
 }
-elseif(isset($_POST['Delete_Review'])){
+elseif (isset($_POST['Delete_Review'])){
     if (!(bool) sessionGet('LoggedIn', false)) {
         addUserError('U moet ingelogd zijn om uw review te kunnen verwijderen.');
         redirect(getCurrentUrl());
@@ -71,7 +71,7 @@ $productId = (int) getFormDataGet('id');
 $product = getProduct($productId);
 $images = getProductImages($productId);
 $categories = getCategoryIdForProduct($productId);
-$reviews = getLimitedReviewsForItem($productId);
+$reviews = getLimitedReviewsForProduct($productId);
 $productReview = getProductReviewByCustomer($productId, (int) sessionGet('personID', 0));
 
 $relatedProductIds = [];
@@ -79,7 +79,7 @@ $relatedProductImages = [];
 
 if (!empty($categories)) {
     $countedCategories = count($categories);
-    for($i = 0; $i < 6; $i++) {
+    for ($i = 0; $i < 6; $i++) {
         $randomCategories = random_int(0, $countedCategories - 1);
         $relatedProductIds[$i] = getRandomProductForCategory($categories[$randomCategories] ['StockGroupID'] ?? '');
 
@@ -176,7 +176,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                     <?= $product['StockItemName'] ?? '' ?>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product['StockItemID']));
+                $averageScore = round(getReviewAverageByProduct($product['StockItemID']));
                 if ($averageScore > 0) : ?>
                     <h3 class="mt-3" style="color: goldenrod;"><?= getRatingStars($averageScore) ?></h3>
                 <?php else : ?>
@@ -279,7 +279,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                 <?php endif; ?>
             </div>
         <div class="row" id="RelatedProducts">
-            <?php foreach($relatedProductIds as $key => $relatedProductId) : ?>
+            <?php foreach ($relatedProductIds as $key => $relatedProductId) : ?>
             <div class="col-sm-2">
                 <?php if (isset($relatedProductImages[$key])) : ?>
                     <?php
@@ -393,7 +393,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                             <div class="col-sm-6 pl-4 pr-4">
                                 <?php if (!empty($reviews)) : ?>
                                     <div class="row d-flex justify-content-center">
-                                        <?php foreach($reviews as $review):?>
+                                        <?php foreach ($reviews as $review):?>
                                             <div class="col-sm-12 border border-white mt-3">
                                                 <div class="row">
                                                     <div class="col-sm-12">
@@ -440,7 +440,7 @@ include __DIR__ . '/../Src/Html/alert.php'; ?>
                             <div class="col-sm-12 pl-4 pr-4">
                                 <?php if (!empty($reviews)) : ?>
                                     <div class="row d-flex justify-content-center">
-                                        <?php foreach($reviews as $review):?>
+                                        <?php foreach ($reviews as $review):?>
                                             <div class="col-sm-4 border border-white mt-3">
                                                 <div class="row">
                                                     <div class="col-sm-12">

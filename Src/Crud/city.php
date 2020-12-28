@@ -18,20 +18,6 @@ function getCity(string $city) {
 }
 
 /**
- * Gets the last city id.
- *
- * @return int
- *   The last city id.
- */
-function getLastCityId() {
-    return selectFirst('
-        SELECT CityID, CityName
-        FROM cities 
-        ORDER BY CityID DESC
-    ')['CityID'] ?? 0;
-}
-
-/**
  * Creates a city.
  *
  * @param string $cityName

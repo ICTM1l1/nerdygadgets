@@ -56,7 +56,7 @@ class Cart {
      *   The amount of the item.
      */
     public function setItemCount(int $id, int $count): void {
-        if(isset($this->items[$id])){
+        if (isset($this->items[$id])){
             $this->items[$id] = $count;
             $this->updated = true;
         }
@@ -80,7 +80,7 @@ class Cart {
             return;
         }
 
-        if(isset($this->items[$id])){
+        if (isset($this->items[$id])){
             $this->items[$id]++;
             $this->updated = true;
         }
@@ -120,7 +120,7 @@ class Cart {
      */
     public function getItems(): array {
         $items = array();
-        foreach($this->items as $id => $count){
+        foreach ($this->items as $id => $count){
             $items[] = array('id' => $id, 'amount' => $count);
         }
 
@@ -173,7 +173,7 @@ class Cart {
      *   The id of the item.
      */
     public function removeItem(int $id): void{
-        if(isset($this->items[$id])) {
+        if (isset($this->items[$id])) {
             unset($this->items[$id]);
             $this->updated = true;
         }
@@ -202,12 +202,12 @@ class Cart {
      *   The total price or the calculated one.
      */
     public function getTotalPrice(): float{
-        if(!$this->updated){
+        if (!$this->updated){
             return $this->cost;
         }
 
         $total = 0;
-        foreach($this->items as $id => $count){
+        foreach ($this->items as $id => $count){
             $productPrice = getProduct($id)['SellPrice'] ?? 0;
 
             $total += $productPrice * $count;

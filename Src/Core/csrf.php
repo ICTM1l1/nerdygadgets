@@ -25,13 +25,13 @@ function csrfGetTokenPrivate(int $size=32){
  *   pseudo-random token.
  */
 function csrfGetToken(){
-    if(session_status() != PHP_SESSION_ACTIVE){
+    if (session_status() != PHP_SESSION_ACTIVE){
         return '';
     }
 
     $pexpiry = $_SESSION['pexpiry'] ?? '';
     $overwrite = false;
-    if($pexpiry != '' && time() >= $pexpiry){
+    if ($pexpiry != '' && time() >= $pexpiry){
         $overwrite = true;
     }
 

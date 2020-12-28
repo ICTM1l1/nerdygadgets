@@ -10,12 +10,12 @@
  * @return string
  *   String containing character repetitions.*/
 function checkRepetition(int $rep, string $password){
-    $split = str_split($password, $rep);
+    $chunks = str_split($password, $rep);
     $accumulator = array();
 
-    foreach($split as $s){
-        if(end($accumulator) !== $s){
-            $accumulator[] = $s;
+    foreach ($chunks as $chunk){
+        if (end($accumulator) !== $chunk){
+            $accumulator[] = $chunk;
         }
     }
     return implode("", $accumulator);

@@ -8,7 +8,7 @@ $cart = getCart();
 $productId = (int) getFormDataGet('id');
 $product = getProduct($productId);
 $images = getProductImages($productId);
-$reviews = getAllReviewsForItem($productId);
+$reviews = getReviewsForProduct($productId);
 
 $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
 $productCustomFields = $product['CustomFields'] ?? null;
@@ -88,8 +88,8 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                     <a class="text-white" href="<?= getUrl('view.php?id=' . $product['StockItemID'])?>"><?= $product['StockItemName'] ?? '' ?></a>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product['StockItemID'] ?? 0));
-                if($averageScore > 0) : ?>
+                $averageScore = round(getReviewAverageByProduct($product['StockItemID'] ?? 0));
+                if ($averageScore > 0) : ?>
                     <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
                     <h3 class="text-white">Geen reviews.</h3>
@@ -156,14 +156,14 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                 </div>
                 <div class="border-bottom border-white"></div>
                 <div class="row mt-1">
-                    <?php if(empty($reviews)):?>
+                    <?php if (empty($reviews)):?>
                     <div class="col-sm-12 mt-3">
                         <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar.</h2>
                     </div>
                     <?php else:?>
                         <div class="col-sm-12">
                             <div class="row d-flex justify-content-center">
-                                <?php foreach($reviews as $review):?>
+                                <?php foreach ($reviews as $review):?>
                                     <div class="col-sm-3 border border-white ml-2 mr-2 mt-3">
                                         <h4><?= getCustomerByPeople($review['PersonID'] ?? '' )['PreferredName'] ?? '' ?></h4>
                                         <div class="row">

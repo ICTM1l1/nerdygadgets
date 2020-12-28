@@ -74,18 +74,18 @@ function createPeople(string $name, string $email, string $password, string $pho
 /**
  * Updates a people by id.
  *
- * @param int $personID
+ * @param int $person
  *   The person ID.
  * @param string $name
  *   The name.
  * @param string $phoneNumber
  *   The phone number.
  */
-function updatePeople(int $personID, string $name, string $phoneNumber) {
+function updatePeople(int $person, string $name, string $phoneNumber) {
     update('people', [
         'FullName' => $name,
         'PhoneNumber' => $phoneNumber
     ], [
-        'PersonID' => $personID
+        'PersonID' => $person
     ]);
 }

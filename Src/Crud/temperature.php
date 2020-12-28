@@ -14,6 +14,12 @@ function getTemperature() {
     ');
 }
 
+/**
+ * Creates or updates the measured temperature.
+ *
+ * @param int $temperature
+ *   The measured temperature
+ */
 function createOrUpdateTemperatureMeasurement(int $temperature) {
     $measuredTemperature = getTemperature();
     if (!empty($measuredTemperature)) {

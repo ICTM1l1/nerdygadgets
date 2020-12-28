@@ -334,7 +334,7 @@ function dateFormatShort(string $date) {
  */
 function dd(...$variables) {
     // Removes all previous printed items
-    if(ob_get_contents()){
+    if (ob_get_contents()){
         ob_end_clean();
     }
 

@@ -188,8 +188,8 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                         <p class="StockItemName"><?= $product['StockItemName'] ?? '' ?></p>
                         <p class="StockItemComments"><?= $product['MarketingComments'] ?? '' ?></p>
                         <?php
-                        $averageScore = round(getReviewAverageByID($product['StockItemID']));
-                        if($averageScore > 0) : ?>
+                        $averageScore = round(getReviewAverageByProduct($product['StockItemID']));
+                        if ($averageScore > 0) : ?>
                             <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                         <?php endif; ?>
                         <?php if ($quantityOnHandRaw <= 0) : ?>

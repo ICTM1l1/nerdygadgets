@@ -22,7 +22,7 @@ if (isset($_POST['delete_review'])) {
         redirect(getCurrentUrl());
     }
 
-    deleteReviewByID($reviewId);
+    deleteReviewById($reviewId);
     addUserMessage('Review is succesvol verwijderd.');
     redirect(getCurrentUrl());
 }
@@ -97,9 +97,9 @@ if (isset($_POST['delete_review'])) {
                                             <div class="tab-content text-white" id="nav-tabContent">
                                                 <?php $active = 'active';
                                                 foreach ($reviews as $key => $review) :
-                                                    $productReviews = getAllReviewsForItem($review['StockItemID'][0] ?? 0);
+                                                    $productReviews = getReviewsForProduct($review['StockItemID'][0] ?? 0);
                                                     if (!empty($inputDate)) {
-                                                        $productReviews = getAllReviewsForItemByDate($review['StockItemID'][0] ?? 0, $inputDate);
+                                                        $productReviews = getReviewsForProductByDate($review['StockItemID'][0] ?? 0, $inputDate);
                                                     }
                                                     ?>
                                                     <div class="tab-pane fade show <?= $active ?>"

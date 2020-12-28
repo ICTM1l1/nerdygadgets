@@ -6,7 +6,7 @@ $products = getRandomProducts(10);
 <div class="IndexStyle">
     <div class="col-11 m-auto">
         <?php if (!empty($products)) : ?>
-            <?php foreach($products as $key => $product) : ?>
+            <?php foreach ($products as $key => $product) : ?>
                 <?php if (!empty($product)) : ?>
                     <?php
                     $productId = $product['StockItemID'] ?? 0;

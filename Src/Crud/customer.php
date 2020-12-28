@@ -13,13 +13,13 @@
  *   The postal code.
  * @param string $city
  *   The city.
- * @param int|null $personID
+ * @param int|null $person
  *   The person id.
  *
  * @return int
  *   The customer id.
  */
-function createCustomer(string $name, string $phoneNumber, string $address, string $postalCode, string $city, int $personID = null) {
+function createCustomer(string $name, string $phoneNumber, string $address, string $postalCode, string $city, int $person = null) {
     $cityFromDb = getCity($city);
     $cityId = $cityFromDb['CityID'] ?? 0;
     if (empty($cityId)) {
@@ -31,28 +31,10 @@ function createCustomer(string $name, string $phoneNumber, string $address, stri
         'DeliveryMethodID' => 1,
         'DeliveryCityID' => $cityId,
         'PhoneNumber' => $phoneNumber,
-        'PeopleID' => $personID,
+        'PeopleID' => $person,
         'DeliveryAddressLine1' => $address,
         'DeliveryPostalCode' => $postalCode,
     ]);
-}
-
-/**
- * Gets a specific customer.
- *
- * @param string $customer
- *   The customer to search for.
- *
- * @return array
- *   The found customer.
- */
-function getCustomerByName(string $customer) {
-    return selectFirst('
-        SELECT PrivateCustomerID, PrivateCustomerName, DeliveryPostalCode, DeliveryAddressLine1,
-        CityName, C.PhoneNumber, EmailAddress, P.PersonID, LogonName
-        FROM privatecustomer
-        WHERE PrivateCustomerName = :customerName
-    ', ['customerName' => $customer]);
 }
 
 /**
@@ -97,7 +79,7 @@ function getCustomerByPeople(int $people) {
 /**
  * Updates a customer.
  *
- * @param int $peopleID
+ * @param int $people
  *   The people id.
  * @param string $name
  *   The name.
@@ -110,7 +92,7 @@ function getCustomerByPeople(int $people) {
  * @param string $city
  *   The city.
  */
-function updateCustomer(int $peopleID, string $name, string $address, string $postalCode, string $phoneNumber, string $city) {
+function updateCustomer(int $people, string $name, string $address, string $postalCode, string $phoneNumber, string $city) {
     $cityFromDb = getCity($city);
     $cityId = $cityFromDb['CityID'] ?? 0;
     if (empty($cityId)) {
@@ -124,7 +106,7 @@ function updateCustomer(int $peopleID, string $name, string $address, string $po
         'DeliveryAddressLine1' => $address,
         'DeliveryCityID' => $cityId,
     ], [
-        'PeopleID' => $peopleID
+        'PeopleID' => $people
     ]);
 }
 
