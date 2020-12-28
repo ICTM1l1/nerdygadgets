@@ -15,8 +15,8 @@ function authorizeUser() {
  */
 function authorizeAdmin() {
     authorizeUser();
-    $personID = sessionGet('personID', 0);
-    $account = getPeople($personID);
+    $personId = sessionGet('personID', 0);
+    $account = getPeople($personId);
     
     // If the user is an employee, he is automatically an admin.
     return (bool) ($account['IsEmployee'] ?? 0);

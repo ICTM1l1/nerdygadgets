@@ -11,13 +11,16 @@
 function getRatingStars(int $rating){
     $estar = '<i class="far fa-star"></i>';
     $fstar = '<i class="fas fa-star"></i>';
-    $r = "";
+
+    $result = "";
     $i = 0;
-    for(; $i < $rating && $i < 5; $i++){
-        $r .= $fstar;
+    for (; $i < $rating && $i < 5; $i++) {
+        $result .= $fstar;
     }
-    for(; $i < 5; $i++){
-        $r .= $estar;
+
+    for (; $i < 5; $i++) {
+        $result .= $estar;
     }
-    return $r;
+
+    return $result;
 }

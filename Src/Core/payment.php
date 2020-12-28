@@ -7,12 +7,12 @@ require_once __DIR__ . "/../Mollie/vendor/autoload.php";
  *
  * @param string $price
  *   The price to be payed.
- * @param int $order_nr
+ * @param int $order
  *   The order number.
  * @throws \Mollie\Api\Exceptions\ApiException
  *   Thrown on API connection error.
  */
-function initiatePayment(string $price, int $order_nr) {
+function initiatePayment(string $price, int $order) {
     $mollie = new \Mollie\Api\MollieApiClient();
     $mollie->setApiKey('test_sKWktBBCgNax7dGjt8sU6cF92zRuzb');
     $payment = $mollie->payments->create([
@@ -20,7 +20,7 @@ function initiatePayment(string $price, int $order_nr) {
             'currency' => 'EUR',
             'value' => $price
         ],
-        'description' => "Order #{$order_nr}",
+        'description' => "Order #{$order}",
         'redirectUrl' => getUrl('transactioncomplete.php'),
         'webhookUrl'  => '',
     ]);
@@ -51,4 +51,4 @@ function checkPayment(string $paymentId) {
 
     return $payment->isPaid();
 }
-?>
+

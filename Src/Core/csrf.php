@@ -25,13 +25,13 @@ function csrfGetTokenPrivate(int $size=32){
  *   pseudo-random token.
  */
 function csrfGetToken(){
-    if(session_status() != PHP_SESSION_ACTIVE){
+    if (session_status() != PHP_SESSION_ACTIVE){
         return '';
     }
 
-    $px = $_SESSION['pexpiry'] ?? '';
+    $pexpiry = $_SESSION['pexpiry'] ?? '';
     $overwrite = false;
-    if($px != '' && time() >= $px){
+    if ($pexpiry != '' && time() >= $pexpiry){
         $overwrite = true;
     }
 
@@ -55,18 +55,20 @@ function csrfGetToken(){
  *   Thrown when there is no adequate randomness source for private key.
  */
 function csrfValidate($destination = ''){
-    $csrf_token = csrfGetToken();
+    $csrfToken = csrfGetToken();
     sessionKeyUnset('ptoken');
     sessionKeyUnset('pexpiry');
 
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        if(hash_equals($csrf_token, $_POST['token'] ?? '')){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (hash_equals($csrfToken, $_POST['token'] ?? '')) {
             return true;
         }
+
         addUserError('Er is iets fout gegaan. Probeer het opnieuw.');
-        if($destination != ''){
+        if ($destination != '') {
             redirect($destination);
         }
     }
+
     return false;
 }

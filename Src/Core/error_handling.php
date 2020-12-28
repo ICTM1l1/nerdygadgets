@@ -24,7 +24,7 @@ set_error_handler('errorHandler');
  */
 function errorHandler($errno, $errstr, $errfile, $errline) {
     // Removes all previous printed items
-    if(ob_get_contents()){
+    if (ob_get_contents()){
         ob_end_clean();
     }
 
@@ -46,12 +46,12 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
 /**
  * Adds custom error handling for exceptions.
  *
- * @param Exception $exception
+ * @param mixed $exception
  *   The exception.
  */
 function errorException($exception) {
     // Removes all previous printed items
-    if(ob_get_contents()){
+    if (ob_get_contents()){
         ob_end_clean();
     }
 

@@ -177,16 +177,16 @@ function getBaseUrl() {
 /**
  * Gets the asset url.
  *
- * @param string $asset_url
+ * @param string $assetUrl
  *   The path to the asset.
  *
  * @return string
  *   The asset url.
  */
-function getAssetUrl(string $asset_url) {
-    $base_url = getBaseUrl();
+function getAssetUrl(string $assetUrl) {
+    $baseUrl = getBaseUrl();
 
-    return "{$base_url}/Assets/{$asset_url}";
+    return "{$baseUrl}/Assets/{$assetUrl}";
 }
 
 /**
@@ -199,9 +199,9 @@ function getAssetUrl(string $asset_url) {
  *   The url.
  */
 function getUrl(string $url) {
-    $base_url = getBaseUrl();
+    $baseUrl = getBaseUrl();
 
-    return "{$base_url}/{$url}";
+    return "{$baseUrl}/{$url}";
 }
 
 /**
@@ -334,34 +334,12 @@ function dateFormatShort(string $date) {
  */
 function dd(...$variables) {
     // Removes all previous printed items
-    if(ob_get_contents()){
+    if (ob_get_contents()){
         ob_end_clean();
     }
 
     var_dump($variables);
     die();
-}
-
-/**
- * Retrieves dates of the first and last day of the week that the relevant date falls in.
- *
- * @param DateTime $date
- *   The date which falls in the week we wish to retrieve the start and end off.
- *
- * @return array
- *   Associative array containing the start date at index "start" and the end date at index "end".
- * @throws Exception
- */
-function getWeekBoundariesFromDate(DateTime $date){
-    $w = array();
-    $year = (int)$date->format("Y");
-    $weekN = (int)$date->format("W");
-    $week = new DateTime();
-    $week->setISODate($year, $weekN);
-    $w['start'] = $week->format("Y-m-d");
-    $week->modify("+6 days");
-    $w['end'] = $week->format("Y-m-d");
-    return $w;
 }
 
 /**

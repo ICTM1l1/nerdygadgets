@@ -40,7 +40,7 @@ if (!empty($_POST)) {
         $valuesValid = false;
     }
 
-    if(scorePassword($password, 8) < 75) {
+    if (scorePassword($password, 8) < 75) {
         addUserError('Wachtwoord niet sterk genoeg. Een sterk wachtwoord voldoet aan de volgende eisen: <ul><li>1 hoofdletter</li><li>1 kleineletter</li><li>1 getal</li><li>Langer dan 8 karakters</li></ul>');
         $valuesValid = false;
     }
@@ -48,8 +48,8 @@ if (!empty($_POST)) {
     if ($valuesValid) {
         if (validateRecaptcha()) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $personID = createPeople($name, $email, $hashedPassword, $phoneNumber);
-            createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personID);
+            $personId = createPeople($name, $email, $hashedPassword, $phoneNumber);
+            createCustomer($name, $phoneNumber, $address, $postalCode, $city, $personId);
 
             $account = getPeopleByEmail($email);
 

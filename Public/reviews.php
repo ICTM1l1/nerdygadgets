@@ -5,10 +5,10 @@ csrfValidate(getCurrentUrl());
 
 $cart = getCart();
 
-$product_id = (int) getFormDataGet('id');
-$product = getProduct($product_id);
-$images = getProductImages($product_id);
-$reviews = getAllReviewsForItem($product_id);
+$productId = (int) getFormDataGet('id');
+$product = getProduct($productId);
+$images = getProductImages($productId);
+$reviews = getReviewsForProduct($productId);
 
 $quantityOnHandRaw = (int) ($product['QuantityOnHandRaw'] ?? 0);
 $productCustomFields = $product['CustomFields'] ?? null;
@@ -17,7 +17,7 @@ if (!empty($productCustomFields)) {
     $customFields = json_decode($productCustomFields, true, 512, JSON_THROW_ON_ERROR);
 }
 
-$productInCart = $cart->getItemCount($product_id) > 0;
+$productInCart = $cart->getItemCount($productId) > 0;
 if ($id = getFormDataPost('Add_Cart', NULL)) {
     $cart->addItem($id);
     redirect(getCurrentUrl());
@@ -88,8 +88,8 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                     <a class="text-white" href="<?= getUrl('view.php?id=' . $product['StockItemID'])?>"><?= $product['StockItemName'] ?? '' ?></a>
                 </h2>
                 <?php
-                $averageScore = round(getReviewAverageByID($product['StockItemID'] ?? 0));
-                if($averageScore > 0) : ?>
+                $averageScore = round(getReviewAverageByProduct($product['StockItemID'] ?? 0));
+                if ($averageScore > 0) : ?>
                     <h3 style="color: goldenrod;"><?=getRatingStars($averageScore)?></h3>
                 <?php else : ?>
                     <h3 class="text-white">Geen reviews.</h3>
@@ -110,26 +110,26 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                                 <div class="edit-actions w-100 mb-2">
                                     <?php if ($productInCart) : ?>
                                         <button type="submit" class="btn btn-outline-danger mr-2"
-                                                name="Min_Cart" value="<?= $product_id ?>">
+                                                name="Min_Cart" value="<?= $productId ?>">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                         <button type="submit" class="btn btn-outline-success mr-2"
-                                                name="Increase_Cart" value="<?= $product_id ?>">
+                                                name="Increase_Cart" value="<?= $productId ?>">
                                             <i class="fas fa-plus"></i>
                                         </button>
 
                                         <p class="h4 font-weight-bold float-right">
-                                            <?= $cart->getItemCount($product_id) ?>x
+                                            <?= $cart->getItemCount($productId) ?>x
                                         </p>
 
                                         <button class="btn btn-outline-danger float-right w-75 mt-2"
-                                                type="submit" name="Del_Cart" value="<?= $product_id ?>"
+                                                type="submit" name="Del_Cart" value="<?= $productId ?>"
                                                 data-confirm="Weet u zeker dat u `<?= replaceDoubleQuotesForWhiteSpaces($product['StockItemName'] ?? '') ?>` wilt verwijderen?">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     <?php else : ?>
                                         <button type="submit" class="btn btn-outline-success w-100"
-                                                name="Add_Cart" value="<?= $product_id ?>"
+                                                name="Add_Cart" value="<?= $productId ?>"
                                             <?= $quantityOnHandRaw <= 0 ? 'disabled' : '' ?>>
                                             <i class="fas fa-cart-plus h1"></i>
                                         </button>
@@ -151,19 +151,19 @@ elseif ($id = getFormDataPost('Del_Cart', NULL)) {
                         <h1>Reviews</h1>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="<?= getUrl('view.php?id=' . $product_id) ?>" class="btn btn-success">Terug naar product</a>
+                        <a href="<?= getUrl('view.php?id=' . $productId) ?>" class="btn btn-success">Terug naar product</a>
                     </div>
                 </div>
                 <div class="border-bottom border-white"></div>
                 <div class="row mt-1">
-                    <?php if(empty($reviews)):?>
+                    <?php if (empty($reviews)):?>
                     <div class="col-sm-12 mt-3">
                         <h2 class="text-center text-white">Geen reviews voor dit product beschikbaar.</h2>
                     </div>
                     <?php else:?>
                         <div class="col-sm-12">
                             <div class="row d-flex justify-content-center">
-                                <?php foreach($reviews as $review):?>
+                                <?php foreach ($reviews as $review):?>
                                     <div class="col-sm-3 border border-white ml-2 mr-2 mt-3">
                                         <h4><?= getCustomerByPeople($review['PersonID'] ?? '' )['PreferredName'] ?? '' ?></h4>
                                         <div class="row">

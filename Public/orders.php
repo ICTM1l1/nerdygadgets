@@ -3,12 +3,12 @@ require_once __DIR__ . '/../Src/header.php';
 
 authorizeUser();
 
-$personID = sessionGet('personID', 0);
-$account = getCustomerByPeople($personID);
+$personId = sessionGet('personID', 0);
+$account = getCustomerByPeople($personId);
 
-$orders = getOrdersByCustomer($personID);
+$orders = getOrdersByCustomer($personId);
 if ($date = getFormDataGet('date')) {
-    $orders = getOrdersByCustomerByDate($personID, $date);
+    $orders = getOrdersByCustomerByDate($personId, $date);
 }
 
 $amountOrders = count($orders);
@@ -88,10 +88,10 @@ $amountOrders = count($orders);
                                             <div class="tab-content text-white" id="nav-tabContent">
                                                 <?php $active = 'active';
                                                 foreach ($orders as $key => $order) :
-                                                    $order_id = $order['OrderID'] ?? 0;
+                                                    $orderId = $order['OrderID'] ?? 0;
                                                     $priceTotal = 0;
 
-                                                    $orderLines = getOrderLinesByOrder($order_id);
+                                                    $orderLines = getOrderLinesByOrder($orderId);
                                                     ?>
                                                     <div class="tab-pane fade show <?= $active ?>"
                                                          id="list-<?= $key ?>" role="tabpanel"
@@ -99,7 +99,7 @@ $amountOrders = count($orders);
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <h3 class="mt-0 pt-0">
-                                                                    Bestelling #<?= $order_id ?>
+                                                                    Bestelling #<?= $orderId ?>
                                                                 </h3>
 
                                                                 <h5 class="mt-2 float-left">

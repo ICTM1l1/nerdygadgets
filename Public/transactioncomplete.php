@@ -37,9 +37,9 @@ if ($orderSuccessful) {
         foreach ($products as $product) {
             $productId = (int) ($product['id'] ?? 0);
             $productAmount = (int) ($product['amount'] ?? 0);
-            $productFromDB = getProduct($productId);
+            $productFromDb = getProduct($productId);
 
-            createOrderLine($orderId, $productFromDB, $productAmount, $currentDate, $connection);
+            createOrderLine($orderId, $productFromDb, $productAmount, $currentDate, $connection);
         }
 
         commitTransaction($connection);

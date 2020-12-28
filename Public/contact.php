@@ -9,38 +9,38 @@ $subject = getFormDataPost('subject');
 $message = getFormDataPost('message');
 
 if (!empty($_POST)) {
-    $values_valid = true;
-    if(empty($email) || empty($name) || empty($subject) || empty($message)) {
+    $valuesValid = true;
+    if (empty($email) || empty($name) || empty($subject) || empty($message)) {
         addUserError('Niet alle verplichte velden met een * zijn ingevuld.');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if ($values_valid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($valuesValid && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         addUserError('Ongeldige email opgegeven.');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if(strlen($message) > 100) {
+    if (strlen($message) > 100) {
         addUserError('Uw opgegeven naam is langer dan toegestaan. (Max: 100 tekens)');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if(strlen($email) > 100) {
+    if (strlen($email) > 100) {
         addUserError('Uw opgegeven email adres is langer dan toegestaan. (Max: 100 tekens)');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if(strlen($subject) > 100) {
+    if (strlen($subject) > 100) {
         addUserError('Uw opgegeven onderwerp is langer dan toegestaan (Max: 100 tekens).');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if(strlen($message) > 2000) {
+    if (strlen($message) > 2000) {
         addUserError('Uw bericht is langer dan toegestaan.');
-        $values_valid = false;
+        $valuesValid = false;
     }
 
-    if ($values_valid) {
+    if ($valuesValid) {
         if (validateRecaptcha()) {
             createContactRequest($name, $email, $subject, $message);
             addUserMessage('Uw bericht is verstuurd.');

@@ -7,15 +7,15 @@ $cart = getCart();
 $cartItems = $cart->getItems();
 $amountCartItems = $cart->getCount();
 
-if($id = getFormDataPost('Add_Product', NULL)){
+if ($id = getFormDataPost('Add_Product', NULL)){
     $cart->increaseItemCount($id);
     redirect(getCurrentUrl());
 }
-elseif($id = getFormDataPost('Min_Product', NULL)){
+elseif ($id = getFormDataPost('Min_Product', NULL)){
     $cart->decreaseItemCount($id);
     redirect(getCurrentUrl());
 }
-elseif($id = getFormDataPost('Del_Product', NULL)){
+elseif ($id = getFormDataPost('Del_Product', NULL)){
     $cart->removeItem($id);
     redirect(getCurrentUrl());
 }
@@ -131,18 +131,18 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
         </div>
         <div class="mt-5">
             <?php
-            if($amountCartItems > 0) :
+            if ($amountCartItems > 0) :
             ?>
             <div id="RelatedProductText" class="pt-5">
                 <h3>Gerelateerde Producten</h3>
             </div>
                 <?php
-                $product_id = $cartItems[array_key_first($cartItems)]['id'] ?? 0;
-                $categories = getCategoryIdForProduct($product_id);
+                $firstProductId = $cartItems[array_key_first($cartItems)]['id'] ?? 0;
+                $categories = getCategoryIdForProduct($firstProductId);
 
                 $relatedProductIds = [];
                 $relatedProductImages = [];
-                for($i = 0; $i < 4; $i++){
+                for ($i = 0; $i < 4; $i++) {
                     $relatedProductIds[$i] = getRandomProductForCategory($categories[random_int(0, count($categories) - 1)] ['StockGroupID'] ?? '');
 
                     $image = getProductImages($relatedProductIds[$i] ?? 0);
@@ -152,13 +152,14 @@ elseif($id = getFormDataPost('Del_Product', NULL)){
                     $relatedProductImages[$i]['BackupImagePath'] = $fallbackImage['BackupImagePath'] ?? '';
                 }?>
             <div class="row" id="RelatedCartProducts">
-                <?php foreach($relatedProductIds as $key => $productId) : ?>
+                <?php foreach ($relatedProductIds as $key => $productId) : ?>
                 <div class="col-sm-3">
                     <?php if (isset($relatedProductImages[$key])) : ?>
-                        <?php $relatedImage = $relatedProductImages[$key];
+                        <?php
+                        $relatedImage = $relatedProductImages[$key];
                         $imagePath = $relatedImage['ImagePath'] ?? '';
                         $backupImagePath = $relatedImage['BackupImagePath'] ?? '';
-                    ?>
+                        ?>
                     <a href="<?= getUrl("view.php?id={$relatedProductIds[$key]}") ?>">
                         <?php if (!empty($imagePath)) : ?>
                             <div class="ImgFrame"

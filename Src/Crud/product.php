@@ -3,13 +3,13 @@
 /**
  * Gets a product for the given id.
  *
- * @param int $product_id
+ * @param int $product
  *   The id to search for.
  *
  * @return array
  *   The found product.
  */
-function getProduct(int $product_id) {
+function getProduct(int $product) {
     return selectFirst("
         SELECT SI.StockItemID, SI.IsChillerStock AS 'IsChillerStock',
         (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
@@ -24,67 +24,41 @@ function getProduct(int $product_id) {
         JOIN stockgroups USING(StockGroupID)
         WHERE SI.stockitemid = :stockitemid
         GROUP BY StockItemID
-    ", ['stockitemid' => $product_id]);
-}
-
-/**
- * Gets a product with a image for the given id.
- *
- * @param int $product_id
- *   The id to search for.
- *
- * @return array
- *   The found product.
- */
-function getProductWithImage(int $product_id) {
-    return selectFirst("
-        SELECT SI.StockItemID, (RecommendedRetailPrice*(1+(TaxRate/100))) AS SellPrice, 
-        StockItemName, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
-        CONCAT('Voorraad: ', QuantityOnHand) AS QuantityOnHand, SearchDetails, 
-        (CASE WHEN (RecommendedRetailPrice*(1+(TaxRate/100))) > 50 THEN 0 ELSE 6.95 END) AS SendCosts, MarketingComments, CustomFields, SI.Video,
-        (SELECT ImagePath FROM stockgroups JOIN stockitemstockgroups USING(StockGroupID) WHERE StockItemID = SI.StockItemID LIMIT 1) as BackupImagePath   
-        FROM stockitems SI 
-        JOIN stockitemholdings SIH USING(stockitemid)
-        JOIN stockitemstockgroups ON SI.StockItemID = stockitemstockgroups.StockItemID
-        JOIN stockgroups USING(StockGroupID)
-        WHERE SI.stockitemid = :stockitemid
-        AND SI.StockItemID IN (SELECT SIMG.StockItemID FROM stockitemimages SIMG)
-        GROUP BY StockItemID
-    ", ['stockitemid' => $product_id]);
+    ", ['stockitemid' => $product]);
 }
 
 /**
  * Gets the images for a product for the given id.
  *
- * @param int $product_id
+ * @param int $product
  *   The id to search for.
  *
  * @return array
  *   The found product images.
  */
-function getProductImages(int $product_id) {
+function getProductImages(int $product) {
     return select('
         SELECT ImagePath
         FROM stockitemimages 
         WHERE StockItemID = :stockitemid
-    ', ['stockitemid' => $product_id]);
+    ', ['stockitemid' => $product]);
 }
 
 /**
  * Gets the image for a product for the given id.
  *
- * @param int $product_id
+ * @param int $product
  *   The id to search for.
  *
  * @return array
  *   The found product image.
  */
-function getProductImage(int $product_id) {
+function getProductImage(int $product) {
     return selectFirst('
         SELECT ImagePath
         FROM stockitemimages 
         WHERE StockItemID = :stockitemid
-    ', ['stockitemid' => $product_id]);
+    ', ['stockitemid' => $product]);
 }
 
 /**
@@ -150,7 +124,7 @@ function getProductsAmount(string $queryBuildResult = '') {
  *   The sorting of the products.
  * @param int $showStockLevel
  *   The minimum for showing the stock level.
- * @param int $categoryID
+ * @param int $category
  *   The category ID to search for.
  * @param int $productsOnPage
  *   The amount of products to show on one page.
@@ -160,7 +134,7 @@ function getProductsAmount(string $queryBuildResult = '') {
  * @return array
  *   The found products for the category.
  */
-function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort, int $showStockLevel, int $categoryID, int $productsOnPage, int $offset) {
+function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort, int $showStockLevel, int $category, int $productsOnPage, int $offset) {
     return select("
         SELECT SI.StockItemID, SI.StockItemName, SI.MarketingComments, SIH.QuantityOnHand AS 'QuantityOnHandRaw',
         ROUND(SI.TaxRate * SI.RecommendedRetailPrice / 100 + SI.RecommendedRetailPrice,2) as SellPrice, 
@@ -175,7 +149,7 @@ function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort
         GROUP BY StockItemID
         ORDER BY {$sort}
         LIMIT :limit OFFSET :offset
-    ", ['showStockLevel' => $showStockLevel, 'categoryId' => $categoryID, 'limit' => $productsOnPage, 'offset' => $offset]);
+    ", ['showStockLevel' => $showStockLevel, 'categoryId' => $category, 'limit' => $productsOnPage, 'offset' => $offset]);
 }
 
 /**
@@ -183,49 +157,49 @@ function getProductsForCategoryWithFilter(string $queryBuildResult, string $sort
  *
  * @param string $queryBuildResult
  *   Provides extra select query statements.
- * @param int $categoryID
+ * @param int $category
  *   The category ID to search for.
  *
  * @return int
  *   The amount of products for the category.
  */
-function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $categoryID) {
+function getProductsAmountForCategoryWithFilter(string $queryBuildResult, int $category) {
     $productsAmount = selectFirst("
         SELECT count(*)
         FROM stockitems SI 
         WHERE {$queryBuildResult} :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)
-    ", ['categoryId' => $categoryID]);
+    ", ['categoryId' => $category]);
 
     return $productsAmount["count(*)"] ?? 0;
 }
 /**
  * Gets the IDs of products from category.
  *
- * @param int $categoryID
+ * @param int $category
  *   The category ID to search for.
  *
  * @return array
  *   The randomly found product IDs from category.
  */
-function getProductIdsForCategory(int $categoryID) {
+function getProductIdsForCategory(int $category) {
     return select('
         SELECT SI.StockItemID
         FROM stockitems SI 
         WHERE :categoryId IN (SELECT SS.StockGroupID FROM stockitemstockgroups SS WHERE SS.StockItemID = SI.StockItemID)
-    ', ['categoryId' => $categoryID]);
+    ', ['categoryId' => $category]);
 }
 
 /**
  * Gets a random product id from category.
  *
- * @param int $categoryID
+ * @param int $category
  *   The category ID to search for.
  *
  * @return int
  *   The ID of the randomly found product from category or 0.
  */
-function getRandomProductForCategory(int $categoryID){
-    $productIds = getProductIdsForCategory($categoryID);
+function getRandomProductForCategory(int $category){
+    $productIds = getProductIdsForCategory($category);
     if (!empty($productIds)) {
         $selectedProduct = $productIds[array_rand($productIds)];
     }
@@ -245,9 +219,9 @@ function getRandomProductForCategory(int $categoryID){
 function getRandomProducts(int $amountOfProducts) {
     $productPlaceholders = '';
     $productIds = [];
-    for ($category_id = 1; $category_id <= $amountOfProducts; $category_id++) {
-        $productIds["product_$category_id"] = getRandomProductForCategory($category_id);
-        $productPlaceholders .= $category_id !== $amountOfProducts ? ":product_$category_id, " : ":product_$category_id";
+    for ($categoryId = 1; $categoryId <= $amountOfProducts; $categoryId++) {
+        $productIds["product_$categoryId"] = getRandomProductForCategory($categoryId);
+        $productPlaceholders .= $categoryId !== $amountOfProducts ? ":product_$categoryId, " : ":product_$categoryId";
     }
 
     return select("
@@ -271,34 +245,35 @@ function getRandomProducts(int $amountOfProducts) {
 /**
  * Gets category id of product.
  *
- * @param int $product_id
+ * @param int $product
  *   The id of the product
  *
  * @return array
- *   The array of catogory ids the product is in
+ *   The array of category ids the product is in
  */
-function getCategoryIdForProduct(int $product_id){
+function getCategoryIdForProduct(int $product) {
     return select('
-                SELECT StockGroupID 
-                FROM stockitemstockgroups 
-                WHERE StockItemID = :stockitemid', ['stockitemid' => $product_id]);
+        SELECT StockGroupID 
+        FROM stockitemstockgroups 
+        WHERE StockItemID = :stockitemid
+    ', ['stockitemid' => $product]);
 }
 
 /**
  * Gets the image for a product for the given id.
  *
- * @param int $product_id
+ * @param int $product
  *   The id to search for.
  *
  * @return array
  *   The found product image.
  */
-function getBackupProductImage(int $product_id) {
+function getBackupProductImage(int $product) {
     return selectFirst('
-                SELECT ImagePath as BackupImagePath
-                FROM stockgroups 
-                JOIN stockitemstockgroups USING(StockGroupID) 
-                WHERE StockItemID = :StockItemID 
-                LIMIT 1
-                ', ['StockItemID' => $product_id]);
+        SELECT ImagePath as BackupImagePath
+        FROM stockgroups 
+        JOIN stockitemstockgroups USING(StockGroupID) 
+        WHERE StockItemID = :StockItemID 
+        LIMIT 1
+    ', ['StockItemID' => $product]);
 }

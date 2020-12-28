@@ -48,23 +48,6 @@ class Cart {
     }
 
     /**
-     * Sets the amount of an item.
-     *
-     * @param int $id
-     *   The id of the item.
-     * @param int $count
-     *   The amount of the item.
-     */
-    public function setItemCount(int $id, int $count): void {
-        if(isset($this->items[$id])){
-            $this->items[$id] = $count;
-            $this->updated = true;
-        }
-
-        saveCart($this);
-    }
-
-    /**
      * Increase the amount of an item.
      *
      * @param int $id
@@ -72,15 +55,15 @@ class Cart {
      */
     public function increaseItemCount(int $id): void {
         $product = getProduct($id);
-        $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
+        $currentQuantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
         $count = $this->items[$id] ?? 1;
-        if (($current_quantity - $count - 1) < 0) {
+        if (($currentQuantity - $count - 1) < 0) {
             addUserError('Product ' . ($product['StockItemName'] ?? '') . ' is na verhoging van het aantal niet meer op voorraad');
             $this->updated = false;
             return;
         }
 
-        if(isset($this->items[$id])){
+        if (isset($this->items[$id])){
             $this->items[$id]++;
             $this->updated = true;
         }
@@ -99,11 +82,10 @@ class Cart {
      *   The id of the item.
      */
     public function decreaseItemCount(int $id): void {
-        if(isset($this->items[$id]) && $this->getItemCount($id) > 1){
+        $this->updated = false;
+        if (isset($this->items[$id]) && $this->getItemCount($id) > 1) {
             $this->items[$id]--;
             $this->updated = true;
-        }else{
-            $this->updated = false;
         }
 
         if ($this->isUpdated()) {
@@ -121,7 +103,7 @@ class Cart {
      */
     public function getItems(): array {
         $items = array();
-        foreach($this->items as $id => $count){
+        foreach ($this->items as $id => $count){
             $items[] = array('id' => $id, 'amount' => $count);
         }
 
@@ -148,8 +130,8 @@ class Cart {
      */
     public function addItem(int $id, int $count = 1): void {
         $product = getProduct($id);
-        $current_quantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
-        if (($current_quantity - $count) < 0) {
+        $currentQuantity = (int) ($product['QuantityOnHandRaw'] ?? 0);
+        if (($currentQuantity - $count) < 0) {
             addUserError('Product ' . ($product['StockItemName'] ?? '') . ' is niet op voorraad');
             $this->updated = false;
             return;
@@ -174,7 +156,7 @@ class Cart {
      *   The id of the item.
      */
     public function removeItem(int $id): void{
-        if(isset($this->items[$id])) {
+        if (isset($this->items[$id])) {
             unset($this->items[$id]);
             $this->updated = true;
         }
@@ -187,31 +169,21 @@ class Cart {
     }
 
     /**
-     * Clears the cart.
-     */
-    public function cleanCart(): void{
-        $this->items = array();
-        $this->updated = true;
-
-        saveCart($this);
-    }
-
-    /**
      * Gets the total price.
      *
      * @return float
      *   The total price or the calculated one.
      */
     public function getTotalPrice(): float{
-        if(!$this->updated){
+        if (!$this->updated){
             return $this->cost;
         }
 
         $total = 0;
-        foreach($this->items as $id => $count){
-            $product_price = getProduct($id)['SellPrice'] ?? 0;
+        foreach ($this->items as $id => $count){
+            $productPrice = getProduct($id)['SellPrice'] ?? 0;
 
-            $total += $product_price * $count;
+            $total += $productPrice * $count;
         }
 
         $this->updated = false;
