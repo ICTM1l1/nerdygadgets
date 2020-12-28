@@ -3,22 +3,25 @@
 /**
  * Check string repetitions.
  *
- * @param int $rep
+ * @param int $repetitions
  *   Amount of character repetitions to check.
  * @param string $password
  *   String to check repetitions in.
+ *
  * @return string
- *   String containing character repetitions.*/
-function checkRepetition(int $rep, string $password){
-    $chunks = str_split($password, $rep);
-    $accumulator = array();
+ *   String containing character repetitions.
+ */
+function checkRepetition(int $repetitions, string $password){
+    $chunks = str_split($password, $repetitions);
 
+    $accumulator = [];
     foreach ($chunks as $chunk){
         if (end($accumulator) !== $chunk){
             $accumulator[] = $chunk;
         }
     }
-    return implode("", $accumulator);
+
+    return implode('', $accumulator);
 }
 
 /**
@@ -30,13 +33,14 @@ function checkRepetition(int $rep, string $password){
  *
  * @param string $password
  *   Password string to check.
- * @param int $minlen
+ * @param int $minLength
  *   Minimum password length.
+ *
  * @return int
  *   The score calculated for the password.
  */
-function scorePassword(string $password, int $minlen){
-    if (strlen($password) < $minlen) {
+function scorePassword(string $password, int $minLength){
+    if (strlen($password) < $minLength) {
         return -1;
     }
 
