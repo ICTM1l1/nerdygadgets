@@ -46,7 +46,7 @@ function errorHandler($errno, $errstr, $errfile, $errline) {
 /**
  * Adds custom error handling for exceptions.
  *
- * @param Exception $exception
+ * @param mixed $exception
  *   The exception.
  */
 function errorException($exception) {

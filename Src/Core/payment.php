@@ -51,4 +51,4 @@ function checkPayment(string $paymentId) {
 
     return $payment->isPaid();
 }
-?>
+

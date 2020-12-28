@@ -48,23 +48,6 @@ class Cart {
     }
 
     /**
-     * Sets the amount of an item.
-     *
-     * @param int $id
-     *   The id of the item.
-     * @param int $count
-     *   The amount of the item.
-     */
-    public function setItemCount(int $id, int $count): void {
-        if (isset($this->items[$id])){
-            $this->items[$id] = $count;
-            $this->updated = true;
-        }
-
-        saveCart($this);
-    }
-
-    /**
      * Increase the amount of an item.
      *
      * @param int $id
@@ -181,16 +164,6 @@ class Cart {
         if ($this->isUpdated()) {
             addUserMessage('Product is succesvol verwijderd uit de winkelwagen.');
         }
-
-        saveCart($this);
-    }
-
-    /**
-     * Clears the cart.
-     */
-    public function cleanCart(): void{
-        $this->items = array();
-        $this->updated = true;
 
         saveCart($this);
     }

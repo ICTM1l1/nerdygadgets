@@ -23,6 +23,8 @@ function preventXSS(string $value) {
  *
  * @return false
  *   Whether the recaptcha challenge was successful or not.
+ *
+ * @throws JsonException
  */
 function validateRecaptcha() {
     $secretKey = configGet('recaptcha_private_key');
